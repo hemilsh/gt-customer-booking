@@ -1,0 +1,54 @@
+.card-header{
+    border-bottom: none !important;
+}
+.qty {margin-top: 5px !important;}
+ngb-datepicker{
+    width: 100%;
+    transform: translate(0px, 71px);
+}
+.position-relative{
+  position: relative;
+}
+ngb-datepicker .ngb-dp-month{
+    width: 100%;
+}
+ngb-datepicker ngb-datepicker-month-view{
+    width: 100%;
+}
+ngb-datepicker-month-view .ngb-dp-week.ngb-dp-weekdays{
+    width: 100%;
+}
+ngb-datepicker-month-view .text-muted.outside{
+    width: 100%;
+}
+.btn-light.text-muted.outside{
+    width: 100%;
+}
+.ngb-dp-day{
+    width: 100%;
+}
+.btn-light.ng-star-inserted{
+    width: 100%;
+    /* background-color: #ff9f4380 !important; */
+    border-radius: 0;
+/* border-left: 1px solid #fff; */
+/* border-top: 1px solid #fff; */
+}
+.ngb-dp-header.bg-light{background-color:#fff !important;color: #ff9f43 !important}
+.ngb-dp-weekday{background-color:#fff !important;color: #ff9f43 !important;
+  font-size: 16px !important;
+  font-style: normal !important;}
+.ngb-dp-day, .ngb-dp-week-number, .ngb-dp-weekday {
+  width: 14.28% !important;
+}
+.ngb-dp-month:last-child .ngb-dp-week {
+  padding-right: 0 !important;
+}
+.ngb-dp-month:first-child .ngb-dp-week {
+  padding-left: 0 !important;
+}
+.ngb-dp-arrow-btn {color: #fff !important;}
+
+.widthqty{
+  width:50px;
+}

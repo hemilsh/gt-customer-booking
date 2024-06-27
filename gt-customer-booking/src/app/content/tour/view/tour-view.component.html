@@ -1,0 +1,657 @@
+<section class="ftco-booking ftco-section mt-5 ftco-no-pb">
+    <div class="container">
+        <div class="row no-gutters mt-100">
+            <div class="col-lg-12">
+                <form action="#" class="booking-form aside-stretch">
+                    <div class="row">
+                        <div class="col-md d-flex pr-1">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/location.png" class="bookingLocation" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1 py-0 booking-field autosearchHome">
+
+
+
+                                    <label for="#">Destination</label>
+                                    <ng-autocomplete [data]="tourDropdownList" [searchKeyword]="keyword"
+                                        (selected)='onSelect($event)' (inputChanged)='onInputChangedEvent($event)'
+                                        [itemTemplate]="itemTemplate" [placeHolder]="searchTourPlaceHolder"
+                                        [initialValue]="tourDropdownList[0]">
+                                        <!--
+                                [notFoundTemplate]="notFoundTemplate" -->
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate let-item>
+                                        <div class="row autosearchrow" *ngIf="item.name != ''">
+                                            <div class="col-7">
+                                                <p class="autoIcon"> <span [innerHTML]="item.name"
+                                                        class="locdesty"></span></p>
+                                            </div>
+                                            <div class="col-5">
+                                                <p class="destiny"> {{item.type.value}}
+                                                    <span *ngIf="item.type.key != 1">({{item.total}} Properties)</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+                                    <!-- <ng-template #notFoundTemplate let-notFound>
+                              <div [innerHTML]="notFound"></div>
+                            </ng-template> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex pl-0 pr-0" *blockUI="'filterTourList'">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end ">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/calendar.png" class="bookingDate" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0 tourDrp">
+                                    <label for="#">Tour</label>
+                                    <!-- <dp-date-picker [(ngModel)]="selectedDateAndMonth" name="selectedDate" [config]="config" [mode]="'month'"></dp-date-picker> -->
+                                    <ng-select [searchable]="true" placeholder="Select Tour" name="tours"
+                                        class="form-control1 tcglSelect" [items]="tourFilterDropdownList"
+                                        [(ngModel)]="tourFilterDropdownView" bindLabel="value">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md d-flex pr-0 pl-1  m-pl-15">
+                            <div class="form-group align-self-stretch d-flex align-items-end">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/calendar.png" class="bookingDate" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1  px-1 booking-field">
+                                    <label for="#" class="tourMonthdate">Month</label>
+                                    <dp-date-picker [(ngModel)]="selectedDateAndMonth" placeholder="Select Month"
+                                        name="selectedDate" class=" border-none" [mode]="'month'" [config]="config">
+                                    </dp-date-picker>
+
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-md d-flex pl-0">
+                            <div class="form-group d-flex align-self-stretch">
+                                <a (click)="checkAvailability()"
+                                    class="btn btn-primary py-5 py-md-3 px-3 align-self-stretch d-block"><span>Check
+                                        Availability</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="ftco-section ftco-menu ">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 col-md-9 yourbooking-h-Detail">
+                    <h3>{{tour.name}}</h3>
+                    <p>
+                        <span *ngFor="let tourLocationView of tour.tourLocationViews">{{tourLocationView.name}}
+                            <span *ngIf="tour.tourLocationViews[tour.tourLocationViews.length-1] != tourLocationView">,
+                            </span>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="text align-items-start row hotelRatingview float-right" (click)="scrollTo('target')">
+                        <p> <span class="rating">{{tour.average}}</span></p>
+
+                        <p class="hv-Review"><span class="review">{{tour.totalRattings}} Review</span></p>
+                        <!-- <p> <span class="rating">4.5</span></p><br />
+                        <p><span class="review">736 Review</span></p> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-8 OrderingInMobile">
+                    <div class="row">
+                        <div class="container hotelSinglePageSliderSection">
+
+
+
+                            <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails"
+                                data-ride="carousel" data-interval="false">
+
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="carousel-item active"
+                                        *ngIf="tour.tourGalleryViews == undefined ||tour.tourGalleryViews.length == 0;">
+                                        <img class="d-block w-100" src="assets/images/defaultImage1.jpg"
+                                            alt="defaultImage1.jpg">
+                                    </div>
+                                    <div class="carousel-item" id="id_{{i}}" [ngClass]="{'active':i == 0}"
+                                        *ngFor="let image of tour.tourGalleryViews; let i = index">
+                                        <!-- <img class="d-block w-100"
+                                        src="{{imgUrl}}{{image.fileView.fileId}}"
+                                        alt="{{image.fileView.name}}"> -->
+                                        <img [defaultImage]="'assets/images/loading.gif'"
+                                            [lazyLoad]="imgUrl+image.fileView.fileId+'&requireCompressImage=false'"
+                                            class="width-100" alt="{{image.fileView.name}}" />
+                                    </div>
+                                </div>
+
+                                <a class="carousel-control-prev" (click)="prevMainSlider(tour.tourGalleryViews.length)"
+                                    *ngIf="tour.tourGalleryViews != undefined && tour.tourGalleryViews.length != 0;"
+                                    href="#carousel-thumb" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" (click)="nextMainSlider(tour.tourGalleryViews.length)"
+                                    *ngIf="tour.tourGalleryViews != undefined && tour.tourGalleryViews.length != 0;"
+                                    href="#carousel-thumb" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                                <ol class="carousel-indicators thumslider">
+                                    <li data-target="#carousel-thumb"
+                                        *ngFor="let image of tour.tourGalleryViews; let i = index"
+                                        [ngClass]="{'display-none':!(currentSliderImage <= i && i < currentSliderImage+5),'active':i == 0}"
+                                        (click)="setSliderMainImage(i)" class="slider-li" id="slider_id_{{i}}">
+                                        <!-- <img class="d-block w-100"
+                                        src="{{imgUrl}}{{image.fileView.fileId}}"
+                                        alt="{{image.fileView.name}}" class="img-fluid"> -->
+                                        <img [defaultImage]="'assets/images/loading.gif'"
+                                            [lazyLoad]="imgUrl+image.fileView.fileId+'&requireCompressImage=false'"
+                                            class="img-fluid" alt="{{image.fileView.name}}" />
+                                    </li>
+                                </ol>
+                            </div>
+                            <!-- <button class="thmleftarrow" (click)="prevImg()"  [disabled]="currentSliderImage+5 == 5"> <i [ngClass]="{'cursor-no-drop':currentSliderImage+5 == 5}" class="fa fa-angle-left"></i></button>
+                            <button class="thmrightarrow" (click)="nextImg()"  [disabled]="currentSliderImage+5 >= tour.tourGalleryViews.length"><i [ngClass]="{'cursor-no-drop':currentSliderImage+5 >= tour.tourGalleryViews.length}" class="fa fa-angle-right"></i></button> -->
+
+                        </div>
+                        <div class="col-lg-12 col-xl-12 sliderSection mt-5">
+                            <!-- <div id="carouselExampleControls" class="carousel slide hotelViewSlider"
+                                data-ride="carousel">
+                                <div class="carousel-inner" *ngIf="tour.tourGalleryViews">
+                                    <div class="carousel-item" [ngClass]="{'active':i == 0}"
+                                        *ngFor="let image of tour.tourGalleryViews; let i = index">
+                                        <img class="d-block w-100" src="{{imgUrl}}{{image.fileView.fileId}}"
+                                            alt="{{image.fileView.name}}">
+                                    </div>
+                                </div>
+                                <div class="carousel-inner" *ngIf="!tour.tourGalleryViews">
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100" src="assets/images/slidel.jpg" alt="defaultImage">
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls"
+                                    *ngIf="tour.tourGalleryViews != undefined && tour.tourGalleryViews.length > 1"
+                                    role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls"
+                                    *ngIf="tour.tourGalleryViews != undefined && tour.tourGalleryViews.length > 1"
+                                    role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div> -->
+                            <p class="mt-5">{{tour.description}}.</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class=" col-lg-12 col-xl-12 paymentAccordian">
+                            <ngb-accordion closeOthers="true" class="mt-4" activeIds="ngb-panel-0">
+                                <ngb-panel title="Itinerary(s)">
+                                    <ng-template ngbPanelContent>
+                                        <div *ngFor="let tourIternityView of tour.tourIternityViews;let index = i">
+                                            <h5>Itinerary day {{tourIternityView.day}}</h5>
+                                            <p [innerHtml]="tourIternityView.iternity"></p>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                                <ngb-panel title="Inclusion">
+                                    <ng-template ngbPanelContent>
+                                        <div>
+                                            <div class="panel-body" id="subCollapse101">
+                                                <span [innerHtml]="tour.inclusion"></span>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                                <ngb-panel title="Exclusion">
+                                    <ng-template ngbPanelContent>
+                                        <div>
+                                            <div class="panel-body" id="subCollapse101">
+                                                <span [innerHtml]="tour.exclusion"></span>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                                <ngb-panel title="Terms and Conditions">
+                                    <ng-template ngbPanelContent>
+                                        <div>
+                                            <div class="panel-body" id="subCollapse101">
+                                                <span [innerHtml]="tour.terms"></span>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                                <ngb-panel title="Additional Information">
+                                    <ng-template ngbPanelContent>
+                                        <div>
+                                            <div class="panel-body" id="subCollapse101">
+                                                <span [innerHtml]="tour.information"></span>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                            </ngb-accordion>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-lg-12 col-xl-12 mt-5">
+                            <h4 class="formSubTitle" id="room-category">Inclusion</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection selectroomcategory">
+                            <span [innerHtml]="tour.inclusion"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 mt-5">
+                            <h4 class="formSubTitle" id="room-category">Exclusion</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection selectroomcategory">
+                            <span [innerHtml]="tour.exclusion"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 mt-5">
+                            <h4 class="formSubTitle" id="room-category">Terms and Conditions</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection selectroomcategory">
+                            <span [innerHtml]="tour.terms"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 mt-5">
+                            <h4 class="formSubTitle" id="room-category">Additional Information</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection selectroomcategory">
+                            <span [innerHtml]="tour.information"></span>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 mt-1 singlePageTitle">
+                            <h4 class="formSubTitle" id="target">Reviews</h4>
+                        </div>
+                    </div>
+
+                    <div class="row row-cards row-deck">
+                        <div class="col-lg-4 col-xl-4 d-flex onlineBokingListSection selectroomcategory reviewsBlock">
+                            <div class="card border width-100 reviewScore">
+                                <h4>Review score</h4>
+                                <p class="rvscore">{{tour.average}}<span>/5</span></p>
+                                <p class="rvresult" *ngIf="tour.average >= 1 && tour.average < 2">Terrible</p>
+                                <p class="rvresult" *ngIf="tour.average >= 2 && tour.average < 3">Poor</p>
+                                <p class="rvresult" *ngIf="tour.average >= 3 && tour.average < 4">Average</p>
+                                <p class="rvresult" *ngIf="tour.average >= 4 && tour.average < 5">Very Good</p>
+                                <p class="rvresult" *ngIf="tour.average == 5 ">Excellent</p>
+                                <p class="countreviews">Based on <a href="">{{tour.totalTourRattings}} reviews</a></p>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xl-4  d-flex onlineBokingListSection selectroomcategory reviewsBlock">
+                            <div class="card border width-100">
+                                <h4>Traveler rating</h4>
+                                <div class="excellentRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="excellentColor " [ngClass]="{
+                                                'bar-0':tour.tourRattingCountView.fiveAverageCount < 1 ,
+                                                'bar-2':tour.tourRattingCountView.fiveAverageCount >=1 && tour.tourRattingCountView.fiveAverageCount <2,
+                                                'bar-4':tour.tourRattingCountView.fiveAverageCount >=2 && tour.tourRattingCountView.fiveAverageCount <3,
+                                                'bar-6':tour.tourRattingCountView.fiveAverageCount >=3 && tour.tourRattingCountView.fiveAverageCount <4,
+                                                'bar-8':tour.tourRattingCountView.fiveAverageCount >=4 && tour.tourRattingCountView.fiveAverageCount <5,
+                                                'bar-10':tour.tourRattingCountView.fiveAverageCount == 5 }">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p>Excellent <span
+                                            class="float-right">{{tour.tourRattingCountView.fiveAverageCount}}</span>
+                                    </p>
+                                </div>
+                                <div class="vgRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="vgColor" [ngClass]="{
+                                                'bar-0':tour.tourRattingCountView.fourAverageCount < 1 ,
+                                                'bar-2':tour.tourRattingCountView.fourAverageCount >=1 && tour.tourRattingCountView.fourAverageCount <2,
+                                                'bar-4':tour.tourRattingCountView.fourAverageCount >=2 && tour.tourRattingCountView.fourAverageCount <3,
+                                                'bar-6':tour.tourRattingCountView.fourAverageCount >=3 && tour.tourRattingCountView.fourAverageCount <4,
+                                                'bar-8':tour.tourRattingCountView.fourAverageCount >=4 && tour.tourRattingCountView.fourAverageCount <5,
+                                                'bar-10':tour.tourRattingCountView.fourAverageCount == 5 }"></div>
+                                        </div>
+                                    </div>
+                                    <p>Very Good <span
+                                            class="float-right">{{tour.tourRattingCountView.fourAverageCount}}</span>
+                                    </p>
+                                </div>
+                                <div class="avgRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="avgColor" [ngClass]="{
+                                                'bar-0':tour.tourRattingCountView.threeAverageCount < 1 ,
+                                                'bar-2':tour.tourRattingCountView.threeAverageCount >=1 && tour.tourRattingCountView.threeAverageCount <2,
+                                                'bar-4':tour.tourRattingCountView.threeAverageCount >=2 && tour.tourRattingCountView.threeAverageCount <3,
+                                                'bar-6':tour.tourRattingCountView.threeAverageCount >=3 && tour.tourRattingCountView.threeAverageCount <4,
+                                                'bar-8':tour.tourRattingCountView.threeAverageCount >=4 && tour.tourRattingCountView.threeAverageCount <5,
+                                                'bar-10':tour.tourRattingCountView.threeAverageCount == 5 }"></div>
+                                        </div>
+                                    </div>
+                                    <p>Average <span
+                                            class="float-right">{{tour.tourRattingCountView.threeAverageCount}}</span>
+                                    </p>
+                                </div>
+                                <div class="poorRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class=" poorColor" [ngClass]="{
+                                                'bar-0':tour.tourRattingCountView.twoAverageCount < 1 ,
+                                                'bar-2':tour.tourRattingCountView.twoAverageCount >=1 && tour.tourRattingCountView.twoAverageCount <2,
+                                                'bar-4':tour.tourRattingCountView.twoAverageCount >=2 && tour.tourRattingCountView.twoAverageCount <3,
+                                                'bar-6':tour.tourRattingCountView.twoAverageCount >=3 && tour.tourRattingCountView.twoAverageCount <4,
+                                                'bar-8':tour.tourRattingCountView.twoAverageCount >=4 && tour.tourRattingCountView.twoAverageCount <5,
+                                                'bar-10':tour.tourRattingCountView.twoAverageCount == 5 }"></div>
+                                        </div>
+                                    </div>
+                                    <p>Poor <span
+                                            class="float-right">{{tour.tourRattingCountView.twoAverageCount}}</span>
+                                    </p>
+                                </div>
+                                <div class="terribleRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="terribleColor" [ngClass]="{
+                                                'bar-0':tour.tourRattingCountView.oneAverageCount < 1 ,
+                                                'bar-2':tour.tourRattingCountView.oneAverageCount >=1 && tour.tourRattingCountView.oneAverageCount <2,
+                                                'bar-4':tour.tourRattingCountView.oneAverageCount >=2 && tour.tourRattingCountView.oneAverageCount <3,
+                                                'bar-6':tour.tourRattingCountView.oneAverageCount >=3 && tour.tourRattingCountView.oneAverageCount <4,
+                                                'bar-8':tour.tourRattingCountView.oneAverageCount >=4 && tour.tourRattingCountView.oneAverageCount <5,
+                                                'bar-10':tour.tourRattingCountView.oneAverageCount == 5 }"></div>
+                                        </div>
+                                    </div>
+                                    <p>Terrible <span
+                                            class="float-right">{{tour.tourRattingCountView.oneAverageCount}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xl-4  d-flex onlineBokingListSection selectroomcategory reviewsBlock">
+                            <div class="card border width-100">
+                                <h4>Summary</h4>
+                                <div class="summaryRatingBlock" *ngFor="let summery of tour.tourRattingAverageViews">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-3 summeryColor"></div>
+                                        </div>
+                                    </div>
+                                    <p>{{summery.typeName}} <span class="float-right"> {{summery.average | slice:0:4}} /
+                                            5</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row " id="user-review"
+                        [ngClass]="{'usercomentListRow':(i+1) % 10 != 0 && reviewList[reviewList.length-1] != review}"
+                        *ngFor="let review of reviewList | paginate: { itemsPerPage: 10, currentPage: p ,totalItems:reviewRecords};let i = index">
+                        <div class="col-lg-12 col-xl-12 mt-5 usercomentList">
+                            <div class="d-flex1">
+                                <!-- <img src="assets/images/defualt.jpg" class="circlePic" /> -->
+                                <span class="circlePic">{{review.userView.shortFormOfName}}</span>
+                                <h5>{{review.userView.name}}</h5>
+                                <span>{{review.createDate}}</span>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12 col-xl-12 mt-5 usercomentdetails">
+                            <h6><span>{{review.average}}</span> <sup>"{{review.title}}"</sup></h6>
+                            <p>{{review.content}}</p>
+                        </div>
+                    </div>
+                    <div class="text-center pt-10">
+                        <pagination-controls (pageChange)="pageChanged($event);p = $event"></pagination-controls>
+                    </div>
+                    <div class="row" *ngIf="currentCustomerUser">
+                        <div class="col-lg-12 col-xl-12 mt-5 usercomentList">
+                            <form [formGroup]="saveReviewForm" (ngSubmit)="onSubmitReview('reviewForm')"
+                                #reviewform="ngForm" id="reviewForm" class="bg-gray contact-form border">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Title*"
+                                                [(ngModel)]="reviewModel.title" formControlName="title">
+                                            <small *ngIf="review.title.errors" class="mandatary">
+                                                <div *ngIf="review.title.errors.required && (isReviewSummited)">
+                                                    Mandatory : This cannot be left blank.</div>
+                                            </small>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-7">
+                                        <div class="form-group">
+                                            <textarea class="form-control commentTB" placeholder="Content*"
+                                                [(ngModel)]="reviewModel.content" formControlName="content"></textarea>
+                                            <small *ngIf="review.content.errors" class="mandatary">
+                                                <div *ngIf="review.content.errors.required && (isReviewSummited)">
+                                                    Mandatory : This cannot be left blank.</div>
+                                            </small>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-5">
+                                        <!-- <div id="nav-anchor1"></div> -->
+                                        <div class="bg-white p-4 border behaviorGroup">
+                                            <div id="smileys"
+                                                *ngFor="let rattingParameter of tour.tourReviewRattingTypeViews; let i = index">
+                                                <p class="mb-1">{{rattingParameter.name}}</p>
+                                                <input type="radio" name="tourRattingViews{{i}}" [value]="1"
+                                                    [(ngModel)]="tourRattingViews[rattingParameter.id]"
+                                                    formControlName="tourRattingViews{{i}}" class="happy">
+                                                <input type="radio" name="tourRattingViews{{i}}" [value]="2"
+                                                    [(ngModel)]="tourRattingViews[rattingParameter.id]"
+                                                    formControlName="tourRattingViews{{i}}" class="happy">
+                                                <input type="radio" name="tourRattingViews{{i}}" [value]="3"
+                                                    [(ngModel)]="tourRattingViews[rattingParameter.id]"
+                                                    formControlName="tourRattingViews{{i}}" class="happy">
+                                                <input type="radio" name="tourRattingViews{{i}}" [value]="4"
+                                                    [(ngModel)]="tourRattingViews[rattingParameter.id]"
+                                                    formControlName="tourRattingViews{{i}}" class="happy">
+                                                <input type="radio" name="tourRattingViews{{i}}" [value]="5"
+                                                    [(ngModel)]="tourRattingViews[rattingParameter.id]"
+                                                    formControlName="tourRattingViews{{i}}" class="happy">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-12 mt-2">
+                                        <div *blockUI="'saveReviewBtn'" class="display-center">
+                                            <button type="submit" class="btn btn-primary py-3 px-5 display-center">Leave
+                                                Review</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 yourbookinSection" id="tourDetailsDivId">
+                    <!--Accordion wrapper-->
+                    <div class="row yourbookinBlock">
+                        <div class="col-12 col-md-12 m-pl-0">
+                            <h5>Tour Booking Details</h5>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row yourbookinBlock" id="selectDate">
+                            <div class="col-12">
+                                <div class="row m-payment-room">
+                                    <span class=" uneditable-input checkin-out width-100" name="daterange">
+                                        <div class="row m-payment-room">
+                                            <div class="col-12 col-md-12 ">
+                                                <label class="mb-0"> Date</label>
+                                                <app-custom-calendar [tourStartDate]="tourStartDate" [tourEndDate]="tourEndDate"></app-custom-calendar>
+                                            </div>
+                                        </div>
+                                    </span>
+                                    <!-- <span class="input-group-btn">
+                                            <a type="button" class="btn btn-default"><i
+                                                    class="glyphicon glyphicon-calendar"></i></a>
+                                            </span> -->
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="row yourbookinBlock guestsDrp">
+                            <div class="col-12">
+                                <div class="row m-payment-room mt-0">
+                                    <div class="col-12 col-md-12  m-pl-0">
+                                        <!-- <label class="mb-0">Guests</label> -->
+                                        <div class="dropdown shortDrop gdDropdown">
+                                            <button class="btn btn-secondary dropdown-toggle shortDrop" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                Traveller Details
+                                            </button>
+                                            <div class="dropdown-menu mt-0 pt-0 pb-0"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item border-bottom">Traveller <div
+                                                        class="float-right d-flex counterPM">
+                                                        <input type='button' value='-' class='qtyminus' field='quantity'
+                                                            [disabled]="seatValue == 0" (click)="changeSeats(0)" />
+                                                        <input type='text' name='quantity' [value]='seatValue'
+                                                            class='qty' readonly />
+                                                        <input type='button' value='+' class='qtyplus' field='quantity'
+                                                            (click)="changeSeats(1)" />
+                                                    </div></a>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="dropdown gdDropdown">
+                                            <button class="btn btn-secondary dropdown-toggle gdDropdown" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                Guests Details
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#">2 Adults - 0 Child</a>
+                                                <a class="dropdown-item" href="#">2 Adults - 0 Child</a>
+                                                <a class="dropdown-item" href="#">Something else here</a>
+                                            </div>
+                                        </div> -->
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <div class="row yourbookinBlock">
+                            <div class="col-12">
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7 m-pl-0">
+                                        <label class="mb-0">Tour Tariff</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left" *ngIf="selectedTourPrice != undefined">
+                                            {{selectedTourPrice}}</p>
+                                        <p class="mb-0 text-right m-text-left">No of Travellers - {{seatValue}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">Senior Citizen Disc (%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">0</p>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">Special Disc (%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">0</p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">Digital Payment Disc (%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">0</p>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0 pa-label">Amount</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right pa-label m-text-left"
+                                            *ngIf="roomType.roomTypeChargesView != undefined"><i
+                                                class="fa fa-rupee"></i>&nbsp;{{roomType.roomTypeChargesView.amount * roomType.bookRoomValue}}
+                                        </p>
+                                    </div>
+                                </div> -->
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row yourbookinBlock orng-border">
+                        <div class="col-12">
+                            <div class="row m-payment-room">
+                                <div class="col-12 col-md-7 m-pl-0">
+                                    <label class="mb-0 pa-label">Pay Amount</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right pa-label m-text-left"><i
+                                            class="fa fa-rupee"></i>&nbsp;{{getTotalAmount(selectedTourPrice)}}</p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room ">
+                                <div class="col-12 col-md-12">
+                                    <div *blockUI="'tourBookBtn'" class="loginBtn mt-0">
+                                        <button type="submit" value="" (click)="goToPayment()"
+                                            class="btn btn-primary py-3 px-5 loginBtn mt-3">Book
+                                            Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

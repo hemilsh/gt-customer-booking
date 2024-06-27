@@ -1,0 +1,78 @@
+﻿<div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-header row mb-1">
+        </div>
+        <div class="content-body">
+            <section class="flexbox-container">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="col-sm-8 col-md-5 col-lg-4 col-10 box-shadow-2 p-0 mt-100">
+                        <div class="card border-grey border-lighten-3 px-1 py-1 m-0 bk-Dark-color">
+                            <div class="card-header border-0 ">
+                                <div class="card-title text-center login-logo">
+                                    <img src="assets/images/logo.png" alt="branding logo">
+                                    <!-- <h3 class="brand-text">Gujarat Tourism</h3> -->
+                                </div>
+                                <!-- <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2"><span>Easily Using</span></h6> -->
+                            </div>
+                            <div class="card-content border-0 ">
+                                <h3 class="brand-text text-center mb-2">Device Verification Code</h3>
+                            </div>
+                            <div class="card-content">
+                                <!-- <app-social-signin></app-social-signin>
+                <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-1"><span>OR Using Account Details</span></p> -->
+                                <div class="card-body" >
+                                        <!-- <h3 class="brand-text text-center mb-2">Change Password</h3> -->
+                                    <form class="form-horizontal" [formGroup]="otpForm" (ngSubmit)="otpSubmit()"
+                                        #vform="ngForm">
+                                        <fieldset class="form-group position-relative has-icon-left">
+                                            <input class="form-control" type="text" id="verificaitionOtp" [(ngModel)]="otpModel.verificaitionOtp"
+                                            formControlName="verificaitionOtp" placeholder="Device Verification Code"/>
+                                         
+                                            <div class="form-control-position">
+                                               
+                                                    <i class="la la-key"></i>
+                                            </div>
+                                            <small *ngIf="f.verificaitionOtp.errors" class="mandatory">
+                                                    <div *ngIf="f.verificaitionOtp.errors.required && (vform.submitted || f.verificaitionOtp.touched)">
+                                                      <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                                      Mandatory : This cannot be left blank</div>
+                                                 
+                                                  </small>
+
+                                        </fieldset>
+                                        <div class="form-group row">
+                                            <div class="col-md-12 col-12 text-center text-sm-left">
+                                            <div class="custom-control1">
+                                            Not received your code?
+                                            <label (click)="resendCode()">Resend Code</label>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            <div class="form-group row">
+                                            <div class="col-md-12 col-12 text-center text-sm-left">
+                                            <div class="custom-control1">
+                                            Note:- Please check your Spam folder if you're not able to locate
+                                            the verification code in your inbox
+                                            </div>
+                                            </div>
+                                            </div>
+                                        <div *blockUI="'otpBtn'">
+                                            <div class="row">
+                                                <div class="col-12 col-md-12">
+                                                    <button type="submit" class="btn btn-primary loginBtn">
+                                                        <i class="feather ft-unlock"></i> Verify
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,284 @@
+<section class="ftco-section ftco-menu mt-5">
+    <div class="container-fluid px-md-4">
+        <div class="container myProfileContainer">
+            <div class="row">
+                <div class="col-sm-8 ">
+                    <h2 class="bs-title bb-0 mb-0">My Profile</h2>
+                </div>
+                <div class="col-sm-4 pr-0"></div>
+                <!-- <div class="col-12 col-md-4">
+                    <div class="yourbookinBlock">
+                        <div class="myprofileImg border-radius">
+                            <img src="assets/images/image-01.png" class="width-100" />-->
+                <!-- <a href="" class="profileImgEdt"><i class="fa fa-pencil"></i></a> -->
+                <!-- </div>
+                    </div>
+                </div> -->
+                <div class="col-12 col-md-12 ">
+                    <form [formGroup]="userForm" (ngSubmit)="onSubmit('userAddEditId')" id="userAddEditId"
+                        #vform="ngForm">
+                        <!-- 
+                    <div class="row">
+                        <a href="" class="profileprifle"><i class="fa fa-pencil"></i></a>
+                        <div class="col-lg-12 col-xl-12">
+                            <h4 class="border-top pb-3"></h4>
+                        </div>
+                    </div> -->
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="name">Name <span
+                                            class="mandatory">*</span></label>
+                                    <input class="form-control" type="text" [(ngModel)]="profileModel.name"
+                                        formControlName="name" />
+                                    <small class="mandatory" *ngIf="f.name.errors">
+                                        <div *ngIf="f.name.errors.required && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank</div>
+                                        <div *ngIf="f.name.errors.maxlength && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 30 allowed characters.. </div>
+                                        <div *ngIf="f.name.errors.pattern && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Alphabets, space & dots are allowed. </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="email">Email <span
+                                            class="mandatory">*</span></label>
+                                    <p class="form-control readOnly">{{profileModel.email}}</p>
+                                    <!-- <input class="form-control" type="text" [(ngModel)]="profileModel.email"
+                                    formControlName="email" /> -->
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="countryCode">Country Code <span
+                                            class="mandatory">*</span></label>
+                                    <ng-select [searchable]="true" formControlName="countryCode" [items]="countryCodes"
+                                        [(ngModel)]="profileModel.countryCode" bindLabel="value">
+                                    </ng-select>
+                                    <small class="mandatory" *ngIf="f.countryCode.errors">
+                                        <div
+                                            *ngIf="f.countryCode.errors.required && (vform.submitted || f.countryCode.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank</div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="mobile"> Mobile <span
+                                            class="mandatory">*</span></label>
+                                    <input class="form-control" type="text" [(ngModel)]="profileModel.mobile"
+                                        formControlName="mobile" />
+
+                                    <small class="mandatory" *ngIf="f.mobile.errors">
+                                        <div *ngIf="f.mobile.errors.required && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank</div>
+                                        <div *ngIf="f.mobile.errors.maxlength && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 15 allowed characters.. </div>
+                                        <div *ngIf="f.mobile.errors.pattern && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Invalid Mobile no. </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="gender">Gender </label>
+                                    <ng-select [searchable]="true" formControlName="gender" [items]="genderList"
+                                        [(ngModel)]="profileModel.gender" bindLabel="value">
+                                    </ng-select>
+                                    <small class="mandatory" *ngIf="f.gender.errors">
+                                        <div *ngIf="f.gender.errors.required && (vform.submitted || f.gender.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank</div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group birthDate">
+                                    <label class="form-control-label" for="mobile"> Birth Date </label>
+                                    <dp-date-picker theme="dp-material" [config]="datePickerConfig" required="true"
+                                        class="form-control" formControlName="birthDate" [(ngModel)]="profileModel.birthDate">
+                                    </dp-date-picker>
+                                    <!-- <input type="text" [dpDayPicker]="datePickerConfig" class="form-control" formControlName="birthDate" [(ngModel)]="profileModel.birthDate"/> -->
+                                    <small class="mandatory" *ngIf="f.birthDate.errors">
+                                        <div
+                                            *ngIf="f.birthDate.errors.required && (vform.submitted || f.birthDate.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank</div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="mobile"> Address</label>
+                                    <input class="form-control" type="text" [(ngModel)]="profileModel.address"
+                                        formControlName="address" />
+                                    <small class="invalid-feedback" *ngIf="f.address.errors" class="invalid-feedback">
+                                        <div
+                                            *ngIf="f.address.errors.required && (vform.submitted || f.address.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank</div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="landmark"> Landmark</label>
+                                    <input class="form-control" type="text" [(ngModel)]="profileModel.landmark"
+                                        formControlName="landmark" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="countryView">Select Country </label>
+                                    <ng-select [searchable]="true" formControlName="countryView" [items]="countryViews"
+                                        [(ngModel)]="profileModel.countryView" bindLabel="value"
+                                        (change)="findState($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="stateView">Select State </label>
+                                    <ng-select [searchable]="true" formControlName="stateView" [items]="stateViews"
+                                        *ngIf="profileModel.countryView != null && profileModel.countryView.key == 96"
+                                        [(ngModel)]="profileModel.stateView" bindLabel="value"
+                                        (change)="findCity($event)">
+                                    </ng-select>
+                                    <input class="form-control" type="text" [(ngModel)]="profileModel.stateName"
+                                        formControlName="stateName"
+                                        [hidden]="profileModel.countryView != null && profileModel.countryView.key == 96" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="cityView">Select City </label>
+                                    <ng-select [searchable]="true" formControlName="cityView" [items]="cityViews"
+                                        *ngIf="profileModel.countryView != null && profileModel.countryView.key == 96"
+                                        [(ngModel)]="profileModel.cityView" bindLabel="value">
+                                    </ng-select>
+                                    <input class="form-control" type="text" [(ngModel)]="profileModel.cityName"
+                                        formControlName="cityName"
+                                        [hidden]="profileModel.countryView != null && profileModel.countryView.key == 96" />
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="pincode">Pin Code </label>
+                                    <input class="form-control" type="text" [(ngModel)]="profileModel.pincode"
+                                        formControlName="pincode" />
+                                    <small class="invalid-feedback" *ngIf="f.pincode.errors" class="invalid-feedback">
+                                        <div
+                                            *ngIf="f.pincode.errors.required && (vform.submitted || f.pincode.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank</div>
+                                        <div
+                                            *ngIf="f.pincode.errors.maxlength && (vform.submitted || f.pincode.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 6 allowed characters.. </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                            <div class="form-group galleryCropper">
+                                <label class="form-control-label" for="image">Image <span
+                                        class="mandatory">*</span></label>
+                                <fieldset class="form-group" [hidden]="true">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="inputGroupFile02"
+                                            (change)="fileChangeEvent($event)">
+                                        <label class="custom-file-label" for="inputGroupFile02"
+                                            aria-describedby="inputGroupFile02">Choose file</label>
+                                    </div>
+                                </fieldset>
+                                <div [hidden]="!isShowCropper" class="profileCropImg">
+                                    <img [defaultImage]="'assets/images/loading.gif'" *ngFor="let profilePic of profilePicList" [lazyLoad]="imgURL + profilePic?.fileId" class="" alt="{{profileModel?.profilepic?.name}}" />
+                                    <i class="fa fa-trash"
+                                    (click)="closeCropper()"></i>
+									<i class="fa fa-pencil color-green"
+                                    (click)="editCropper(true)"></i></div>
+                                    <span data-toggle="modal" data-target="#myModal" id="profileImgId"></span>
+                                    
+                                    <div class="custom-file  uploadImg" *ngIf="!isShowCropper" (click)='openChoseImage()'>
+                                        <input  class="custom-file-input  form-control" id="imgupload">
+                                        <label class="custom-file-label" for="imgupload">Choose file</label>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions clearfix float-right mt-4">
+                            <div class="displayInlineBlock" *blockUI="'userAddEditBtn'">
+                                <button type="submit" class="btn btn-primary formBtn">
+                                    <i class="d-md-none d-block feather ft-plus white"></i>
+                                    <span class="d-md-block ">Update</span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </section>
+    <button class="btn btn-lg btn-outline-primary display-none" id="openBoxModelId" type="button" (click)="openCropper(mymodal)">Open My Modal</button>
+    <div class="modal" id="myModal" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Profile Image</h4>
+          <button type="button" id="closeModel1" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body myprofileCroperOverlay">
+            <!-- <img src="{{viewCroppedImage}}" alt="">  -->
+            <image-cropper [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true" 
+            (imageCropped)="imageCropped($event)" [imageBase64]="viewCroppedImage"
+            (imageLoaded)="imageLoaded()" format="jpeg" (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()"></image-cropper>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary formBtn"  (click)="onImageUpload()" >Save</button>
+          <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile Image</h4>
+      <button type="button"  id="closeModel" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body myprofileCroperOverlay">
+        <!-- <img src="{{viewCroppedImage}}" alt="">  -->
+        <image-cropper [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true" 
+        (imageCropped)="imageCropped($event)" [imageBase64]="viewCroppedImage"
+        (imageLoaded)="imageLoaded()" format="jpeg" (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()"></image-cropper>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary formBtn" (click)="onImageUpload()">save</button>
+    </div>
+  </ng-template>

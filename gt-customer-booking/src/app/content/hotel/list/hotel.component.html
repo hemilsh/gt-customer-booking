@@ -1,0 +1,546 @@
+<section class="ftco-booking ftco-section ftco-no-pt ftco-no-pb mt-70">
+    <div class="container  mt-5">
+        <div class="row no-gutters">
+            <div class="col-lg-12">
+                <form action="#" class="booking-form aside-stretch">
+                    <div class="row">
+                      <div class="col-md d-flex pr-1">
+          
+                        <div class="form-group align-self-stretch d-flex align-items-end">
+                          <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                            <img src="assets/images/location.png" class="bookingLocation" />
+                          </div>
+                          <div class="wrap align-self-stretch py-1 px-1 py-0 booking-field autosearchHome">
+          
+          
+          
+          
+                            <label for="#">Destination</label>
+                            <ng-autocomplete [data]="hotelDropdownList" (inputCleared)="onHotelInputCleared()"
+                              [searchKeyword]="keyword" (selected)='onSelect($event)' (inputChanged)='onInputChangedEvent($event)'
+                              [itemTemplate]="itemTemplate" [placeHolder]="searchHotelPlaceHolder"
+                              [initialValue]="hotelDropdownList[0]"
+                              >
+                              <!-- [notFoundTemplate]="notFoundTemplate"s -->
+                            </ng-autocomplete>
+          
+                            <ng-template #itemTemplate let-item>
+                              <div class="row autosearchrow" *ngIf="item.name != ''">
+                                <div class="col-8">
+                                    <p class="autoIcon"> <span [innerHTML]="item.name"  class="locdesty"></span></p>
+                                </div>
+                                <div class="col-4">
+                                  <p class="destiny" *ngIf="item.type != undefined"> {{item.type.value}} <span *ngIf="item.type.key != 1">({{item.total}} Properties)</span></p>
+                                </div>
+                              </div>
+                            </ng-template>
+          
+                            <!-- <ng-template #notFoundTemplate let-notFound>
+                              <div [innerHTML]="notFound"></div>
+                            </ng-template> -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md d-flex pl-0 pr-0">
+          
+                        <div class="form-group align-self-stretch d-flex align-items-end ">
+                          <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                            <img src="assets/images/calendar.png" class="bookingDate" />
+                          </div>
+                          <div class="wrap align-self-stretch py-1 px-1 booking-field py-0">
+                            <!-- <label for="#">Check-in Date</label> -->
+                            <!-- <input type="text" class="form-control checkout_date" placeholder="Check-out date"> -->
+                            <div class="form-control " id="datePicker" daterangepicker
+                              (selected)="selectedDate($event, mainInput)" (cancelDaterangepicker)="calendarEventsHandler($event)"
+                              (applyDaterangepicker)="calendarEventsHandler($event)"
+                              (hideDaterangepicker)="calendarEventsHandler($event)"
+                              (showDaterangepicker)="calendarEventsHandler($event)">
+                              <span class="form-control uneditable-input filter-checkin-out" name="daterange">
+                                <span class="sameBoxCon">
+                                  <label for="#">Check-in</label> <br>
+                                  {{ mainInput.start | date }} &nbsp;&nbsp;&nbsp;&nbsp;|
+                                </span>
+                                <span class="sameBoxCon">
+                                  <label for="#">Check-out</label><br>
+                                  {{ mainInput.end | date }}
+                                </span>
+                                                    
+                              </span>
+                              <span class="input-group-btn">
+                                <a type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></a>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md d-flex pr-0 pl-1 m-pl-15">
+                        <div class="form-group align-self-stretch d-flex align-items-end">
+                          <div class="align-self-stretch py-1 py-0 px-1 pr-0">
+                            <img src="assets/images/Guests.png" class="bookingDate" />
+                          </div>
+                          <div class="wrap align-self-stretch py-1  px-1 booking-field">
+                            <label for="#">Rooms & Guests</label>
+                            <div class="dropdown shortDrop gdDropdown">
+                              <button class="btn btn-secondary dropdown-toggle shortDrop"
+                              id="dropdownMenuButton" data-toggle="modal" data-target="#myModal">
+                              {{getTotalRoom()}} Rooms & {{getTotalGuest()}} Guests
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md d-flex pl-0">
+                        <div class="form-group d-flex align-self-stretch">
+                          <a (click)="checkAvailability()"
+                            class="btn btn-primary py-5 py-md-3 px-3 align-self-stretch d-block"><span>Check
+                              Availability</span></a>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-menu ">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+            <!-- <div class="row justify-content-center mb-5 pb-3">
+				  <div class="col-md-7 heading-section text-center ftco-animate">
+					<span class="subheading">Restaurant</span>
+					<h2>Destinations</h2>
+				  </div>
+				</div> -->
+            <div class="row">
+                <div class="col-12 col-md-2 filterDiv">
+                    <!--Accordion wrapper-->
+                    <h3>Filter By</h3>
+                    <div class="listfiltersectoin">
+                      <p>Star Category</p>
+                      <ul>
+                        <li (click)="filterChange(5 ,'5 Star')">5*</li>
+                        <li (click)="filterChange(4 ,'4 Star')">4*</li>
+                        <li (click)="filterChange(3 ,'3 Star')">3*</li>
+                        <li (click)="filterChange(2 ,'2 Star')">2*</li>
+                        <li (click)="filterChange(1 ,'1 Star')">1*</li>
+                      </ul>
+                    </div>
+                    <div class="listfiltersectoin">
+                      <p>Property Type</p>
+                      <div class="checkboxList" *ngFor="let type of hotelTypeList;let i = index" [hidden]="i > 4">
+                        <!-- <input type="checkbox" (change)="filterChange(type)" id="link1" name="link1" value="link1"> -->
+                        <input type="checkbox" name="typeView" id="type{{type.id}}" [(ngModel)]="typeView[type.id]"
+                                                    (change)="filterChange(categoryFilterValue.id,categoryFilterValue.name)">
+                        <label for="type{{type.id}}"> {{type.name}}</label>
+                      </div>
+                      <div class="checkboxList" *ngFor="let type of hotelTypeList;let i = index" [hidden]="i <= 4 || hotelTypeValue ==5">
+                        <input type="checkbox" id="type{{type.id}}" name="typeView" [(ngModel)]="typeView[type.id]"
+                                                    (change)="filterChange(categoryFilterValue.id,categoryFilterValue.name)">
+                        <label for="type{{type.id}}"> {{type.name}}</label>
+                      </div>
+                      
+                      <div class="checkboxList" (click)="onMoreType()" *ngIf="hotelTypeValue == 5">
+                        <a > See More</a>
+                      </div>
+                      <div class="checkboxList" (click)="onMoreType()" *ngIf="hotelTypeValue != 5">
+                        <a > See Less</a>
+                      </div>
+                    </div>
+                    <div class="listfiltersectoin">
+                      <p>User rating</p>
+                      <div class="checkboxList" *ngFor="let review of hotelReviewList;let i = index" [hidden]="i > 4">
+                        <input type="checkbox" name="reviewView" id="review{{review.id}}"
+                        [(ngModel)]="reviewView[review.id]"
+                        (change)="filterReviewChange(review,reviewView[review.id])">
+                        <label for="review{{review.id}}"> {{review.name}}</label>
+                      </div>
+                      <div class="checkboxList" *ngFor="let review of hotelReviewList;let i = index" [hidden]="i <= 4 && hotelReviewValue ==5">
+                        <input type="checkbox" name="reviewView" id="review{{review.id}}"
+                                                    [(ngModel)]="reviewView[review.id]"
+                                                    (change)="filterReviewChange(review,reviewView[review.id])">
+                        <label for="review{{review.id}}"> {{review.name}}</label>
+                      </div>
+                      <div class="checkboxList" (click)="onMoreReview()" *ngIf="hotelReviewList.length > 5">
+                        <a > See More</a>
+                      </div>
+                    </div>
+                    <div class="listfiltersectoin">
+                      <p>Budget</p>
+                      <div class="checkboxList" *ngFor="let budget of budgetList;let i = index" [hidden]="i > 4">
+                        <input type="checkbox" id="budgetView{{budget.id}}" name="budgetViews{{budget.id}}" [(ngModel)]="budgetViews[budget.id]" (change)="budgetFilterChange(budget.id)">
+                        <label for="budgetView{{budget.id}}"> {{budget.name}}</label>
+                      </div>
+                      <div class="checkboxList" *ngFor="let budget of budgetList;let i = index" [hidden]="i <= 4 && budgetFilterValue ==5">
+                        <input type="checkbox" id="budgetView{{budget.id}}" name="budgetViews{{budget.id}}" [(ngModel)]="budgetViews[budget.id]" (change)="budgetFilterChange(budget.id)">
+                        <label for="budgetView{{budget.id}}"> {{budget.name}}</label>
+                      </div>
+                      <div class="checkboxList" (click)="onMoreBudget()" *ngIf="budgetList.length > 5">
+                        <a href=""> See More</a>
+                      </div>
+                    </div>
+                    <!-- <div class="accordion" id="accordion2">
+                        <div class="accordion-group">
+                            <div class="accordion-heading cursorPointer" data-toggle="collapse"
+                                data-parent="#accordion2" data-target="#collapseOne">
+                                <a class="accordion-toggle">
+                                    Star Category
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="accordion-body collapse show">
+                                <div class="accordion-inner">
+                                    <div class="col-12 col-md-12 pl-0 pr-0"
+                                        *ngFor="let category of hotelCategoryList.slice().reverse()">
+                                        <div class="form-group checkbox-group mb-0 text-left">
+                                            <label><span class="paylable">{{category.name}}</span>
+                                                <input type="checkbox" name="categoryView1"
+                                                    [(ngModel)]="categoryView[category.id]"
+                                                    (change)="filterChange(category)">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
+                    <!-- <div class="accordion" id="accordion3">
+                        <div class="accordion-group">
+                            <div class="accordion-heading cursorPointer" data-toggle="collapse"
+                                data-parent="#accordion3" data-target="#collapse3">
+                                <a class="accordion-toggle">
+                                    Property Type
+                                </a>
+                            </div>
+                            <div id="collapse3" class="accordion-body collapse hide">
+                                <div class="accordion-inner">
+                                    <div class="col-12 col-md-12 pl-0 pr-0" *ngFor="let type of hotelTypeList;">
+                                        <div class="form-group checkbox-group mb-0 text-left">
+                                            <label><span class="paylable">{{type.name}}</span>
+                                                <input type="checkbox" name="typeView" [(ngModel)]="typeView[type.id]"
+                                                    (change)="filterChange(type)">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- <div class="accordion" id="accordion4">
+                        <div class="accordion-group">
+                            <div class="accordion-heading cursorPointer" data-toggle="collapse"
+                                data-parent="#accordion4" data-target="#collapse4">
+                                <a class="accordion-toggle">
+                                    User rating
+                                </a>
+                            </div>
+                            <div id="collapse4" class="accordion-body collapse hide">
+                                <div class="accordion-inner">
+
+                                    <div class="col-12 col-md-12 pl-0 pr-0" *ngFor="let review of hotelReviewList;">
+                                        <div class="form-group checkbox-group mb-0 text-left">
+                                            <label><span class="paylable">{{review.name}}</span>
+                                                <input type="checkbox" name="reviewView"
+                                                    [(ngModel)]="reviewView[review.id]"
+                                                    (change)="filterReviewChange(review,reviewView[review.id])">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- <div class="slidecontainer">
+                        Price
+
+                        <div id="rangeSlider" class="range-slider">
+                            <div class="range-group">
+                                <input class="range-input" value="10" [(ngModel)]="minimumPrice"
+                                    (change)="filterChange()" min="1" max="30000" step="1" type="range" />
+                                <input class="range-input" value="50" [(ngModel)]="maximumPrice"
+                                    (change)="filterChange()" min="1" max="30000" step="1" type="range" />
+                            </div>
+                        </div>
+                       
+                        <div class="row range-slider">
+                            <div class="col-12 col-md-5 p-0">
+                                <input type="text" class="width-100 padding-left-5" [(ngModel)]="minimumPrice"/>
+                            </div>
+                                    <div class="col-12 col-md-2 text-align-center">
+                            - </div>
+                                        <div class="col-12 col-md-5 p-0">
+                            <input type="text" class="width-100 padding-left-5" [(ngModel)]="maximumPrice"/>
+                            </div>
+
+                        </div>
+                    </div> -->
+                </div>
+                
+                <div class="col-12 col-md-10 hotelListSection" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
+                    (scrolled)="loadMoreHotels()">
+                    <div class="row">
+                        <!-- <h2 class="pageTitle">{{selectedHotel.name}} : {{hotelList.length}} Hotels found</h2> -->
+                        <!-- <div class="dropdown shortDrop">
+                            <button class="btn btn-secondary dropdown-toggle shortDrop" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Sort
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div> -->
+                        <div class="col-12 pl-0 searchTag">
+                            <span *ngFor="let category of filterArray.categoryList;" class="tag">{{category.name}} <i
+                                    class="fa fa-remove" (click)="removeCategoryFilter(category)"></i></span>
+                            <span *ngFor="let type of filterArray.typeList;" class="tag">{{type.name}} <i
+                                    class="fa fa-remove" (click)="removeTypeFilter(type)"></i></span>
+                            <span class="tag" *ngIf="filterArray.reviewView">{{filterArray.reviewView.name}} <i
+                                    class="fa fa-remove"
+                                    (click)="removeReviewFilter(filterArray.reviewView)"></i></span>
+                        </div>
+                        <div class="col-12" *ngIf="hotelList.length != 0">
+                            <div class="row">
+                                <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection dsktp-hotellist"
+                                    *ngFor="let hotel of hotelList;">
+                                    <div class="pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated">
+                                        <div class="img align-self-center1">
+                                            <!-- style="background-image: url(assets/images/hotel.png);border-radius: 5px 0 0 5px;" -->
+                                            <img *ngIf="hotel.galleryFileViews" [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="imgDownloadUrl+hotel.galleryFileViews[0].galleryFileView.fileId+'&requireCompressImage=false'" class="width-100" />
+                                            <img *ngIf="!hotel.galleryFileViews" src="assets/images/defaultImage.jpg"
+                                                class="width-100" />
+                                        </div>
+                                        <div class="desc pr-0">
+                                            <div class="row">
+                                                <div class="col-12 col-md-9 hotelDescBlock">
+                                                    <div class="text align-items-start">
+                                                      <p>
+                                                        <span class="tag margin-r-5" *ngFor="let type of hotel.typeViews; let i = index" [hidden]="i>3">
+                                                          {{type.name}}
+                                                        </span>
+                                                        <!-- <span class="typeTag" *ngIf="hotel.vendorView.tcglVendor">Toran Hotel</span> -->
+                                                      </p>
+                                                        <h3 class="mt-10">
+                                                          <span class="hotelName">
+                                                            {{hotel.name}}
+                                                          </span>
+                                                          <span>
+                                                            <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<1,'fa-star':hotel.category.key>=1}"></i>
+                                                            <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<2,'fa-star':hotel.category.key>=2}"></i>
+                                                            <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<3,'fa-star':hotel.category.key>=3}"></i>
+                                                            <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<4,'fa-star':hotel.category.key>=4}"></i>
+                                                            <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<5,'fa-star':hotel.category.key>=5}"></i>
+                                                            
+                                                          </span>
+                                                        </h3>
+                                                        <p>
+                                                            <span *ngIf="hotel.stateView">{{hotel.stateView.value}},
+                                                            </span>
+                                                            <span *ngIf="hotel.stateName">{{hotel.stateName}}, </span>
+                                                            <span *ngIf="hotel.cityView">{{hotel.cityView.value}}</span>
+                                                            <span *ngIf="hotel.cityName">{{hotel.cityName}}</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="d-block hotelbookingDesc">
+                                                        <p>
+                                                  {{  (hotel.description.length>100)? (hotel.description | slice:0:100):(hotel.description)  }}
+                                                </p>
+                                                        <div class="hotellistFclty extraTax">
+                                                            <p>Hotel Facilities </p>
+                                                            <ul>
+                                                              <li *ngFor="let amenities of hotel.defaultHotelAmenitiesViews;let i = index" [hidden]="!(i<5)">
+                                                                <img *ngIf="amenities.imageFileView" [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="hotelAmenitiesImage+amenities.imageFileView.fileId+'&requireCompressImage=false'" class="roomAmenitiesIcon" alt="{{amenities.imageFileView.name}}" />
+                                                                <img  *ngIf="!amenities.imageFileView" src="assets/images/imgpsh_fullsize_anim.png" />
+                                                              </li>
+                                                            </ul>
+                                                          </div>
+                                                        <!-- <p class="extraTax"><strong>*All Taxes will be extra</strong> -->
+                                                        <!-- </p> -->
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-3 hotelListPriceSection pl-0">
+                                                  <div class="text align-items-start">
+                                                    <!-- <p> <span class="rating">{{hotel.average}}</span></p>   -->
+                                                    <p><span class="">Price per night from</span></p>
+                                                    <p class="tourRs margin-b-20" *ngIf="hotel.amount"><span class=""><i class="fa fa-inr" aria-hidden="true"></i>{{hotel.amount}}</span></p>
+                                                    <p> <span class="rating">{{hotel.average}}</span></p>
+                                                    <p><span class="review">{{hotel.totalRattings}} Ratings</span>
+                                                    </p>
+                                                  </div>
+                                                  <div class="bookingBtnblock">
+                                                      <a (click)="bookNow(hotel)" class="bookingBtn tourListBtn">DETAILS</a>
+                                                  </div>
+                                              </div>
+                                                <!-- <div class="align-self-center col-12 col-md-3 hotelListPriceSection pl-0">
+                                                    <div class="text align-items-start">
+                                                        <p class="tourRs"><span class=""><i class="fa fa-inr" aria-hidden="true"></i> {{hotel.amount *1}}</span></p>
+                                                        <p> <span class="rating">{{hotel.average}}</span></p>
+                                                        
+                                                        <p><span class="review">{{hotel.totalRattings}} Review</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="bookingBtnblock">
+                                                        <a (click)="bookNow(hotel)" class="bookingBtn tourListBtn">Details</a>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12"
+                            *ngIf="hotelList.length == 0">
+                            <div class="row">
+                                <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection1 dsktp-hotellist">
+                                <div class="pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated col-12 col-md-12 p-15-20">
+                                    <div class="text align-items-start">
+                                        <h3><span>No hotels found based on your filters</span></h3>
+                                        <p class="mb-4">There maybe no hotels that match based on your filter preferences.
+                                        To get more results, try adjusting your filters.</p>
+                                        <br>
+                                        <div class="bookingBtnblock1 ml-0">
+                                            <a (click)="removeAllFilter()" class="bookingBtn margin-top-40" *ngIf="isRemoveAll">Remove all filters</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-xl-12 d-flex1 mobile-hotellist" *ngFor="let hotel of hotelList;">
+                            <div class="row pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated ">
+                                <div class="col-12">
+                                    <img *ngIf="hotel.galleryFileViews" [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="imgDownloadUrl+hotel.galleryFileViews[0].galleryFileView.fileId+'&requireCompressImage=false'" class="width-100" />
+                                    <img *ngIf="!hotel.galleryFileViews" src="assets/images/defaultImage.jpg"
+                                        class="width-100" /></div>
+                                <div class="col-12 desc p-4">
+                                    <div class="row">
+                                        <div class="col-12 col-md-8 hotelDescBlock">
+                                            <div class="text align-items-start">
+                                                <h3><span>{{hotel.name}}</span> &nbsp;<span>
+                                                  <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<1,'fa-star':hotel.category.key>=1}"></i>
+                                                  <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<2,'fa-star':hotel.category.key>=2}"></i>
+                                                  <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<3,'fa-star':hotel.category.key>=3}"></i>
+                                                  <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<4,'fa-star':hotel.category.key>=4}"></i>
+                                                  <i class="fa " [ngClass]="{'fa-star-o':hotel.category.key<5,'fa-star':hotel.category.key>=5}"></i>
+                                                  
+                                                </span><br /><span class="tag margin-r-5" *ngFor="let type of hotel.typeViews; let i = index" [hidden]="i>3">
+                                                  {{type.name}}
+                                                </span></h3>
+                                                <p><span *ngIf="hotel.stateView">{{hotel.stateView.value}}, </span>
+                                                    <span *ngIf="hotel.stateName">{{hotel.stateName}}, </span>
+                                                    <span *ngIf="hotel.cityView">{{hotel.cityView.value}}</span>
+                                                    <span *ngIf="hotel.cityName">{{hotel.cityName}}</span></p>
+                                            </div>
+                                            <div class="d-block hotelbookingDesc">
+                                                <p>
+                                                  {{  (hotel.description.length>100)? (hotel.description | slice:0:100):(hotel.description)  }}
+                                                </p>
+                                                <!-- <p class="extraTax"><strong>*All Taxes will be extra</strong></p> -->
+                                                <div class="hotellistFclty extraTax">
+                                                  <p>Hotel Facilities </p>
+                                                  <ul>
+                                                    <li *ngFor="let amenities of hotel.defaultHotelAmenitiesViews;let i = index" [hidden]="!(i<5)">
+                                                      <img *ngIf="amenities.imageFileView" [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="hotelAmenitiesImage+amenities.imageFileView.fileId+'&requireCompressImage=false'" class="roomAmenitiesIcon" alt="{{amenities.imageFileView.name}}" />
+                                                      <img  *ngIf="!amenities.imageFileView" src="assets/images/imgpsh_fullsize_anim.png" />
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4 mobilePriceDetails">
+                                          <div class="text align-items-start">
+                                            <!-- <p> <span class="rating">{{hotel.average}}</span></p>   -->
+                                            <p><span class="">Price per night from</span></p>
+                                            <p class="tourRs margin-b-20" *ngIf="hotel.amount"><span class=""><i class="fa fa-inr" aria-hidden="true"></i>{{hotel.amount}}</span></p>
+                                            <p> <span class="rating">{{hotel.average}}</span></p>
+                                            <p><span class="review">{{hotel.totalRattings}} Ratings</span>
+                                            </p>
+                                          </div>
+                                            <div class="row bookingBtnblock">
+                                                <a (click)="bookNow(hotel)" class="bookingBtn width-100 ">Book Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-12 text-center ftco-animate">
+                            <p><a class="btn btn-primary rounded">View More</a></p>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Guests and rooms</h4>
+          <button type="button" id="closeModel" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body scrollroom modalPadding">
+          <div class="addmoreBlock" *ngFor="let roomsAndGuests of roomsAndGuestsList;let i = index">
+          <div class="row">
+          <div class="col-12 rmCounterBlock" [ngClass]="{'mt-2': roomsAndGuests.id != 1}" >
+            <span class="roomLbl">Room {{i+1}}</span> 
+            <div class="float-right d-flex counterPM" *ngIf="i != 0">
+              <span class="removeRoom" (click)="removeRoom(roomsAndGuests)">Remove room</span> 
+            </div>
+         </div>
+         <div class="col-12 rmCounterBlock">
+          <a class="">Adults <div class="float-right d-flex counterPM">
+            <input type='button' value='-' class='qtyminus' field='quantity' [disabled]="roomsAndGuests.adultsValue == 1" [ngClass]="{'cursor-no-drop':roomsAndGuests.adultsValue == 1}"
+              (click)="changeAdults(roomsAndGuests,0)" />
+            <input type='text' name='quantity' [value]='roomsAndGuests.adultsValue' class='qty' readonly />
+            <input type='button' value='+' class='qtyplus' field='quantity'
+              [disabled]="roomsAndGuests.adultsValue == (adultMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest" (click)="changeAdults(roomsAndGuests,1)" [ngClass]="{'cursor-no-drop':roomsAndGuests.adultsValue == (adultMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest}" />
+          </div></a>
+        </div>
+         <div class="col-12 rmCounterBlock">
+          <a class="">Children <div class="float-right d-flex counterPM">
+            <input type='button' value='-' class='qtyminus' field='quantity' [ngClass]="{'cursor-no-drop':roomsAndGuests.childrenValue == 0}"
+              [disabled]="roomsAndGuests.childrenValue == 0" (click)="changeChildren(roomsAndGuests,0)" />
+            <input type='text' name='quantity' [value]='roomsAndGuests.childrenValue' class='qty' readonly />
+            <input type='button' value='+' class='qtyplus' field='quantity' [ngClass]="{'cursor-no-drop':roomsAndGuests.childrenValue == (childrenMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest}"
+              [disabled]="roomsAndGuests.childrenValue == (childrenMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest" (click)="changeChildren(roomsAndGuests,1)" />
+          </div></a>
+        </div>
+         <div class="col-4 rmCounterBlock" *ngFor="let childrenAge of roomsAndGuests.childrenAgeList;let i = index">
+          <label> Child {{i+1}} age</label>
+          <ng-select [searchable]="true" class="form-control dropGender ageDrp" [items]="genderList"
+            [(ngModel)]="childrenAge.childrenAge" bindLabel="value" >
+          </ng-select>
+        </div>
+        <div class="col-12"><div class="border-bottom"></div>
+      </div>
+        </div>
+       
+      </div>
+    <button type="button" class="btn btn-default addMore" *ngIf="roomsAndGuestsList.length < 10" (click)="addRoom();scrollTo('addRoomGuestBtn')" id="addRoomGuestBtn" #addRoomGuestBtn>+ Add More</button>
+        </div>
+        <div class="modal-footer">
+          <div class="col-12">
+          <button  class="btn btn-primary py-3 px-5 loginBtn " type="submit" (click)="onAddRoomAndGuest()" value="">Update</button>
+        </div>
+      </div>
+      </div>
+  
+    </div>
+  </div>

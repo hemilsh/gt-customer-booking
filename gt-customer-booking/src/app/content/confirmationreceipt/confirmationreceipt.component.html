@@ -1,0 +1,485 @@
+<section class="ftco-section ftco-menu mt-5">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12">
+                    <div
+                        [ngClass]="{'confimSuccessfull':receiptView.paid != undefined && receiptView.paid.key != 4,'bookingCancelled': receiptView.paid != undefined && receiptView.paid.key == 4}">
+                        <span *ngIf="receiptView.paid != undefined && receiptView.paid.key == 4">Dear
+                            {{receiptView.userView.name}}, Your booking of
+                            {{receiptView.hotelView.name}} is cancelled.</span>
+                        <span *ngIf="receiptView.paid != undefined && receiptView.paid.key != 4">Dear
+                            {{receiptView.userView.name}}, Your booking of
+                            {{receiptView.hotelView.name}} is confirmed.</span>
+                        <p class="text-gray"> Booking <span
+                                *ngIf="receiptView.paid != undefined && receiptView.paid.key == 4"
+                                class="ml-0 cancelBookingClass">Cancellation</span> Receipt is been sent on
+                            {{receiptView.userView.email}}<span
+                                *ngIf="receiptView.paid != undefined && receiptView.paid.key == 4"
+                                class="ml-0 cancelBookingClass">.</span> <span
+                                *ngIf="receiptView.paid != undefined && receiptView.paid.key != 4"
+                                class="ml-0 cancelBookingClass"> Check in
+                                starts on {{receiptView.startDate | date:'dd MMM, yyyy'}} check out on
+                                {{receiptView.endDate | date:'dd MMM, yyyy'}}</span></p>
+                    </div>
+                </div>
+
+                <div class="col-sm-8">
+                    <h2 class="bs-title bb-0">Booking <span
+                            *ngIf="receiptView.paid != undefined && receiptView.paid.key == 4">Cancellation</span> <span
+                            *ngIf="receiptView.paid != undefined && receiptView.paid.key != 4"
+                            class="">Confirmation</span> Receipt</h2>
+                </div>
+                <div class="col-sm-4 pr-0">
+                    <button type="submit" value="" class="btn btn-primary py-2 printreceiptbtn height-52 paymentbtn"
+                        *ngIf="receiptView.paid != undefined && receiptView.paid.key != 4"
+                        (click)="exportReceipt(receiptView)">Print Receipt</button>
+                    <button type="submit" value="" class="btn btn-primary py-2 printreceiptbtn height-52 paymentbtn"
+                        *ngIf="receiptView.paid != undefined && receiptView.paid.key == 4"
+                        (click)="exportCancelReceipt(receiptView)">Print Receipt</button>
+                </div>
+                <div class="col-12 col-md-8 receiptLeftSection">
+                    <div class="row">
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Booking No.</label>
+                                <p class="textBlock">{{receiptView.referenceNumber}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Booking Date</label>
+                                <p class="textBlock">{{receiptView.createDate | date:'dd MMM, yyyy hh:mm a'}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="receiptView.applicantView && bookingOfficer">
+                        <div class="col-lg-12 col-xl-12">
+                            <h4 class="formSubTitle border-bottom bt-0 pb-3">Citizen Details</h4>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="receiptView.applicantView && bookingOfficer">
+                        <div class="col-lg-12 col-xl-12">
+                            <table
+                                class="table card-table tab-table table-vcenter mt-table table-striped table-layout-fixed no-border">
+                                <thead>
+                                    <tr class="pinkbk">
+                                        <th class="width-20">Name</th>
+                                        <th class="width-15">Mobile </th>
+                                        <th class="width-30">Email </th>
+                                        <th class="width-35">Address</th>
+                                        <!-- <th class="width-25">Room Type </th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            {{receiptView.applicantView.name}}
+                                        </td>
+                                        <td>
+                                            {{receiptView.applicantView.mobile}}
+                                        </td>
+                                        <td>
+                                            {{receiptView.applicantView.email}}
+                                        </td>
+                                        <td>
+                                            <span class="textBlock">{{receiptView.applicantView.address}}
+                                                <span *ngIf="receiptView.applicantView.landmark">,
+                                                    {{receiptView.applicantView.landmark}}</span>
+                                                <span *ngIf="receiptView.applicantView.cityName">,
+                                                    {{receiptView.applicantView.cityName}},</span><span
+                                                    *ngIf="receiptView.applicantView.cityView">,
+                                                    {{receiptView.applicantView.cityView.value}},</span>
+                                                <span *ngIf="receiptView.applicantView.stateName">
+                                                    {{receiptView.applicantView.stateName}},</span><span
+                                                    *ngIf="receiptView.applicantView.stateView">
+                                                    {{receiptView.applicantView.stateView.value}},</span>
+                                                <span *ngIf="receiptView.applicantView.countryView">
+                                                    {{receiptView.applicantView.countryView.value}},</span>
+                                                <span *ngIf="receiptView.applicantView.pincode">
+                                                    {{receiptView.applicantView.pincode}}</span></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <h4 class="formSubTitle border-bottom bt-0 pb-3">Room Wise Traveller and guest Details</h4>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" *ngFor="let typeWise of receiptView.roomBookingViews">
+                        <div class="col-lg-12 col-xl-12 ">
+                            <h4 class="formSubTitle border-bottom bt-0 pb-3">Room Type :--
+                                {{typeWise.roomTypeView.name}}</h4>
+                        </div>
+                        <div class="col-lg-12 col-xl-12 "
+                            *ngFor="let guestInformation of typeWise.tempGuestInformationView;let j = index">
+                            <div class="row">
+                                <div class="col-lg-12 col-xl-12 ">
+                                    <h4 class="formSubTitle border-bottom bt-0 pb-3">Room {{guestInformation.room}}</h4>
+                                </div>
+                            </div>
+                            <table
+                                class="table card-table tab-table table-vcenter mt-table text-nowrap table-striped table-layout-fixed no-border">
+                                <thead>
+                                    <tr class="pinkbk">
+                                        <th class="width-60">Name</th>
+                                        <th class="width-15">Gender </th>
+                                        <th class="width-10">Age </th>
+                                        <th class="width-15">Senior Citizen</th>
+                                        <!-- <th class="width-25">Room Type </th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let guestInfo of guestInformation.guestInfo">
+                                        <td>
+                                            {{guestInfo.name}}
+                                        </td>
+                                        <td>
+                                            {{guestInfo.gender.value}}
+                                        </td>
+                                        <td>
+                                            {{guestInfo.age}}
+                                        </td>
+                                        <td>
+                                            <span *ngIf="guestInfo.seniorCitizen">Yes</span>
+                                            <span *ngIf="!guestInfo.seniorCitizen">No</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="bookingOfficer">
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Payment Mode</label>
+                                <p class="textBlock">{{receiptView.paymentMode.value}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Remarks</label>
+                                <p class="textBlock">{{receiptView.remarks}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3" *ngIf="receiptView.paid.key == 4">
+                        <div class="col-lg-12 col-xl-12 ">
+                            <ngb-accordion closeOthers="true" class="mt-4 dusplay-block">
+                                <ngb-panel title="Cancellation Policy for TCGL Units">
+                                    <ng-template ngbPanelContent>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <ol>
+                                                    <li>
+                                                        <strong>CANCELLATION POLICY FOR TCGL UNITS</strong>
+                                                        <table class="tbrBox mt-10">
+                                                            <thead>
+                                                                <tr class="pinkbk">
+                                                                    <th class="width-15">Season</th>
+                                                                    <th class="width-50">Notice for Cancellation </th>
+                                                                    <th class="width-20">Refund (in %) </th>
+                                                                    <th class="width-15">Unit</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>All year round</td>
+                                                                    <td><strong>For on line booking</strong> –2 days (48
+                                                                        hours) prior to booking date
+                                                                    </td>
+                                                                    <td>90%</td>
+                                                                    <td>All Units</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>All year round</td>
+                                                                    <td><strong>For physical booking</strong> 2 clear
+                                                                        working days excluding date of
+                                                                        application and date of booking. Public holidays
+                                                                        and Sundays will not be
+                                                                        considered as said period of 2 days</td>
+                                                                    <td>90%</td>
+                                                                    <td>All Units</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </li>
+                                                    <li class="mt-10">
+                                                        <strong class="pt-5 pb-5">REFUND POLICY</strong>
+                                                        <ul class="mt-10">
+                                                            <li>Refund amount will be credited to customer's a/c within
+                                                                8 working days.</li>
+                                                            <li>First Day Start from Cancellation Date.</li>
+                                                        </ul>
+                                                    </li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                            </ngb-accordion>
+                        </div>
+                    </div>
+                    <!-- <div class="row mt-3">
+                        <div class="col-lg-12 col-xl-12 ">
+                            <table class="table  table-layout-fixed table-responsive no-border">
+                                <thead>
+                                    <tr class="pinkbk">
+                                        <th class="width-25">Name</th>
+                                        <th class="width-15">Gender </th>
+                                        <th class="width-15">Age </th>
+                                        <th class="width-20">Senior Citizen</th>
+                                        <th class="width-25">Room Type </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let guestInformation of receiptView.guestInformationViews">
+                                        <td>
+                                            {{guestInformation.name}}
+                                        </td>
+                                        <td>
+                                            {{guestInformation.gender.value}}
+                                        </td>
+                                        <td>
+                                            {{guestInformation.age}}
+                                        </td>
+                                        <td>
+                                            <span *ngIf="guestInformation.seniorCitizen">Yes</span>
+                                            <span *ngIf="!guestInformation.seniorCitizen">No</span>
+                                        </td>
+                                        <td>
+                                            {{guestInformation.roomBookingView.roomView.roomTypeView.name}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> -->
+
+                </div>
+                <div class="col-12 col-md-4">
+                    <!--Accordion wrapper-->
+                    <!-- <h2>Your Booking</h2> -->
+
+                    <div class="row yourbookinBlock">
+                        <div class="col-12 col-md-5">
+                            <img *ngIf="receiptView.hotelView.galleryFileViews"
+                                [defaultImage]="'assets/images/loading.gif'"
+                                [lazyLoad]="imgUrl+receiptView.hotelView.galleryFileViews[0].galleryFileView.fileId"
+                                class="width-100" />
+                            <img *ngIf="!receiptView.hotelView.galleryFileViews" src="assets/images/image-01.png"
+                                class="width-100" />
+                        </div>
+                        <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                            <h3>{{receiptView.hotelView.name}}</h3>
+                            <p>
+                                <span>{{receiptView.hotelView.address}} , {{receiptView.hotelView.area}}
+                                </span>
+                                <br />
+                                <span
+                                    *ngIf="receiptView.hotelView.countryView">{{receiptView.hotelView.countryView.value}},
+                                </span>
+                                <span *ngIf="receiptView.hotelView.stateView">{{receiptView.hotelView.stateView.value}},
+                                </span>
+                                <span *ngIf="receiptView.hotelView.stateName">{{receiptView.hotelView.stateName}},
+                                </span>
+                                <span *ngIf="receiptView.hotelView.cityView">{{receiptView.hotelView.cityView.value}},
+                                </span>
+                                <span *ngIf="receiptView.hotelView.cityName">{{receiptView.hotelView.cityName}}, </span>
+                                <span *ngIf="receiptView.hotelView.pincode">{{receiptView.hotelView.pincode}}</span>
+                            </p>
+                            <p class="word-wrap" *ngIf="receiptView.hotelView.email">{{receiptView.hotelView.email}}</p>
+                            <p>{{receiptView.hotelView.mobile}}</p>
+                        </div>
+                    </div>
+                    <div class="row yourbookinBlock" *ngFor="let roomBooking of receiptView.roomBookingViews;">
+                        <div class="col-12">
+                            <!-- <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Email</label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0">loren.ipsum@domain.com</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Phone </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0">+91 90353 53535</p>
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Room </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">{{roomBooking.roomTypeView.name}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Date </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">
+                                        {{receiptView.startDate | date:'dd MMM, yyyy'}} -
+                                        {{receiptView.endDate | date:'dd MMM, yyyy'}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0"> </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">
+                                    <p class="mb-0 text-right">Check in from {{receiptView.hotelView.checkInTime }}
+                                        Check out till {{receiptView.hotelView.checkOutTime}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Number of Rooms </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">{{roomBooking.rooms}}</p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Room Tariff</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">{{roomBooking.roomCharges}}</p>
+                                    <p class="mb-0 text-right m-text-left">
+                                        ({{roomBooking.roomTypeChargesView.amount}} * {{roomBooking.rooms}})</p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room" *ngIf="roomBooking.extraAmount != undefined">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">extra charges</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">
+                                        {{roomBooking.extraAmount}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room"
+                                *ngIf="roomBooking.seniorCitizenDiscount != undefined && roomBooking.seniorCitizenDiscountPercentage!= undefined">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Senior Citizen Disc
+                                        ({{roomBooking.seniorCitizenDiscountPercentage}}%)</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">
+                                        {{roomBooking.seniorCitizenDiscount}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room"
+                                *ngIf="roomBooking.digitalPayDiscount != undefined && roomBooking.digitalPayDiscountPercentage!= undefined">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Digital Payment Disc
+                                        ({{roomBooking.digitalPayDiscountPercentage}}%)</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">
+                                        {{roomBooking.digitalPayDiscount}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room" *ngFor="let bookingTax of roomBooking.bookingTaxViews">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">{{bookingTax.name}}
+                                        <span *ngIf="bookingTax.percetange">({{bookingTax.percetange}}%)</span>
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">{{bookingTax.amount}}</p>
+                                </div>
+                            </div>
+                            <!-- <div class="row m-payment-room">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Special Disc (%)</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">0</p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Digital Payment Disc (%)</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">0</p>
+                                </div>
+                            </div> -->
+                            <div class="row m-payment-room">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0 pa-label">Pay Amount</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right pa-label m-text-left"><i
+                                            class="fa fa-rupee"></i>&nbsp;{{roomBooking.totalAmount}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row yourbookinBlock">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0 pa-label">Total Amount</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right pa-label m-text-left"><i
+                                            class="fa fa-rupee"></i>&nbsp;{{receiptView.totalAmount}}</p>
+                                </div>
+                            </div>
+                            <div class="row"
+                                *ngIf="receiptView.cancellationPercentage && receiptView.cancellationAmount">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Cancellation Charges ({{receiptView.cancellationPercentage}}%)
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{receiptView.cancellationAmount}} </p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="receiptView.refundAmount">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Refund Amount </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{receiptView.refundAmount}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row yourbookinBlock m-payment-room " *ngIf="isHotelCancellationPage">
+                        <div class="col-12 col-md-12">
+                            <div *blockUI="'hotelCancellationBtn'" class="loginBtn mt-0">
+                                <button type="submit" (click)="onHotelCancellation()" value=""
+                                    class="btn btn-primary py-3 px-5 loginBtn mt-3">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,7 @@
+<app-toaster-container></app-toaster-container>
+<app-header [ngClass]="{blackHeader:isHeaderClassShowRoute}" *ngIf="showContent && isHeaderfooterShow"></app-header>
+<block-ui>
+    
+    <router-outlet *ngIf="showContent"></router-outlet>
+</block-ui>
+<app-footer *ngIf="showContent && isHeaderfooterShow"></app-footer>

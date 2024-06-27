@@ -1,0 +1,188 @@
+<section class="ftco-section ftco-menu mt-5">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 myProfilePicTitle">
+                    <h2 class="bs-title bb-0 mb-0">My Profile</h2>
+                </div>
+                <div class="col-sm-4 pr-0"></div>
+                <div class="col-12 col-md-3 myProfilePic">
+                    <div class="yourbookinBlock">
+                        <div class="myprofileImg border-radius">
+                            <span *ngIf="profileModel.profilepic != null && profileModel.profilepic.fileId != null"
+                                class="userViewShortname bg-transparent">
+                                <img *ngIf="profileModel.profilepic != null && profileModel.profilepic.fileId != null"
+                                    [defaultImage]="'assets/images/loading.gif'"
+                                    [lazyLoad]="imgURL + profileModel.profilepic.fileId" class="width-100" />
+                                <!-- <img *ngIf="profileModel.profilepic != null && profileModel.profilepic.fileId != null"
+                                class="width-100" [src]="imgURL + profileModel.profilepic.fileId" alt="" class="w-100"> -->
+                            </span>
+                            <span *ngIf="profileModel.profilepic == null"
+                                class="userViewShortname">{{profileModel.shortFormOfName}}</span>
+                            <!-- <a href="" class="profileImgEdt"><i class="fa fa-pencil"></i></a> -->
+                        </div>
+                        <h5 class="textBlock text-center profileName ">{{profileModel.name}}</h5>
+                    </div>
+                </div>
+                <div class="col-12 col-md-9 myprofileBlock">
+
+                    <div class="row">
+                        <a class="profileprifle cursor-pointer" (click)="editProfile()"><i class="fa fa-pencil"></i></a>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row persionDetails mb-4">
+                                <div class="col-lg-12 col-xl-12">
+                                    <h5 class="textBlock profileName mb-2">Basic Details</h5>
+                                </div>
+                                <!-- <div class="col-lg-6 col-xl-12">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-2">
+                                    <label>Name </label><span class="float-right">:</span>
+                                </div>
+                                <div class="col-xs-12 col-md-10">
+                                    <p class="textBlock">{{profileModel.name}}</p>
+                                </div>
+                            </div>
+                        </div> -->
+                                <div class="col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-3">
+                                            <label>Email</label><span class="float-right">:</span>
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                            <p class="textBlock">{{profileModel.email}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-3">
+                                            <label>Gender</label><span class="float-right">:</span>
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                            <p class="textBlock" *ngIf="profileModel.gender">
+                                                {{profileModel.gender.value}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-3">
+                                            <label>Mobile</label><span class="float-right">:</span>
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                            <p class="textBlock"> <span
+                                                    *ngIf="profileModel.countryCode">{{profileModel.countryCode.value}}</span>
+                                                {{profileModel.mobile}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-3">
+                                            <label>Birth Date</label><span class="float-right">:</span>
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                            <p class="textBlock">{{profileModel.birthDate}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row persionDetails mb-4">
+                                <div class="col-lg-12 col-xl-12">
+                                    <h5 class="textBlock profileName mb-2">Address</h5>
+                                </div>
+                                <!-- <div class="col-lg-6 col-xl-12">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-2">
+                                    <label>Name </label><span class="float-right">:</span>
+                                </div>
+                                <div class="col-xs-12 col-md-10">
+                                    <p class="textBlock">{{profileModel.name}}</p>
+                                </div>
+                            </div>
+                        </div> -->
+                                <div class="col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <!-- <div class="col-xs-12 col-md-2">
+                                    <label>Address</label><span class="float-right">:</span>
+                                </div> -->
+                                        <div class="col-xs-12 col-md-12">
+                                            <p class="textBlock">{{profileModel.address}}
+                                                <span *ngIf="profileModel.landmark">{{profileModel.landmark}}</span>
+                                                <span
+                                                    *ngIf="profileModel.cityName">,{{profileModel.cityName}},</span><span
+                                                    *ngIf="profileModel.cityView">,{{profileModel.cityView.value}},</span>
+                                                <span
+                                                    *ngIf="profileModel.stateName">{{profileModel.stateName}},</span><span
+                                                    *ngIf="profileModel.stateView">{{profileModel.stateView.value}},</span>
+                                                <span
+                                                    *ngIf="profileModel.countryView">{{profileModel.countryView.value}},</span>
+                                                <span *ngIf="profileModel.pincode">{{profileModel.pincode}}</span></p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+                            <div class="row persionDetails mb-4">
+                                <div class="col-lg-12 col-xl-12">
+                                    <h5 class="textBlock profileName mb-2">Login Details</h5>
+                                </div>
+                                <!-- <div class="col-lg-6 col-xl-12">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-2">
+                            <label>Name </label><span class="float-right">:</span>
+                        </div>
+                        <div class="col-xs-12 col-md-10">
+                            <p class="textBlock">{{profileModel.name}}</p>
+                        </div>
+                    </div>
+                </div> -->
+                                <div class="col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-3">
+                                            <label>Mobile Number</label><span class="float-right">:</span>
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                            <p class="textBlock"> <span
+                                                    *ngIf="profileModel.countryCode">{{profileModel.countryCode.value}}</span>
+                                                {{profileModel.mobile}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-3">
+                                            <label>Email Id</label><span class="float-right">:</span>
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                            <p class="textBlock">{{profileModel.email}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-xl-12">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-3">
+                                            <label>Passoword</label><span class="float-right">:</span>
+                                        </div>
+                                        <div class="col-xs-12 col-md-9">
+                                            <p class="textBlock"><span>**********</span> <a
+                                                    (click)="openChangePassword()" class="changePassword">Change
+                                                    Passoword?</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>

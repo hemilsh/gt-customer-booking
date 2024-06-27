@@ -1,0 +1,851 @@
+<section class="ftco-booking ftco-section ftco-no-pt ftco-no-pb mt-5">
+    <div class="container">
+      
+      <div class="row no-gutters">
+        
+        <div class="col-lg-12 mt-70 pt-5">
+          <form action="#" class="booking-form aside-stretch mt-0" >
+            
+            <div class="row">
+              <div class="col-md d-flex pr-1">
+  
+                <div class="form-group align-self-stretch d-flex align-items-end">
+                  <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                    <img src="assets/images/location.png" class="bookingLocation" />
+                  </div>
+                  
+                  <div class="wrap align-self-stretch py-1 px-1 py-0 booking-field autosearchHome">
+  
+  
+  
+  
+                    <label for="#">Destination</label>
+                    <ng-autocomplete *ngIf="hotelDropdownList.length != 0" [data]="hotelDropdownList" (inputCleared)="onHotelInputCleared()"
+                      [searchKeyword]="keyword" (selected)='onSelect($event)' (inputChanged)='onInputChangedEvent($event)'
+                      [itemTemplate]="itemTemplate" [placeHolder]="searchHotelPlaceHolder"
+                      [initialValue]="hotelDropdownList[0]">
+                    </ng-autocomplete>
+                    <!--[notFoundTemplate]="notFoundTemplate" -->
+                    <ng-template #itemTemplate let-item>
+                      <div class="row autosearchrow">
+                        <div class="col-8">
+                          <p class="autoIcon"><span [innerHTML]="item.name" class="locdesty"></span></p>
+                        </div>
+                        <div class="col-4">
+                          <p class="destiny">{{item.type.value}} <span *ngIf="item.type.key != 1"><strong>({{item.total}} Properties)</strong></span></p>
+                        </div>
+                      </div>
+                    </ng-template>
+  
+                    <!-- <ng-template #notFoundTemplate let-notFound>
+                      <div [innerHTML]="notFound"></div>
+                    </ng-template> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md d-flex pl-0 pr-0">
+  
+                <div class="form-group align-self-stretch d-flex align-items-end ">
+                  <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                    <img src="assets/images/calendar.png" class="bookingDate" />
+                  </div>
+                  <div class="wrap align-self-stretch py-1 px-1 booking-field py-0">
+                    <!-- <label for="#">Check-in Date</label> -->
+                    <!-- <input type="text" class="form-control checkout_date" placeholder="Check-out date"> -->
+                    <div class="form-control " id="datePicker" daterangepicker [options]="daterangepickerOptions"
+                      (selected)="selectedDate($event, mainInput)" (cancelDaterangepicker)="calendarEventsHandler($event)"
+                      (applyDaterangepicker)="calendarEventsHandler($event)"
+                      (hideDaterangepicker)="calendarEventsHandler($event)"
+                      (showDaterangepicker)="calendarEventsHandler($event)">
+                     <span class="form-control uneditable-input filter-checkin-out" name="daterange">
+                                <span class="sameBoxCon">
+                                  <label for="#">Check-in</label> <br>
+                                  {{ mainInput.start | date }} &nbsp;&nbsp;&nbsp;&nbsp;|
+                                </span>
+                                <span class="sameBoxCon">
+                                  <label for="#">Check-out</label><br>
+                                  {{ mainInput.end | date }}
+                                </span>
+                                                    
+                              </span>
+                      <span class="input-group-btn">
+                        <a type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></a>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md d-flex pr-0 pl-1 m-pl-15">
+                <div class="form-group align-self-stretch d-flex align-items-end">
+                  <div class="align-self-stretch py-1 py-0 px-1 pr-0">
+                    <img src="assets/images/Guests.png" class="bookingDate" />
+                  </div>
+                  <div class="wrap align-self-stretch py-1  px-1 booking-field" >
+                    <label for="#" >Rooms & Guests</label>
+                    <div class="dropdown shortDrop gdDropdown" >
+                     <button class="btn btn-secondary dropdown-toggle shortDrop" type="button" id="dropdownMenuButton" data-toggle="modal" data-target="#guestInfo">
+                         {{getTotalRoom()}} Rooms & {{getTotalGuest()}} Guests
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md d-flex pl-0">
+                <div class="form-group d-flex align-self-stretch">
+                  <a (click)="checkAvailability()"
+                    class="btn btn-primary py-5 py-md-3 px-3 align-self-stretch d-block"><span>Check
+                      Availability</span></a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+<section class="ftco-section ftco-menu ">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 col-md-9 yourbooking-h-Detail">
+                    <h3>{{hotel.name}}</h3>
+                    <p>
+                        <span *ngIf="hotel.stateView">{{hotel.stateView.value}}, </span>
+                        <span *ngIf="hotel.stateName">{{hotel.stateName}}, </span>
+                        <span *ngIf="hotel.cityView">{{hotel.cityView.value}}</span>
+                        <span *ngIf="hotel.cityName">{{hotel.cityName}}</span>
+                    </p>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="text align-items-start row hotelRatingview float-right" (click)="scrollToReview('target')">
+                        <p> <span class="rating">{{hotel.average}}</span></p>
+                        <p class="hv-Review"><span class="review">{{hotel.totalRattings}} Review</span></p>
+                        <!-- <p> <span class="rating">4.5</span></p><br />
+                        <p><span class="review">736 Review</span></p> -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-8 OrderingInMobile">
+                    <div class="row">
+                        <div class="container hotelSinglePageSliderSection">
+
+
+
+                            <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails"
+                                data-ride="carousel" data-interval="false">
+
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="carousel-item active" *ngIf="hotel.galleryFileViews == undefined ||hotel.galleryFileViews.length == 0;">
+                                        <img class="d-block w-100"
+                                        src="assets/images/defaultImage.jpg"
+                                        alt="defaultImage.jpg">
+                                    </div>
+                                    <div class="carousel-item" id="id_{{i}}" [ngClass]="{'active':i == 0}" *ngFor="let image of hotel.galleryFileViews; let i = index">
+                                        <!-- <img class="d-block w-100"
+                                        src="{{imgUrl}}{{image.galleryFileView.fileId}}"
+                                        alt="{{image.galleryFileView.name}}"> -->
+                                        <img [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="imgUrl+image.galleryFileView.fileId+'&requireCompressImage=false'" class="d-block w-100" alt="{{image.galleryFileView.name}}"/>
+                                    </div>
+                                </div>
+
+                                <a class="carousel-control-prev" (click)="prevMainSlider(hotel.galleryFileViews.length)" *ngIf="hotel.galleryFileViews != undefined && hotel.galleryFileViews.length != 0;" href="#carousel-thumb" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" (click)="nextMainSlider(hotel.galleryFileViews.length)" *ngIf="hotel.galleryFileViews != undefined && hotel.galleryFileViews.length != 0;" href="#carousel-thumb"
+                                    role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+
+                                <ol class="carousel-indicators thumslider">
+                                    <li data-target="#carousel-thumb" *ngFor="let image of hotel.galleryFileViews; let i = index"
+                                        [ngClass]="{'display-none':!(currentSliderImage <= i && i < currentSliderImage+5),'active':i == 0}"
+                                        (click)="setSliderMainImage(i)" class="slider-li" id="slider_id_{{i}}"> 
+                                        <!-- <img class="d-block w-100"
+                                        src="{{imgUrl}}{{image.galleryFileView.fileId}}"
+                                        alt="{{image.galleryFileView.name}}"
+                                            class="img-fluid"> -->
+                                            <img [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="imgUrl+image.galleryFileView.fileId+'&requireCompressImage=false'" class="img-fluid" alt="{{image.galleryFileView.name}}"/>
+                                        </li>
+                                </ol>
+                            </div>
+                            <!-- <button class="thmleftarrow" (click)="prevImg()"  [disabled]="currentSliderImage+5 == 5"> <i [ngClass]="{'cursor-no-drop':currentSliderImage+5 == 5}" class="fa fa-angle-left"></i></button>
+                            <button class="thmrightarrow" (click)="nextImg()"  [disabled]="currentSliderImage+5 >= hotel.galleryFileViews.length"><i [ngClass]="{'cursor-no-drop':currentSliderImage+5 >= hotel.galleryFileViews.length}" class="fa fa-angle-right"></i></button> -->
+
+                        </div>
+                        <div class="col-lg-12 col-xl-12 sliderSection mt-5">
+                            <!-- <div id="carouselExampleControls" class="carousel slide hotelViewSlider"
+                                data-ride="carousel">
+                                <div class="carousel-inner" *ngIf="hotel.galleryFileViews">
+                                    <div class="carousel-item" [ngClass]="{'active':i == 0}"
+                                        *ngFor="let image of hotel.galleryFileViews; let i = index">
+                                        <img class="d-block w-100" src="{{imgUrl}}{{image.galleryFileView.fileId}}"
+                                            alt="{{image.galleryFileView.name}}">
+                                    </div>
+                                </div>
+                                <div class="carousel-inner" *ngIf="!hotel.galleryFileViews">
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100" src="assets/images/slidel.jpg" alt="defaultImage">
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls"
+                                    *ngIf="hotel.galleryFileViews != undefined && hotel.galleryFileViews.length > 1"
+                                    role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls"
+                                    *ngIf="hotel.galleryFileViews != undefined && hotel.galleryFileViews.length > 1"
+                                    role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div> -->
+                            <p class="mt-5">{{hotel.description}}</p>
+                        </div>
+                    </div>
+                    <div class="row"
+                        *ngIf="hotel.defaultHotelAmenitiesViews != undefined && hotel.defaultHotelAmenitiesViews.length != 0">
+                        <div class="col-lg-12 col-xl-12 singlePageTitle">
+                            <h4 class="formSubTitle">Facilities</h4>
+                        </div>
+                    </div>
+                    <div class="row"
+                        *ngIf="hotel.defaultHotelAmenitiesViews != undefined && hotel.defaultHotelAmenitiesViews.length != 0">
+                        <div class="col-md-6 col-lg-4 col-xl-4 facilities"
+                            *ngFor="let aminitis of hotel.defaultHotelAmenitiesViews">
+                            <span>
+                                    <img *ngIf="aminitis.imageFileView" [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="hotelAmenitiesImage+aminitis.imageFileView.fileId+'&requireCompressImage=false'" class="roomAmenitiesIcon" alt="{{aminitis.imageFileView.name}}" />
+                                <img  *ngIf="!aminitis.imageFileView" src="assets/images/imgpsh_fullsize_anim.png" />
+                                {{aminitis.name}}</span>
+                        </div>
+
+                    </div>
+                    <div class="row" *ngIf="hotel.rules">
+                        <div class="col-lg-12 col-xl-12 mt-5">
+                            <h4 class="formSubTitle">Rules</h4>
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="hotel.rules">
+                        <div class="col-md-6 col-lg-12 col-xl-12">
+                            <p [innerHTML]="hotel.rules"></p>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 mt-5 singlePageTitle">
+                            <h4 class="formSubTitle" id="room-category">Select Room Category </h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection selectroomcategory dsktp-hoteldetails"
+                            [hidden]="!isRoomTypeFound" *ngFor="let roomType of roomTypeList;let i = index">
+                            <div class="hotelViewRoomCategory pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated">
+                                <div class="img">
+                                    <!-- <ng-image-slider #nav [images]="imageObject"
+                                        [imageSize]="{width: '100%', height: auto}" [infinite]="sliderInfinite"
+                                        [imagePopup]="sliderImagePopup" [showArrow]="sliderArrowShow"
+                                        [autoSlide]="sliderAutoSlide ? 1 : 0" [slideImage]="sliderSlideImage"
+                                        [animationSpeed]="sliderAnimationSpeed" [manageImageRatio]="false"
+                                        (imageClick)="imageOnClick($event)" (arrowClick)="arrowOnClick($event)"
+                                        (lightboxArrowClick)="lightboxArrowClick($event)"></ng-image-slider> -->
+                                        <img *ngIf="!roomType.roomTypeGalleryViews" src="assets/images/defaultImage.jpg"
+                                        class="w-100" />
+                                        <img *ngIf="roomType.roomTypeGalleryViews" [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="roomImgUrl+roomType.roomTypeGalleryViews[0].galleryFileView.fileId+'&requireCompressImage=false'" class="w-100" alt="{{roomType.roomTypeGalleryViews[0].galleryFileView.name}}"/>
+                                    <!-- <img *ngIf="roomType.roomTypeGalleryViews"
+                                        src="{{roomImgUrl}}{{roomType.roomTypeGalleryViews[0].galleryFileView.fileId}}"
+                                        class="w-100" /> -->
+                                </div>
+                                <div class="desc p-4">
+                                    <div class="row height-100">
+                                        <div class="col-12 col-md-6 hotelDescBlock">
+                                            <div class="text align-items-start">
+                                                <h3><span class="color-orng">{{roomType.name}}</span></h3>
+                                                <!-- <br *ngIf="roomType.totalAvailableRooms == 0"/> -->
+                                                <p class="hotelReview1" *ngIf="roomType.totalAvailableRooms == 0"><span class="review color-red">No more room left</span></p>
+                                                <!-- <br *ngIf="roomType.totalAvailableRooms <= 2 && roomType.totalAvailableRooms != 0"/> -->
+                                                <p class="hotelReview1" *ngIf="roomType.totalAvailableRooms <= 2 && roomType.totalAvailableRooms != 0"><span class="review color-red">Only 2 rooms left</span></p>
+                                            </div>
+                                            <div class="d-block hotelbookingDesc">
+                                                <p>{{roomType.description  | slice:0:150}}</p>
+                                                <p class="extraTax mt-5 mb-2" [hidden]="!roomType.roomTypeGalleryViews"><a
+                                                        (click)="openModal(roomType)" class="gallerybtn"><i
+                                                            class="fa fa-file-image-o gallery-icon"></i>
+                                                        Gallery</a></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <!-- <div class="align-items-start row">
+											  <div class="col-md-6 pr-0">
+                                                <p class="hotelReview text-right w-100">
+                                                    <span class="review"
+                                                        [hidden]="roomType.roomTypeChargesView != undefined"></span>
+                                                    <span class="review"
+                                                        *ngIf="roomType.roomTypeChargesView != undefined"><i
+                                                            class="fa fa-rupee"></i>
+                                                        {{roomType.roomTypeChargesView.amount}} <br /> Per Night</span>
+                                                </p>
+												</div>
+												<div class="col-md-6 pr-0 extraPerson">
+                                                <p class="hotelReview text-right w-100">
+												<i class="fa fa-plus float-left mt-2"></i>
+                                                    <span class="review"
+                                                        [hidden]="roomType.roomTypeChargesView != undefined"></span>
+                                                    <span class="review"
+                                                        *ngIf="roomType.roomTypeChargesView != undefined"><i
+                                                            class="fa fa-rupee"></i>
+                                                        {{roomType.roomTypeChargesView.extraAdultCharge}} <br /> Extra Person</span>
+                                                </p>
+												</div>
+                                                <br />
+                                                <div class="input-group detailscounterGroup mt-3" *ngIf="roomType.totalAvailableRooms != 0">
+                                                    <input type='button' value='-' class='qtyminus' field='quantity'
+                                                        [disabled]="roomTypeList[i].rooms == 0"
+                                                        (click)="changeBookRoom(0,i);onCheckAvailability(false,roomType.id,'minus',true)" />
+                                                    <input type='text' name='quantity'
+                                                        [value]='roomTypeList[i].rooms' class='qty' readonly />
+                                                    <input type='button' value='+' class='qtyplus' field='quantity'
+                                                        (click)="changeBookRoom(1,i);onCheckAvailability(false,roomType.id,'pluse',true)" />
+                                                </div>
+                                                
+                                            </div> -->
+											<div class="align-items-start row">
+											  <div class="col-md-12 pr-0">
+                                                <h5 class="hotelReview text-right w-100 mb-0 mt-0">
+                                                    <span class="review color-black"
+                                                        *ngIf="roomType.roomTypeChargesView != undefined"><i
+                                                            class="fa fa-rupee"></i>
+                                                        {{roomType.roomTypeChargesView.amount}} <!-- <sup>(Per Night)</sup> --></span>
+                                                    </h5>
+                                                    <span class="hotelReview text-right w-100 mt-0">Per Night</span>
+												<p class="hotelReview text-right w-100 mt-0">
+												
+                                                   
+                                                    <span class="review"
+                                                        *ngIf="roomType.roomTypeChargesView != undefined && roomType.roomTypeChargesView.extraAdultCharge != undefined">
+                                                         <small><i class="fa fa-rupee"></i>{{roomType.roomTypeChargesView.extraAdultCharge}} extra per person </small></span>
+                                                </p>
+												</div>
+												
+                                                <br />
+                                                <div class="input-group detailscounterGroup mt-3" *ngIf="roomType.totalAvailableRooms != 0">
+                                                    <input type='button' value='-' class='qtyminus' field='quantity'
+                                                        [disabled]="roomTypeList[i].rooms == 0"
+                                                        (click)="changeBookRoom(0,i);onCheckAvailability(false,roomType.id,'minus',true)" />
+                                                    <input type='text' name='quantity'
+                                                        [value]='roomTypeList[i].rooms' class='qty' readonly />
+                                                    <input type='button' value='+' class='qtyplus' field='quantity'
+                                                        (click)="changeBookRoom(1,i);onCheckAvailability(false,roomType.id,'pluse',true)" />
+                                                </div>
+                                                
+                                            </div>
+                                            <!-- <div class="row bookingBtnblock">
+                                                <a href="" class="bookingBtn">Book Now</a>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection selectroomcategory height-200"
+                            [hidden]="isRoomTypeFound" >
+                            <!--*blockUI="'checkAvailabilityBtn'"-->
+                        </div>
+                        <div class="col-lg-12 col-xl-12 d-flex1 mobile-hoteldetails" [hidden]="!isRoomTypeFound"
+                            *ngFor="let roomType of roomTypeList;let i = index">
+                            <div class="row pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated ">
+                                <div class="col-12">
+                                    <!-- <ng-image-slider #nav [images]="imageObject"
+                                        [imageSize]="{width: '100%', height: auto}" [infinite]="sliderInfinite"
+                                        [imagePopup]="sliderImagePopup" [showArrow]="sliderArrowShow"
+                                        [autoSlide]="sliderAutoSlide ? 1 : 0" [slideImage]="sliderSlideImage"
+                                        [animationSpeed]="sliderAnimationSpeed" [manageImageRatio]="false"
+                                        (imageClick)="imageOnClick($event)" (arrowClick)="arrowOnClick($event)"
+                                        (lightboxArrowClick)="lightboxArrowClick($event)"></ng-image-slider> -->
+                                        <img *ngIf="!roomType.roomTypeGalleryViews" src="assets/images/defaultImage.jpg"
+                                        class="w-100" />
+                                        <img *ngIf="roomType.roomTypeGalleryViews" [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="roomImgUrl+roomType.roomTypeGalleryViews[0].galleryFileView.fileId+'&requireCompressImage=false'" class="w-100" alt="{{roomType.roomTypeGalleryViews[0].galleryFileView.name}}"/>
+                                </div>
+                                <div class="col-12 desc p-4">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 hotelDescBlock">
+                                            <div class="text align-items-start">
+                                                <h3><span>{{roomType.name}}</span><br /></h3>
+                                            </div>
+                                            <div class="d-block Select Room">
+                                                <p>{{roomType.description}}</p>
+                                                <p class="extraTax" [hidden]="!roomType.roomTypeGalleryViews"><a
+                                                        (click)="openModal(roomType)" class="gallerybtn"><i
+                                                            class="fa fa-file-image-o gallery-icon"></i>
+                                                        Gallery</a></p>
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-12">
+                                            <div class="text align-items-start row">
+                                                <p class="mobileReview mt-10">
+                                                    <span class="review"
+                                                        [hidden]="roomType.roomTypeChargesView != undefined"></span>
+                                                    <span class="review"
+                                                        *ngIf="roomType.roomTypeChargesView != undefined"><i
+                                                            class="fa fa-rupee"></i>
+                                                        {{roomType.roomTypeChargesView.amount}} Per Night</span>
+                                                </p>
+                                                <br />
+                                                <div class="input-group detailscounterGroup">
+                                                    <input type='button' value='-' class='qtyminus' field='quantity'
+                                                        [disabled]="roomTypeList[i].rooms == 0"
+                                                        (click)="changeBookRoom(0,i)" />
+                                                    <input type='text' name='quantity'
+                                                        [value]='roomTypeList[i].rooms' class='qty' readonly />
+                                                    <input type='button' value='+' class='qtyplus' field='quantity'
+                                                        (click)="changeBookRoom(1,i)" />
+                                                </div>
+                                                <!-- <br />
+                                                <p class="mobileReview mt-10"><span class="review">7 Room
+                                                        Avaliable</span></p> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12 mt-5 singlePageTitle">
+                            <h4 class="formSubTitle" id="target">Reviews</h4>
+                        </div>
+                    </div>
+
+                    <div class="row row-cards row-deck">
+                        <div class="col-lg-4 col-xl-4 d-flex onlineBokingListSection selectroomcategory reviewsBlock">
+                            <div class="card border width-100 reviewScore">
+                                <h4>Review score</h4>
+                                <p class="rvscore">{{hotel.average}}<span>/5</span></p>
+                                <p class="rvresult" *ngIf="hotel.average >= 1 && hotel.average < 2">Terrible</p>
+                                <p class="rvresult" *ngIf="hotel.average >= 2 && hotel.average < 3">Poor</p>
+                                <p class="rvresult" *ngIf="hotel.average >= 3 && hotel.average < 4">Average</p>
+                                <p class="rvresult" *ngIf="hotel.average >= 4 && hotel.average < 5">Very Good</p>
+                                <p class="rvresult" *ngIf="hotel.average == 5 ">Excellent</p>
+                                <p class="countreviews">Based on <a href="">{{hotel.totalRattings}} reviews</a></p>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xl-4  d-flex onlineBokingListSection selectroomcategory reviewsBlock">
+                            <div class="card border width-100">
+                                <h4>Traveler rating</h4>
+                                <div class="excellentRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="excellentColor " [ngClass]="{
+                                                'bar-0':hotel.hotelRattingCountView.fiveAverageCount < 1 ,
+                                                'bar-2':hotel.hotelRattingCountView.fiveAverageCount >=1 && hotel.hotelRattingCountView.fiveAverageCount <2,
+                                                'bar-4':hotel.hotelRattingCountView.fiveAverageCount >=2 && hotel.hotelRattingCountView.fiveAverageCount <3,
+                                                'bar-6':hotel.hotelRattingCountView.fiveAverageCount >=3 && hotel.hotelRattingCountView.fiveAverageCount <4,
+                                                'bar-8':hotel.hotelRattingCountView.fiveAverageCount >=4 && hotel.hotelRattingCountView.fiveAverageCount <5,
+                                                'bar-10':hotel.hotelRattingCountView.fiveAverageCount == 5 }">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p>Excellent <span
+                                            class="float-right">{{hotel.hotelRattingCountView.fiveAverageCount}}</span>
+                                    </p>
+                                </div>
+                                <div class="vgRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="vgColor" [ngClass]="{
+                                                'bar-0':hotel.hotelRattingCountView.fourAverageCount < 1 ,
+                                                'bar-2':hotel.hotelRattingCountView.fourAverageCount >=1 && hotel.hotelRattingCountView.fourAverageCount <2,
+                                                'bar-4':hotel.hotelRattingCountView.fourAverageCount >=2 && hotel.hotelRattingCountView.fourAverageCount <3,
+                                                'bar-6':hotel.hotelRattingCountView.fourAverageCount >=3 && hotel.hotelRattingCountView.fourAverageCount <4,
+                                                'bar-8':hotel.hotelRattingCountView.fourAverageCount >=4 && hotel.hotelRattingCountView.fourAverageCount <5,
+                                                'bar-10':hotel.hotelRattingCountView.fourAverageCount == 5 }"></div>
+                                        </div>
+                                    </div>
+                                    <p>Very Good <span
+                                            class="float-right">{{hotel.hotelRattingCountView.fourAverageCount}}</span>
+                                    </p>
+                                </div>
+                                <div class="avgRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="avgColor" [ngClass]="{
+                                                'bar-0':hotel.hotelRattingCountView.threeAverageCount < 1 ,
+                                                'bar-2':hotel.hotelRattingCountView.threeAverageCount >=1 && hotel.hotelRattingCountView.threeAverageCount <2,
+                                                'bar-4':hotel.hotelRattingCountView.threeAverageCount >=2 && hotel.hotelRattingCountView.threeAverageCount <3,
+                                                'bar-6':hotel.hotelRattingCountView.threeAverageCount >=3 && hotel.hotelRattingCountView.threeAverageCount <4,
+                                                'bar-8':hotel.hotelRattingCountView.threeAverageCount >=4 && hotel.hotelRattingCountView.threeAverageCount <5,
+                                                'bar-10':hotel.hotelRattingCountView.threeAverageCount == 5 }"></div>
+                                        </div>
+                                    </div>
+                                    <p>Average <span
+                                            class="float-right">{{hotel.hotelRattingCountView.threeAverageCount}}</span>
+                                    </p>
+                                </div>
+                                <div class="poorRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class=" poorColor" [ngClass]="{
+                                                'bar-0':hotel.hotelRattingCountView.twoAverageCount < 1 ,
+                                                'bar-2':hotel.hotelRattingCountView.twoAverageCount >=1 && hotel.hotelRattingCountView.twoAverageCount <2,
+                                                'bar-4':hotel.hotelRattingCountView.twoAverageCount >=2 && hotel.hotelRattingCountView.twoAverageCount <3,
+                                                'bar-6':hotel.hotelRattingCountView.twoAverageCount >=3 && hotel.hotelRattingCountView.twoAverageCount <4,
+                                                'bar-8':hotel.hotelRattingCountView.twoAverageCount >=4 && hotel.hotelRattingCountView.twoAverageCount <5,
+                                                'bar-10':hotel.hotelRattingCountView.twoAverageCount == 5 }"></div>
+                                        </div>
+                                    </div>
+                                    <p>Poor <span
+                                            class="float-right">{{hotel.hotelRattingCountView.twoAverageCount}}</span>
+                                    </p>
+                                </div>
+                                <div class="terribleRatingBlock">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="terribleColor" [ngClass]="{
+                                                'bar-0':hotel.hotelRattingCountView.oneAverageCount < 1 ,
+                                                'bar-2':hotel.hotelRattingCountView.oneAverageCount >=1 && hotel.hotelRattingCountView.oneAverageCount <2,
+                                                'bar-4':hotel.hotelRattingCountView.oneAverageCount >=2 && hotel.hotelRattingCountView.oneAverageCount <3,
+                                                'bar-6':hotel.hotelRattingCountView.oneAverageCount >=3 && hotel.hotelRattingCountView.oneAverageCount <4,
+                                                'bar-8':hotel.hotelRattingCountView.oneAverageCount >=4 && hotel.hotelRattingCountView.oneAverageCount <5,
+                                                'bar-10':hotel.hotelRattingCountView.oneAverageCount == 5 }"></div>
+                                        </div>
+                                    </div>
+                                    <p>Terrible <span
+                                            class="float-right">{{hotel.hotelRattingCountView.oneAverageCount}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xl-4  d-flex onlineBokingListSection selectroomcategory reviewsBlock">
+                            <div class="card border width-100">
+                                <h4>Summary</h4>
+                                <div class="summaryRatingBlock" *ngFor="let summery of hotel.hotelRattingAverageViews">
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-3 summeryColor"></div>
+                                        </div>
+                                    </div>
+                                    <p>{{summery.typeName}} <span class="float-right"> {{summery.average | slice:0:4}} /
+                                            5</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row " id="user-review"
+                        [ngClass]="{'usercomentListRow':(i+1) % 10 != 0 && reviewList[reviewList.length-1] != review}"
+                        *ngFor="let review of reviewList | paginate: { itemsPerPage: 10, currentPage: p ,totalItems:reviewRecords};let i = index">
+                        <div class="col-lg-12 col-xl-12 mt-5 usercomentList">
+                            <div class="d-flex1">
+                                <!-- <img src="assets/images/defualt.jpg" class="circlePic" /> -->
+                                <span class="circlePic">{{review.userView.shortFormOfName}}</span>
+                                <h5>{{review.userView.name}}</h5>
+                                <span>{{review.createDate}}</span>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12 col-xl-12 mt-5 usercomentdetails">
+                            <h6><span>{{review.average}}</span> <sup>"{{review.title}}"</sup></h6>
+                            <p>{{review.content}}</p>
+                        </div>
+                    </div>
+                    <div class="text-center pt-10" *ngIf="reviewList.length != 0">
+                        <pagination-controls (pageChange)="pageChanged($event);p = $event"></pagination-controls>
+                    </div>
+                    <div class="row" *ngIf="currentCustomerUser != undefined" id="reviewFormId">
+                        <div class="col-lg-12 col-xl-12 mt-5 usercomentList">
+                            <form [formGroup]="saveReviewForm" (ngSubmit)="onSubmitReview('reviewForm')"
+                                #reviewform="ngForm" id="reviewForm" class="bg-gray contact-form border">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Title*"
+                                                [(ngModel)]="reviewModel.title" formControlName="title">
+                                            <small *ngIf="review.title.errors" class="mandatary">
+                                                <div *ngIf="review.title.errors.required && (isReviewSummited)">
+                                                    Mandatory : This cannot be left blank.</div>
+                                            </small>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-7">
+                                        <div class="form-group">
+                                            <textarea class="form-control commentTB" placeholder="Content*"
+                                                [(ngModel)]="reviewModel.content" formControlName="content"></textarea>
+                                            <small *ngIf="review.content.errors" class="mandatary">
+                                                <div *ngIf="review.content.errors.required && (isReviewSummited)">
+                                                    Mandatory : This cannot be left blank.</div>
+                                            </small>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-5">
+                                        <div class="bg-white p-4 border behaviorGroup">
+                                            <div id="smileys"
+                                                *ngFor="let rattingParameter of hotel.reviewRattingTypeViews; let i = index">
+                                                <p class="mb-1">{{rattingParameter.name}}</p>
+                                                <input type="radio" name="hotelRattingViews{{i}}" [value]="1"
+                                                    [(ngModel)]="hotelRattingViews[rattingParameter.id]" [ngModelOptions]="{standalone: true}"  class="happy">
+                                                <input type="radio" name="hotelRattingViews{{i}}" [value]="2"
+                                                    [(ngModel)]="hotelRattingViews[rattingParameter.id]" [ngModelOptions]="{standalone: true}"  class="happy">
+                                                <input type="radio" name="hotelRattingViews{{i}}" [value]="3"
+                                                    [(ngModel)]="hotelRattingViews[rattingParameter.id]" [ngModelOptions]="{standalone: true}"  class="happy">
+                                                <input type="radio" name="hotelRattingViews{{i}}" [value]="4"
+                                                    [(ngModel)]="hotelRattingViews[rattingParameter.id]" [ngModelOptions]="{standalone: true}"  class="happy">
+                                                <input type="radio" name="hotelRattingViews{{i}}" [value]="5"
+                                                    [(ngModel)]="hotelRattingViews[rattingParameter.id]" [ngModelOptions]="{standalone: true}"  class="happy">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-12 mt-2">
+                                        <div *blockUI="'saveReviewBtn'" class="display-center">
+                                            <button type="submit" class="btn btn-primary py-3 px-5 display-center">Leave
+                                                Review</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 yourbookinSection">
+                    <div class="row yourbookinBlock">
+                        <div class="col-12 col-md-12 m-pl-0">
+                            <h5>Room Booking Details</h5>
+                        </div>
+                    </div>
+                    <div *ngFor="let roomType of roomTypeList" [hidden]="roomType.rooms == 0">
+                        <div class="row yourbookinBlock">
+                            <div class="col-12">
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-5 m-pl-0">
+                                        <label class="mb-0">Room</label>
+                                    </div>
+                                    <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0">{{roomType.name}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-5 m-pl-0">
+                                        <label class="mb-0">Date</label>
+                                    </div>
+                                    <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0">{{ mainInput.start | date }} -
+                                            {{ mainInput.end | date }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row yourbookinBlock">
+                            <div class="col-12">
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7 m-pl-0">
+                                        <label class="mb-0">Room Tariff</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left"
+                                            *ngIf="roomType.roomTypeChargesView != undefined">
+                                            {{roomType.roomTypeChargesView.amount}}</p>
+                                        <p class="mb-0 text-right m-text-left">No of Rooms - {{roomType.rooms}}
+                                        </p>
+                                          <p class="mb-0 text-right m-text-left">No of Nights - {{roomType.nights}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">Senior Citizen Disc (%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">0</p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">Special Disc (%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">0</p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">Digital Payment Disc (%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">0</p>
+                                    </div>
+                                </div> -->
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7 m-pl-0">
+                                        <label class="mb-0 pa-label">Amount</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right pa-label m-text-left"
+                                            *ngIf="roomType.roomTypeChargesView != undefined"><i
+                                                class="fa fa-rupee"></i>&nbsp;{{roomType.roomCharges}}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div [hidden]="getRoomTypeCharges() != 0">
+                        <div class="row yourbookinBlock">
+                            <div class="col-12">
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-12">
+                                        <label class="mb-0">Please Select Room First</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row yourbookinBlock orng-border">
+                        <div class="col-12">
+                            <div class="row m-payment-room">
+                                <div class="col-12 col-md-7 m-pl-0">
+                                    <label class="mb-0 pa-label">Pay Amount</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right pa-label m-text-left"><i
+                                            class="fa fa-rupee"></i>&nbsp;{{getRoomTypeCharges()}}</p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room ">
+                                <div class="col-12 col-md-12">
+                                    <div *blockUI="'bookRoomBtn'" class="loginBtn mt-0">
+                                        <button type="submit" (click)="goToPayment()" value=""
+                                            class="btn btn-primary py-3 px-5 loginBtn mt-3">Book
+                                            Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<div id="myModal" class="modal">
+    <span class="close cursor" (click)="closeModal()">&times;</span>
+    <div class="modal-content">
+
+        <div id="mySlides{{i+1}}" [ngClass]="{'display-block':i==0}" class="mySlides"
+            *ngFor="let image of imageList; let i = index">
+            <div class="numbertext">{{i+1}} / {{imageList.length}}</div>
+            <a class="lightbox">
+                <img [defaultImage]="'assets/images/loading.gif'" [lazyLoad]="roomImgUrl+image.galleryFileView.fileId" class="w-100" alt="roomTypeImageView"/>
+            </a>
+        </div>
+
+        <!-- <div class="mySlides">
+        <div class="numbertext">2 / 4</div>
+        <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" style="width:100%">
+      </div>
+  
+      <div class="mySlides">
+        <div class="numbertext">3 / 4</div>
+        <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" style="width:100%">
+      </div>
+      
+      <div class="mySlides">
+        <div class="numbertext">4 / 4</div>
+        <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" style="width:100%">
+      </div> -->
+
+        <a class="prev" (click)="plusSlides(-1)">&#10094;</a>
+        <a class="next" (click)="plusSlides(1)">&#10095;</a>
+
+        <div class="caption-container">
+            <p id="caption"></p>
+        </div>
+
+
+        <!-- <div class="column">
+        <img class="demo cursor" src="https://www.w3schools.com/howto/img_nature_wide.jpg" style="width:100%" onclick="currentSlide(1)" alt="Nature and sunrise">
+      </div>
+      <div class="column">
+        <img class="demo cursor" src="https://www.w3schools.com/howto/img_nature_wide.jpg" style="width:100%" onclick="currentSlide(2)" alt="Snow">
+      </div>
+      <div class="column">
+        <img class="demo cursor" src="https://www.w3schools.com/howto/img_nature_wide.jpg" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
+      </div>
+      <div class="column">
+        <img class="demo cursor" src="https://www.w3schools.com/howto/img_nature_wide.jpg" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
+      </div> -->
+    </div>
+</div>
+
+<div id="guestInfo" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Guests and rooms</h4>
+          <button type="button" id="closeModel" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body scrollroom modalPadding">
+          <div class="addmoreBlock" *ngFor="let roomsAndGuests of roomsAndGuestsList;let i = index">
+          <div class="row">
+          <div class="col-12 rmCounterBlock" [ngClass]="{'mt-2': roomsAndGuests.id != 1}" >
+            <span class="roomLbl">Room {{i+1}}</span> 
+            <div class="float-right d-flex counterPM" *ngIf="i != 0">
+              <span class="removeRoom" (click)="removeRoom(roomsAndGuests)">Remove room</span> 
+            </div>
+         </div>
+         <div class="col-12 rmCounterBlock">
+          <a class="">Adults <div class="float-right d-flex counterPM">
+            <input type='button' value='-' class='qtyminus' field='quantity' [disabled]="roomsAndGuests.adultsValue == 1" [ngClass]="{'cursor-no-drop':roomsAndGuests.adultsValue == 1}"
+              (click)="changeAdults(roomsAndGuests,0)" />
+            <input type='text' name='quantity' [value]='roomsAndGuests.adultsValue' class='qty' readonly />
+            <input type='button' value='+' class='qtyplus' field='quantity'
+              [disabled]="roomsAndGuests.adultsValue == (adultMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest" (click)="changeAdults(roomsAndGuests,1)" [ngClass]="{'cursor-no-drop':roomsAndGuests.adultsValue == (adultMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest}" />
+          </div></a>
+        </div>
+         <div class="col-12 rmCounterBlock">
+          <a class="">Children <div class="float-right d-flex counterPM">
+            <input type='button' value='-' class='qtyminus' field='quantity' [ngClass]="{'cursor-no-drop':roomsAndGuests.childrenValue == 0}"
+              [disabled]="roomsAndGuests.childrenValue == 0" (click)="changeChildren(roomsAndGuests,0)" />
+            <input type='text' name='quantity' [value]='roomsAndGuests.childrenValue' class='qty' readonly />
+            <input type='button' value='+' class='qtyplus' field='quantity' [ngClass]="{'cursor-no-drop':roomsAndGuests.childrenValue == (childrenMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest}"
+              [disabled]="roomsAndGuests.childrenValue == (childrenMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest" (click)="changeChildren(roomsAndGuests,1)" />
+          </div></a>
+        </div>
+         <div class="col-4 rmCounterBlock" *ngFor="let childrenAge of roomsAndGuests.childrenAgeList;let i = index">
+          <label> Child {{i+1}} age</label>
+          <ng-select [searchable]="true" class="form-control dropGender ageDrp" [items]="genderList"
+            [(ngModel)]="childrenAge.childrenAge" bindLabel="value" >
+          </ng-select>
+        </div>
+        <div class="col-12"><div class="border-bottom"></div>
+      </div>
+        </div>
+       
+      </div>
+    <button type="button" class="btn btn-default addMore" *ngIf="roomsAndGuestsList.length < 10" (click)="addRoom();scrollTo('addRoomGuestBtn')" id="addRoomGuestBtn" #addRoomGuestBtn>+ Add More</button>
+        </div>
+        <div class="modal-footer">
+          <div class="col-12">
+          <button  class="btn btn-primary py-3 px-5 loginBtn " type="submit" (click)="onAddRoomAndGuest()" value="">Update</button>
+        </div>
+      </div>
+      </div>
+  
+    </div>
+  </div>

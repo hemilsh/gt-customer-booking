@@ -1,0 +1,365 @@
+<section class="ftco-section ftco-menu mt-5">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+            <form (ngSubmit)="redirectToPayment('applicantDetailsFormId')" id="applicantDetailsFormId" #vform="ngForm">
+
+                <div class="row">
+                    <div class="col-12 col-md-8 OrderingInMobile m-pl-0 m-pr-0">
+                        <div class="row" id="carBookingFormId" [formGroup]="bookingForm">
+                            <div class="col-lg-12 col-xl-12">
+                                <h4 class="formSubTitle bb-0 float-left mt-0 pt-2">Traveller Details</h4>
+                            </div>
+                            <div class="col-12 col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="name">Name* </label>
+                                    <input class="form-control" type="text" [(ngModel)]="carBookingModel.name"
+                                        formControlName="name" placeholder="Name" />
+                                    <small class="mandatory" *ngIf="f.name.errors">
+                                        <div *ngIf="f.name.errors.required && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                        <div *ngIf="f.name.errors.maxlength && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 30 allowed characters..
+                                        </div>
+                                        <div *ngIf="f.name.errors.pattern && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Alphabets, space & dots are allowed.
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="email">Email* </label>
+                                    <input type="text" class="form-control" placeholder="Email" id="email"
+                                        [(ngModel)]="carBookingModel.email" formControlName="email"
+                                        (ngModelChange)="$event != undefined && carBookingModel.email = $event.toLowerCase()">
+                                    <small *ngIf="f.email.errors" class="mandatary">
+                                        <div *ngIf="f.email.errors.required && (vform.submitted || f.email.touched)">
+                                            <span>
+                                                <img src="assets/images/invalid.svg" alt="invalid">
+                                            </span>
+                                            Mandatory : This cannot be left blank.
+                                        </div>
+                                        <div *ngIf="f.email.errors.pattern && (vform.submitted || f.email.touched)">
+                                            <span>
+                                                <img src="assets/images/invalid.svg" alt="invalid">
+                                            </span>
+                                            Email must be a valid email address
+                                        </div>
+                                        <div *ngIf="f.email.errors.maxlength && (vform.submitted || f.email.touched)">
+                                            <span>
+                                                <img src="assets/images/invalid.svg" alt="invalid">
+                                            </span>
+                                            You have reached maximum limit of 100 allowed characters..
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="mobile"> Mobile* </label>
+                                    <input class="form-control" type="text" [(ngModel)]="carBookingModel.mobile"
+                                        formControlName="mobile" placeholder="Mobile" />
+
+                                    <small class="mandatory" *ngIf="f.mobile.errors">
+                                        <div *ngIf="f.mobile.errors.required && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                        <div *ngIf="f.mobile.errors.maxlength && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 15 allowed characters..
+                                        </div>
+                                        <div *ngIf="f.mobile.errors.pattern && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Invalid Mobile no.
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group birthDate">
+                                    <label class="form-control-label" for="startDate"> Start Date* </label>
+                                    <input class="form-control" placeholder="dd-mm-yyyy" readonly
+                                        formControlName="startDate" [(ngModel)]="carBookingModel.startDate"
+                                        ngbDatepicker [minDate]="minDate" [maxDate]="maxDate" #d2="ngbDatepicker"
+                                        (click)="d2.toggle()" (dateSelect)="calculateAmount(carBookingModel)">
+
+                                    <small class="mandatory" *ngIf="f.startDate.errors">
+                                        <div
+                                            *ngIf="f.startDate.errors.required && (vform.submitted || f.startDate.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group birthDate">
+                                    <label class="form-control-label" for="startDate"> End Date* </label>
+                                    <input class="form-control" placeholder="dd-mm-yyyy" readonly
+                                        formControlName="endDate" [minDate]="minDate" [maxDate]="maxDate"
+                                        [(ngModel)]="carBookingModel.endDate" ngbDatepicker
+                                        [disabled]="carBookingModel.carView.rateType.key == 2" #d1="ngbDatepicker"
+                                        (click)="d1.toggle()" (dateSelect)="calculateAmount(carBookingModel)">
+
+                                    <small class="mandatory" *ngIf="f.endDate.errors">
+                                        <div
+                                            *ngIf="f.endDate.errors.required && (vform.submitted || f.endDate.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" *ngIf="carBookingModel.carView.rateType.key == 1">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="startDate"> Kilometers* </label>
+                                    <input class="form-control" type="text" [(ngModel)]="carBookingModel.kilometers"
+                                        formControlName="kilometers" placeholder="Kilometers"
+                                        (blur)="calculateAmount(carBookingModel)" />
+                                    <small class="mandatory" *ngIf="f.kilometers.errors">
+                                        <div
+                                            *ngIf="f.kilometers.errors.required && (vform.submitted || f.kilometers.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" *ngIf="carBookingModel.carView.rateType.key == 2">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="startDate"> Hours* </label>
+                                    <input class="form-control" type="text" [(ngModel)]="carBookingModel.hours"
+                                        formControlName="hours" placeholder="Hours"
+                                        (blur)="calculateAmount(carBookingModel)" />
+                                    <small class="mandatory" *ngIf="f.hours.errors">
+                                        <div *ngIf="f.hours.errors.required && (vform.submitted || f.hours.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="startDate"> Cars* </label>
+                                    <div class="col-12 rmCounterBlock pl-0">
+                                        <a class="">
+                                            <div class="float-left d-flex counterPM">
+                                                <input type='button' value='-' class='qtyminus form-control'
+                                                    field='cars' [disabled]="carBookingModel.cars == 1"
+                                                    [ngClass]="{'cursor-no-drop':carBookingModel.cars == 1}"
+                                                    (click)="changeCars(0);calculateAmount(carBookingModel)" />
+                                                <input type='text' name='cars' [value]='carBookingModel.cars'
+                                                    class='qty form-control widthqty' readonly
+                                                    [(ngModel)]="carBookingModel.cars" formControlName="cars" />
+                                                <input type='button' value='+' class='qtyplus form-control' field='cars'
+                                                    [disabled]="carBookingModel.cars == 50"
+                                                    [ngClass]="{'cursor-no-drop':carBookingModel.cars == 50}"
+                                                    (click)="changeCars(1);calculateAmount(carBookingModel)" />
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <small class="mandatory" *ngIf="f.cars.errors">
+                                        <div *ngIf="f.cars.errors.required && (vform.submitted || f.cars.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="bookingOfficer" [formGroup]="bookingForm">
+                            <div class="col-12 col-md-8">
+                                <div class="row">
+                                    <div class="col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="name">Payment Mode* </label>
+                                            <div class="clearfix"></div>
+                                            <div id="" *ngFor="let paymentModeTBI of paymentModes" class="paymentRadio">
+                                                <input type="radio" name="paymentModeTBI.value" [value]="paymentModeTBI"
+                                                    [(ngModel)]="carBookingModel.paymentModeTBI"
+                                                    [ngModelOptions]="{standalone: true}" class="happy">
+                                                <span class="pl-2">{{paymentModeTBI.value}}</span>
+                                            </div>
+                                            <!-- <ng-select [searchable]="true" formControlName="paymentMode" [items]="paymentModes"
+                                                [(ngModel)]="applicantModel.paymentMode" bindLabel="value"
+                                                placeholder="Select Payment Mode">
+                                            </ng-select> -->
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="name">Remarks* </label>
+                                            <textarea class="form-control" type="text"
+                                                [(ngModel)]="carBookingModel.remarks" formControlName="remarks"
+                                                placeholder="Remarks"></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-5 yourbookinSection">
+                        <!--Accordion wrapper-->
+                        <h2>Your Booking</h2>
+
+                        <div class="row yourbookinBlock">
+                            <div class="col-12 col-md-12 align-self-center yourbooking-h-Detail">
+                                <h3>{{carBookingModel.carView.name}}</h3>
+                                <p>
+                                    <span *ngFor="let carLocation of carBookingModel.carView.carLocationViews">
+                                        {{carLocation.name}}
+                                        <span
+                                            *ngIf="carBookingModel.carView.carLocationViews[carBookingModel.carView.carLocationViews.length -1] != carLocation">,</span>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row yourbookinBlock">
+                                <div class="col-12">
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0">Tariff</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">{{carBookingModel.carView.rate}}
+                                                ({{carBookingModel.carView.rateType.value}})</p>
+                                            <p class="mb-0 text-right m-text-left">( No of Cars -
+                                                {{carBookingModel.cars}}
+                                                )
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room"
+                                        *ngIf="carBookingModel.startDate && carBookingModel.endDate">
+                                        <div class="col-12 col-md-5 m-pl-0 m-pr-0">
+                                            <label class="mb-0">Date</label>
+                                        </div>
+                                        <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right">{{carBookingModel.startDate }} -
+                                                {{carBookingModel.endDate}}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row yourbookinBlock">
+                                <div class="col-12">
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0 pa-label">Payable Amount</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right pa-label m-text-left"><i
+                                                    class="fa fa-rupee"></i>&nbsp;
+                                                <span
+                                                    *ngIf="carBookingModel.netAmount">{{carBookingModel.netAmount}}</span>
+                                                <span
+                                                    *ngIf="carBookingModel.carView.rate && !carBookingModel.netAmount">{{carBookingModel.carView.rate}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room" *ngIf="carBookingModel.sgstAmount">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0 pa-label">SGST <span
+                                                    *ngIf="carBookingModel.sgstTax">({{carBookingModel.sgstTax}}%)</span></label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right pa-label m-text-left"><i
+                                                    class="fa fa-rupee"></i>&nbsp;{{carBookingModel.sgstAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room" *ngIf="carBookingModel.cgstAmount">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0 pa-label">CGST <span
+                                                    *ngIf="carBookingModel.cgstTax">({{carBookingModel.cgstTax}}%)</span></label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right pa-label m-text-left"><i
+                                                    class="fa fa-rupee"></i>&nbsp;{{carBookingModel.cgstAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room" *ngIf="carBookingModel.igstAmount">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0 pa-label">IGST <span
+                                                    *ngIf="carBookingModel.igstTax">({{carBookingModel.igstTax}}%)</span></label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right pa-label m-text-left"><i
+                                                    class="fa fa-rupee"></i>&nbsp;{{carBookingModel.igstAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row yourbookinBlock">
+                                <div class="col-12">
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0 pa-label">Total Amount</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right pa-label m-text-left"><i
+                                                    class="fa fa-rupee"></i>&nbsp;<span
+                                                    *ngIf="carBookingModel.totalAmount">{{carBookingModel.totalAmount}}</span>
+                                                <span
+                                                    *ngIf="carBookingModel.carView.rate && !carBookingModel.totalAmount">{{carBookingModel.carView.rate}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="form-group checkbox-group mb-0" [formGroup]="bookingForm">
+                                    <label><span class="paylable">I have read and accept the <a [href]="termsUrl"
+                                                target="_blank">Terms and
+                                                Conditions</a></span>
+                                        <input type="checkbox" class="form-control" formControlName="termsAndConditions"
+                                            [(ngModel)]="carBookingModel.termsAndConditions"
+                                            [required]="!carBookingModel.termsAndConditions">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <small class="mandatory" *ngIf="f.termsAndConditions.errors">
+                                        <div *ngIf="f.termsAndConditions.errors.required && (vform.submitted || f.termsAndConditions.touched)"
+                                            class="font-size-12">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-primary py-2 loginBtn height-52 paymentbtn">Payment</button>
+            </form>
+        </div>
+    </div>
+</section>

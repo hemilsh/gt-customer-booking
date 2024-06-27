@@ -1,0 +1,338 @@
+<section class="ftco-section ftco-menu mt-5">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12">
+                    <div
+                        [ngClass]="{'confimSuccessfull':receiptView.status != undefined && receiptView.status.key != 4,'bookingCancelled': receiptView.status != undefined && receiptView.status.key == 4}">
+                        <span *ngIf="receiptView.status != undefined && receiptView.status.key == 4">Dear
+                            {{receiptView.userView.name}}, Your booking of
+                            {{receiptView.tourView.name}} is cancelled</span>
+                        <span *ngIf="receiptView.status != undefined && receiptView.status.key != 4">Dear
+                            {{receiptView.userView.name}}, Your booking of
+                            {{receiptView.tourView.name}} is confirmed</span>
+                        <p class="text-gray"> Booking <span
+                                *ngIf="receiptView.status != undefined && receiptView.status.key == 4"
+                                class="ml-0 cancelBookingClass">Cancellation</span> Receipt is been sent on
+                            {{receiptView.userView.email}}<span
+                                *ngIf="receiptView.status != undefined && receiptView.status.key == 4"
+                                class="ml-0 cancelBookingClass">.</span> <span
+                                *ngIf="receiptView.status != undefined && receiptView.status.key != 4"
+                                class="ml-0 cancelBookingClass"> Check in
+                                starts on {{receiptView.tourView.tourPriceView.startDate | date:'dd MMM, yyyy'}} check out on
+                                {{receiptView.tourView.tourPriceView.endDate | date:'dd MMM, yyyy'}}</span></p>
+                    </div>
+                </div>
+
+                <div class="col-sm-8">
+                    <h2 class="bs-title bb-0">Booking Confirmation Receipt</h2>
+                </div>
+                <div class="col-sm-4 pr-0">
+                    <button type="submit" value="" class="btn btn-primary py-2 printreceiptbtn height-52 paymentbtn"
+                        *ngIf="receiptView.status != undefined && receiptView.status.key != 4"
+                        (click)="exportReceipt(receiptView)">Print Receipt</button>
+                    <button type="submit" value="" class="btn btn-primary py-2 printreceiptbtn height-52 paymentbtn"
+                        *ngIf="receiptView.status != undefined && receiptView.status.key == 4"
+                        (click)="exportCancelReceipt(receiptView)">Print Receipt</button>
+                </div>
+                <div class="col-12 col-md-8 receiptLeftSection">
+                    <div class="row">
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Booking No.</label>
+                                <p class="textBlock">{{receiptView.referenceNumber}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Booking Date</label>
+                                <p class="textBlock">{{receiptView.createDate | date:'dd MMM, yyyy hh:mm a'}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <h4 class="formSubTitle border-bottom bt-0 pb-3">Guest Details</h4>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <!-- <div class="col-lg-12 col-xl-12 ">
+                            <h4 class="formSubTitle border-bottom bt-0 pb-3">Room Type :-- {{typeWise.type.name}}</h4>
+                        </div> -->
+                        <div class="col-lg-12 col-xl-12 ">
+                            <table
+                                class="table card-table tab-table table-vcenter mt-table text-nowrap table-striped table-layout-fixed no-border">
+                                <thead>
+                                    <tr class="pinkbk">
+                                        <th class="width-60">Name</th>
+                                        <th class="width-15">Gender </th>
+                                        <th class="width-10">Age </th>
+                                        <th class="width-15">Senior Citizen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let guestInformation of receiptView.tourGuestInformationViews">
+                                        <td>
+                                            {{guestInformation.name}}
+                                        </td>
+                                        <td>
+                                            {{guestInformation.gender.value}}
+                                        </td>
+                                        <td>
+                                            {{guestInformation.age}}
+                                        </td>
+                                        <td>
+                                            <span *ngIf="guestInformation.seniorCitizen">Yes</span>
+                                            <span *ngIf="!guestInformation.seniorCitizen">No</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="bookingOfficer">
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Payment Mode</label>
+                                <p class="textBlock">{{receiptView.paymentModeTBI.value}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Remarks</label>
+                                <p class="textBlock">{{receiptView.remarks}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row mt-3">
+                        <div class="col-lg-12 col-xl-12 ">
+                            <table class="table  table-layout-fixed table-responsive no-border">
+                                <thead>
+                                    <tr class="pinkbk">
+                                        <th class="width-25">Name</th>
+                                        <th class="width-15">Gender </th>
+                                        <th class="width-15">Age </th>
+                                        <th class="width-20">Senior Citizen</th>
+                                        <th class="width-25">Room Type </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let guestInformation of receiptView.guestInformationViews">
+                                        <td>
+                                            {{guestInformation.name}}
+                                        </td>
+                                        <td>
+                                            {{guestInformation.gender.value}}
+                                        </td>
+                                        <td>
+                                            {{guestInformation.age}}
+                                        </td>
+                                        <td>
+                                            <span *ngIf="guestInformation.seniorCitizen">Yes</span>
+                                            <span *ngIf="!guestInformation.seniorCitizen">No</span>
+                                        </td>
+                                        <td>
+                                            {{guestInformation.roomBookingView.roomView.roomTypeView.name}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> -->
+
+                </div>
+                <div class="col-12 col-md-4">
+                    <!--Accordion wrapper-->
+                    <!-- <h2>Your Booking</h2> -->
+
+                    <div class="row yourbookinBlock">
+                        <div class="col-12 col-md-5">
+                            <img *ngIf="receiptView.tourView.tourGalleryViews"
+                                [defaultImage]="'assets/images/loading.gif'"
+                                [lazyLoad]="imgUrl+receiptView.tourView.tourGalleryViews[0].fileView.fileId"
+                                class="width-100" />
+                            <img *ngIf="!receiptView.tourView.tourGalleryViews" src="assets/images/bg_4.jpg"
+                                class="width-100" />
+                        </div>
+                        <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                            <h3>{{receiptView.tourView.name}}</h3>
+                            <p class="mb-0">{{receiptView.tourView.tourPriceView.startDate | date}} -
+                                {{receiptView.tourView.tourPriceView.endDate | date}}</p>
+                        </div>
+                    </div>
+                    <div class="row yourbookinBlock">
+                        <div class="col-12">
+                            <!-- <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Email</label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0">loren.ipsum@domain.com</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Phone </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0">+91 90353 53535</p>
+                                </div>
+                            </div> -->
+                            <!-- <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Room </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0">{{roomBooking.roomView.name}}</p>
+                                </div>
+                            </div> -->
+                            <!-- <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Date </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0">{{receiptView.tourView.tourPriceView.startDate | date}} -
+                                        {{receiptView.tourView.tourPriceView.endDate | date}}</p>
+                                </div>
+                            </div> -->
+                            <div class="row m-payment-room">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Tour Tariff</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">
+                                        {{receiptView.netAmount}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room pl-3">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Adult Tariff</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">
+                                        {{receiptView.adultAmount}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row m-payment-room pl-3">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Child Tariff</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">
+                                        {{receiptView.childAmount}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Number of Persons </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left">{{receiptView.totalSeats}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Senior Citizen Disc
+                                        ({{receiptView.seniorCitizenDiscount}}%)</label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{receiptView.seniorCitizenDiscountAmount}}</p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="receiptView.cgstTax && receiptView.cgstAmount">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">CGST ({{receiptView.cgstTax}}%) </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{receiptView.cgstAmount}} </p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="receiptView.sgstTax && receiptView.sgstAmount">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">SGST ({{receiptView.sgstTax}}%) </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{receiptView.sgstAmount}} </p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="receiptView.igstTax && receiptView.igstAmount">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">IGST ({{receiptView.igstTax}}%) </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{receiptView.igstAmount}} </p>
+                                </div>
+                            </div>
+
+                            <!-- <div class="row">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0 pa-label">Net Amount</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right pa-label m-text-left"><i
+                                            class="fa fa-rupee"></i>&nbsp;{{roomBooking.roomTypeChargesView.amount}}</p>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="row yourbookinBlock">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0 pa-label">Total Amount</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right pa-label m-text-left"><i
+                                            class="fa fa-rupee"></i>&nbsp;{{receiptView.totalAmount}}</p>
+                                </div>
+                            </div>
+                            <div class="row"
+                                *ngIf="receiptView.cancellationPercentage && receiptView.cancellationAmount">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Cancellation Charges ({{receiptView.cancellationPercentage}}%)
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{receiptView.cancellationAmount}} </p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="receiptView.refundAmount">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Refund Amount </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{receiptView.refundAmount}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row yourbookinBlock m-payment-room " *ngIf="isTourCancellationPage">
+                        <div class="col-12 col-md-12">
+                            <div *blockUI="'bookRoomBtn'" class="loginBtn mt-0">
+                                <button type="submit" (click)="onTourcancellation()" value=""
+                                    class="btn btn-primary py-3 px-5 loginBtn mt-3">Cancel
+                                    Tour</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>

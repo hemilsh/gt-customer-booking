@@ -1,0 +1,683 @@
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar"
+    [ngClass]="{'1':!isHomePage}">
+    <div class="container">
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto1">
+                <!-- <li class="nav-item"><a href="" class="nav-link cursorPointer"><i class="fa fa-search"></i></a></li> -->
+                <li class="nav-item">
+                    <a class="nav-link cursorPointer pl-0" *ngIf="currentCustomerUser" (click)="openNav()">
+                        <i class="fa fa-align-left"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link cursorPointer" *ngIf="currentCustomerUser" (click)="showProfile()">
+                        <i class="fa fa-user"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link cursorPointer" *ngIf="!currentCustomerUser" (click)="openLogin()">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link cursorPointer" *ngIf="!currentCustomerUser"
+                        (click)="openSignup()">Registration</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link cursorPointer">Go to Website</a>
+                </li>
+
+
+            </ul>
+        </div>
+        <a class="navbar-brand" href="">
+            <img src="assets/images/newLogo.png" class="" />
+        </a>
+        <ul class="mobileMenu">
+            <!-- <li class="nav-item"><a href="" class="nav-link cursorPointer"><i class="fa fa-search"></i></a></li> -->
+            <li class="nav-item">
+                <a href="" class="nav-link cursorPointer">Go to Website</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link cursorPointer" *ngIf="!currentCustomerUser" (click)="openLogin()">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link cursorPointer" *ngIf="!currentCustomerUser" (click)="openSignup()">Registration</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link cursorPointer" *ngIf="currentCustomerUser" (click)="openLogin()">
+                    <i class="fa fa-user"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link cursorPointer" *ngIf="currentCustomerUser" (click)="openNav()">
+                    <i class="fa fa-align-left"></i>
+                </a>
+            </li>
+        </ul>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="oi oi-menu"></span> Menu
+    </button> -->
+
+
+    </div>
+</nav>
+<div id="login" class="overlaymenu">
+
+    <div class="overlay-content">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin('userAddEditId')" id="userAddEditId" #lform="ngForm"
+            class="bg-white contact-form loginForm max-width-500">
+            <a class="closebtn" (click)="closeLogin()">&times;</a>
+            <h2>Login</h2>
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Login through Email id/Mobile No*"
+                            id="loginId" [(ngModel)]="loginModel.loginId" formControlName="loginId">
+                        <small *ngIf="l.loginId.errors" class="mandatary">
+                            <div *ngIf="l.loginId.errors.required && (lform.submitted || l.loginId.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <input type="{{passwordType}}" class="form-control" placeholder="Password*" id="password"
+                            [(ngModel)]="loginModel.password" formControlName="password">
+                        <i id="eyeIcon" (click)="changePasswordType()" class="fa fa-eye-slash float-right eyeIconClass"
+                            aria-hidden="true"></i>
+                        <small *ngIf="l.password.errors" class="mandatary">
+                            <div *ngIf="l.password.errors.required && (lform.submitted || l.password.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+                    </div>
+                    <div class="form-group" *blockUI="'loginBtn'">
+                        <button type="submit" value="" class="btn btn-primary py-3 px-5 loginBtn">Login</button>
+                    </div>
+
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6 col-md-6 pr-0">
+                            <div class="form-group checkbox-group mb-0 text-left">
+                                <label>
+                                    <span class="paylable">Remember me</span>
+                                    <input type="checkbox" checked>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6 pl-0">
+                            <div class="form-check">
+                                <a class="forgotPasswordLink pr-0 m-pr-0 m-pl-0"
+                                    (click)="openForgetPassword();closeLogin()">Forgot Password ?</a>
+                            </div>
+                        </div>
+                        <!-- <div class="border-top col-12 pt-15 continueWith">
+                            <p>or continue with</p>
+                        </div>
+                        <div class="col-12 col-md-4 socialLink">
+                            <a href=""><img src="assets/images/facebook0.png" /></a>
+                        </div>
+                        <div class="col-12 col-md-4 socialLink">
+                            <a href=""><img src="assets/images/google0.png" /></a>
+                        </div>
+                        <div class="col-12 col-md-4 socialLink">
+                            <a href=""><img src="assets/images/twitter0.png" /></a>
+                        </div> -->
+                        <div class="col-12">
+                            <p>Do not have an account ?
+                                <span>
+                                    <a class="signupLink cursorPointer" (click)="openSignup();closeLogin()">Register</a>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="otp" class="overlaymenu">
+
+    <div class="overlay-content">
+        <form [formGroup]="otpForm" (ngSubmit)="onOtp('otpId')" id="otpId" #oform="ngForm"
+            class="bg-white contact-form loginForm max-width-500">
+            <a class="closebtn" (click)="closeOtp()">&times;</a>
+            <h2>Login Verification</h2>
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Verificaition Otp" id="verificaitionOtp"
+                            [(ngModel)]="otpModel.verificaitionOtp" formControlName="verificaitionOtp">
+                        <small *ngIf="o.verificaitionOtp.errors" class="mandatary">
+                            <div
+                                *ngIf="o.verificaitionOtp.errors.required && (oform.submitted || o.verificaitionOtp.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+                    </div>
+                    <div class="form-group" *blockUI="'otpBtn'">
+                        <button type="submit" value="" class="btn btn-primary py-3 px-5 loginBtn">verify</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="signup" class="overlaymenu">
+
+    <div class="overlay-content top-0">
+        <form [formGroup]="userForm" (ngSubmit)="onRegister('userAddEditId')" id="userAddEditId" #sform="ngForm"
+            class="bg-white contact-form loginForm ">
+            <a class="closebtn" (click)="closeSignup()">&times;</a>
+            <h2>Registration</h2>
+            <br />
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Name*" id="name"
+                            [(ngModel)]="userModel.name" formControlName="name">
+                        <small *ngIf="f.name.errors" class="mandatary">
+                            <div *ngIf="f.name.errors.required && (sform.submitted || f.name.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                            <div *ngIf="f.name.errors.maxlength && (sform.submitted || f.name.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                You have reached maximum limit of 30 allowed characters..
+                            </div>
+                            <div *ngIf="f.name.errors.pattern && (sform.submitted || f.name.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Alphabets, space & dots are allowed.
+                            </div>
+                        </small>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Email*" id="email"
+                            [(ngModel)]="userModel.email"
+                            (ngModelChange)="$event != undefined && userModel != undefined && userModel.email = $event.toLowerCase()"
+                            formControlName="email">
+                        <small *ngIf="f.email.errors" class="mandatary">
+                            <div *ngIf="f.email.errors.required && (sform.submitted || f.email.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                            <div *ngIf="f.email.errors.pattern && (sform.submitted || f.email.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Email must be a valid email address
+                            </div>
+                            <div *ngIf="f.email.errors.maxlength && (sform.submitted || f.email.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                You have reached maximum limit of 100 allowed characters..
+                            </div>
+                        </small>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <!-- <input type="text" class="form-control" placeholder="contryCode*" id="contryCode" [(ngModel)]="userModel.contryCode"
+                      formControlName="contryCode"> -->
+                        <ng-select class="singUpDrp regCntryCode pl-0 pr-0" placeholder="Country Code*"
+                            [searchable]="true" formControlName="countryCode" [items]="countryCodes"
+                            [(ngModel)]="userModel.countryCode" bindLabel="value">
+                        </ng-select>
+                        <small *ngIf="f.countryCode.errors" class="mandatary">
+                            <div *ngIf="f.countryCode.errors.required && (sform.submitted || f.countryCode.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Mobile*" id="mobile"
+                            [(ngModel)]="userModel.mobile" formControlName="mobile">
+                        <small *ngIf="f.mobile.errors" class="mandatary">
+                            <div *ngIf="f.mobile.errors.required && (sform.submitted || f.mobile.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                            <div *ngIf="f.mobile.errors.pattern && (sform.submitted || f.mobile.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Only number required
+                            </div>
+                            <div *ngIf="f.mobile.errors.maxlength && (sform.submitted || f.mobile.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                You have reached maximum limit of 15 allowed characters..
+                            </div>
+                        </small>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <input class="form-control" type="{{passwordType}}" id="password"
+                            [(ngModel)]="userModel.password" formControlName="password" placeholder="new password"
+                            (blur)="passwordCheck(userModel.password,'new')" />
+                        <i id="eyeIcon" (click)="changePasswordType()" class="fa fa-eye-slash float-right eyeIconClass"
+                            aria-hidden="true"></i>
+                        <small *ngIf="f.password.errors" class="mandatary">
+                            <div *ngIf="f.password.errors.required && (sform.submitted || f.password.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+                        <div *ngIf="isNewPasswordValidated == false" class="mandatory">
+                            <span>
+                                <img src="assets/images/invalid.svg" alt="invalid">
+                            </span>
+                            {{newPasswordValidationMessage}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <input class="form-control" type="{{confirmPasswordType}}" id="confirmPassword"
+                            [(ngModel)]="userModel.confirmPassword" formControlName="confirmPassword"
+                            placeholder="confirm password"
+                            (blur)="passwordCheck(userModel.confirmPassword,'confirm')" />
+                        <i id="confirmEyeIcon" (click)="changeConfirmPasswordType()"
+                            class="fa fa-eye-slash float-right eyeIconClass" aria-hidden="true"></i>
+                        <small *ngIf="f.confirmPassword.errors" class="mandatary">
+                            <div
+                                *ngIf="f.confirmPassword.errors.required && (sform.submitted || f.confirmPassword.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+
+                        <div *ngIf="isConfirmPasswordValidated == false" class="mandatory">
+                            <span>
+                                <img src="assets/images/invalid.svg" alt="invalid">
+                            </span>
+                            {{confirmPasswordValidationMessage}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-group captchaField">
+                        <i class="fa fa-refresh" aria-hidden="true" (click)="loadCaptcha()"></i>
+                        <!-- <img src="{{capchaImageDownloadUrl}}{{capchaId}}" alt="capcha image"> -->
+                        <img [defaultImage]="'assets/images/loading.gif'" *ngFor="let captchaView of captchaList"
+                            [lazyLoad]="capchaImageDownloadUrl+captchaView.id" class="width-100" alt="capcha image" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div formGroupName="captchaView">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Captcha*" id="captcha"
+                                [(ngModel)]="userModel.captchaView.captcha" formControlName="captcha">
+                            <small class="mandatary"
+                                *ngIf="f.captchaView.controls != null && f.captchaView.controls.captcha != null && f.captchaView.controls.captcha.invalid">
+                                <div
+                                    *ngIf="f.captchaView.controls.captcha.errors.required && (sform.submitted || f.captchaView.controls.captcha.touched)">
+                                    <span>
+                                        <img src="assets/images/invalid.svg" alt="invalid">
+                                    </span>
+                                    Mandatory : This cannot be left blank.
+                                </div>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <div class="form-group checkbox-group mb-0 text-left">
+                            <label class="form-check-label">
+                                <span class="paylable regAcceptCb">I have read and accept the
+                                    <a [href]="termsUrl" class="forgotPasswordLink termsPrivacy" target="_blank">Terms
+                                        and Privacy Policy</a>
+                                </span>
+                                <input type="checkbox">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-2">
+                            <div class="form-group" *blockUI="'signUpBtn'">
+                                <button type="submit" class="btn btn-primary py-3 px-5 loginBtn">Registration</button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <p class="aleadyLogin">Already have an account?
+                                <span>
+                                    <a class="signupLink cursorPointer" (click)="openLogin();closeSignup()">Login</a>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="row">
+                        <!-- <div class="border-top col-12 pt-15 continueWith">
+                            <p>or continue with</p>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <a href=""><img src="assets/images/facebook0.png" /></a>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <a href=""><img src="assets/images/google0.png" /></a>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <a href=""><img src="assets/images/twitter0.png" /></a>
+                        </div> -->
+                        <!-- <div class="col-12">
+                            <p>Already have an account? <span><a class="signupLink cursorPointer"
+                                        (click)="openLogin();closeSignup()">Login</a></span></p>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="changePassword" class="overlaymenu">
+
+    <div class="overlay-content">
+        <form [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword('changePasswordId')" id="changePasswordId"
+            #cpform="ngForm" class="bg-white contact-form loginForm max-width-500">
+            <a class="closebtn" (click)="closeChangePassword()">&times;</a>
+            <h2>Change Password</h2>
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <input class="form-control" type="{{oldPasswordType}}" id="oldPassword"
+                            [(ngModel)]="changePasswordModel.oldPassword" formControlName="oldPassword"
+                            placeholder="old password" />
+                        <i id="oldEyeIcon" (click)="changeOldPasswordType()"
+                            class="fa fa-eye-slash float-right eyeIconClass    " aria-hidden="true"></i>
+                        <!-- <input type="password" class="form-control" placeholder="Old Password*" id="oldPassword" [(ngModel)]="changePasswordModel.oldPassword"
+                            formControlName="oldPassword">
+                        <i id="oldEyeIcon" (click)="changePasswordType()" class="fa fa-eye-slash float-right eyeIconClass" aria-hidden="true"></i> -->
+                        <small *ngIf="cp.oldPassword.errors" class="mandatary">
+                            <div *ngIf="cp.oldPassword.errors.required && (isChangePasswordFormSubmitted)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="{{passwordType}}" id="password"
+                            [(ngModel)]="changePasswordModel.password" formControlName="password"
+                            placeholder="new password" (blur)="passwordCheck(changePasswordModel.password,'new')" />
+                        <i id="eyeIcon" (click)="changePasswordType()" class="fa fa-eye-slash float-right eyeIconClass"
+                            aria-hidden="true"></i>
+                        <!-- <input type="password" class="form-control" placeholder="New Password*" id="password" [(ngModel)]="changePasswordModel.password"
+                            formControlName="password" (blur)="passwordCheck(changePasswordModel.password)">
+                        <i id="newEyeIcon" (click)="changePasswordType()" class="fa fa-eye-slash float-right eyeIconClass" aria-hidden="true"></i> -->
+                        <small *ngIf="cp.password.errors" class="mandatary">
+                            <div *ngIf="cp.password.errors.required && (isChangePasswordFormSubmitted)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+                        <div *ngIf="isNewPasswordValidated == false" class="mandatory">
+                            <span>
+                                <img src="assets/images/invalid.svg" alt="invalid">
+                            </span>
+                            {{newPasswordValidationMessage}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Confirm Password*" id="confirmPassword"
+                            [(ngModel)]="changePasswordModel.confirmPassword" formControlName="confirmPassword"
+                            (blur)="passwordCheck(changePasswordModel.confirmPassword,'confirm')">
+                        <small *ngIf="cp.confirmPassword.errors" class="mandatary">
+                            <div *ngIf="cp.confirmPassword.errors.required && (isChangePasswordFormSubmitted)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+
+                        <div *ngIf="isConfirmPasswordValidated == false" class="mandatory">
+                            <span>
+                                <img src="assets/images/invalid.svg" alt="invalid">
+                            </span>
+                            {{confirmPasswordValidationMessage}}
+                        </div>
+                    </div>
+                    <div class="form-group" *blockUI="'changePasswordBtn'">
+                        <button type="submit" class="btn btn-primary py-3 px-5 loginBtn">Change Password</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="forgetPassword" class="overlaymenu">
+
+    <div class="overlay-content">
+        <form [formGroup]="forgetPasswordForm" (ngSubmit)="onForgetPassword('forgetPasswordId')" id="forgetPasswordId"
+            #fpform="ngForm" class="bg-white contact-form loginForm max-width-500">
+            <a class="closebtn" (click)="closeForgetPassword()">&times;</a>
+            <h2>Forget Password</h2>
+            <br />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="your@example.com" id="loginId"
+                            [(ngModel)]="forgetPasswordModel.loginId" formControlName="loginId">
+                        <small *ngIf="fp.loginId.errors" class="mandatary">
+                            <div *ngIf="fp.loginId.errors.required && (fpform.submitted || fp.loginId.touched)">
+                                <span>
+                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                </span>
+                                Mandatory : This cannot be left blank.
+                            </div>
+                        </small>
+                    </div>
+                    <div class="form-group" *blockUI="'forgetPasswordBtn'">
+                        <button type="submit" class="btn btn-primary py-3 px-5 loginBtn">Send Link</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- <div id="myNav" class="overlaymenu">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+  <div class="overlay-content">
+      
+      <a href="">About</a>
+      <a href="">Services</a>
+      <a href="">Clients</a>
+      <a href="">Contact</a>
+  </div>
+</div> -->
+<div id="myNav" class="overlay overlay_menu_con" style="width: 0;">
+    <!-- <a class="closebtn" (click)="closeNav()">&times;</a> -->
+    <div class="row">
+        <div class="col-sm-12 col-md-12 ">
+            <div class="overlay_menu_right">
+                <div class="menuBox">
+                    <div class="subMenu">
+                        <div id="boxlink1" class="boxlink">
+                            <div class="row">
+                                <div class="col-md-12 subMenuTitle">
+                                    <a>
+                                        <span>Manage Booking</span>
+                                    </a>
+                                </div>
+                                <ul class="col-md-12">
+                                    <li>
+                                        <a (click)="goToHotelBookingDetails()">Hotel Booking</a>
+                                    </li>
+                                    <li>
+                                        <a (click)="goToTourBookingDetails()">Tour Booking</a>
+                                    </li>
+                                    <li>
+                                        <a (click)="goToCarBookingDetails()">Car Booking</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+
+
+                        <a onclick="location.href='javascript:void(0);'" class="subMenuClose">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" width="23px" height="23px">
+                                <g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-miterlimit="10">
+                                    <path d="M23.5 12.5h-22M9 20l-7.5-7.5L9 5"></path>
+                                </g>
+                            </svg>
+                        </a>
+
+                    </div>
+                    <ul class="menuList">
+                        <li>
+                            <a (click)="showProfile()"> My Profile </a>
+                        </li>
+                        <li class="deskMenu">
+                            <a onclick="location.href='javascript:void(0);'" (mouseenter)="mouseEnterEvent(1,1)"
+                                id="link1" class="menu-link" [ngClass]="{'active':activeSection == 1}">
+                                Manage Booking </a>
+                        </li>
+                        <li class="abt-drop">
+                            <div class="dropdown">
+                                <button type="button" data-toggle="dropdown"
+                                    class="dropdown-toggle menu_title abt-drop cursorPointer">Manage Booking
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="">Hotel Booking</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Tour Booking</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- <li> <a id="link2" class="menu-link" [ngClass]="{'active':activeSection == 2}"> Manage Tour </a> </li> -->
+                        <li>
+                            <a (click)="closeNav();openTermsAndCondition()"> Terms and Conditions </a>
+                        </li>
+                        <!-- <li>
+                            <a (click)="closeNav();openMonthlyVacantReport()"> Monthly Vacant Report </a>
+                        </li> -->
+                        <li>
+                            <a (click)="closeNav();openChangePassword()"> Change Password </a>
+                        </li>
+                        <li>
+                            <a (click)="onLogout()"> Logout </a>
+                        </li>
+
+                    </ul>
+                    <a (click)="closeNav()" class="menuBoxClose">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="15px" height="15px"
+                            fill="#fff">
+                            <path
+                                d="M16.7 15.1L28.1 3.7c.5-.5.5-1.2 0-1.7s-1.2-.5-1.7 0L15 13.3 3.6 1.9c-.5-.5-1.2-.5-1.7 0s-.5 1.2 0 1.7L13.3 15 1.9 26.5c-.5.5-.5 1.2 0 1.7.2.2.7.2 1 .2s.7 0 .7-.2L15 16.8l11.4 11.4c.2.2.7.2 1 .2.2 0 .7 0 .7-.2.5-.5.5-1.2 0-1.7L16.7 15.1z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+                <!-- <ul id="addClassAbout" class="menu_togal_ul">
+                    <li><a href="" class="menu_title">My Account</a></li>
+                    <li class="desk-about">
+                        <a class="menu_title ">Manage Booking <span class="subicon"></span></a>
+                        <span id="subMenuAbout" class="menu_togal_ul_child">
+                            <ul class="menu_togal_li_child_ul">
+                                <li><a href="">Edit Booking</a></li>
+                                <li><a (click)="goToBookingDetails()">Booking History</a></li>
+                                <li><a href="">Booking Slip</a></li>
+                                <li><a href="">Cancel Booking</a></li>
+                                <li><a href="">Cancel Slip </a></li>
+                            </ul>
+                        </span>
+                    </li>
+                    <li class="abt-drop">
+                        <div class="dropdown">
+                            <button type="button" data-toggle="dropdown"
+                                class="dropdown-toggle menu_title abt-drop cursorPointer">Manage Booking
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="">Edit Booking</a></li>
+                                <li><a href="">Booking History</a></li>
+                                <li><a href="">Booking Slip</a></li>
+                                <li><a href="">Cancel Booking</a></li>
+                                <li><a href="">Cancel Slip </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="" class="menu_title">My Account</a></li>
+                    <li><a href="" class="menu_title">Manage Tour</a></li>
+                    <li><a href="" class="menu_title">Terms and Conditions</a></li>
+                    <li><a (click)="closeNav();openChangePassword()" class="menu_title">Change Password</a></li>
+                    <li><a (click)="onLogout()" class="menu_title">Logout</a></li>
+                </ul> -->
+            </div>
+        </div>
+        <!-- <div class="col-sm-12 col-md-8 overlay_menu_right_Con">
+            <div class="overlay_menu_left">
+                <div class="menu-logo-con"><a href="index.html"><img src="assets/images/logo.png"></a> </div>
+                <div class="menu-address">
+                    <div class="row">
+                        <a href="" target="_blank">
+                            <div class="col-sm-12">
+                                <p><strong>Registered office</strong></p>
+                            </div>
+                            <div class="col-sm-12 col-12">
+                                <p>Udyog Bhavan, Block No. 16, 4th Floor, Sector-11, Gandhinagar - 382 011.</p>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+</div>

@@ -1,0 +1,344 @@
+<section class="ftco-section ftco-menu mt-5">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+            <form (ngSubmit)="redirectToPayment('applicantDetailsFormId')" id="applicantDetailsFormId" #vform="ngForm">
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12">
+                                <h4 class="formSubTitle bb-0 float-left">Guest Information</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class=" col-lg-12 col-xl-12 paymentAccordian">
+                                <ngb-accordion closeOthers="true" class="mt-4" activeIds="ngb-panel-0"
+                                    *ngIf="paymentInfo.tourGuestInformationViews">
+                                    <ngb-panel title="Guest Information {{j+1}}"
+                                        *ngFor="let guestInformation of paymentInfo.tourGuestInformationViews;let j = index">
+                                        <ng-template ngbPanelContent>
+                                            <label *ngIf="guestInformation.seniorCitizen"
+                                            class="color-red">You are eligible for senior citizen
+                                            discount.</label>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Full Name*</label>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" name="name"
+                                                            [(ngModel)]="guestInformation.name" placeholder="Full Name">
+                                                        <!-- [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.name) || checkMaxLengthError(guestInformation.name,100) || checkRegexError(guestInformation.name,'ALPHABETS_WITH_SPACE'))}"  -->
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div *ngIf="checkMandatoryError(guestInformation.name)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                            <div *ngIf="checkMaxLengthError(guestInformation.name,100)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                You have reached maximum limit of 100
+                                                                allowed
+                                                                characters..
+                                                            </div>
+                                                            <div
+                                                                *ngIf="checkRegexError(guestInformation.name,'ALPHABETS_WITH_SPACE')">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Alphabets & space are allowed.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Gender*</label>
+                                                    <div class="form-group">
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            placeholder="Select Gender" [searchable]="true"
+                                                            [items]="genderList" name="gender"
+                                                            [(ngModel)]="guestInformation.gender" bindLabel="value">
+                                                            <!-- [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.gender))}" -->
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div *ngIf="checkMandatoryError(guestInformation.gender)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Age*</label>
+                                                    <div class="form-group">
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            placeholder="Age" [searchable]="true" [items]="ageList"
+                                                            bindValue="value" name="age"
+                                                            [(ngModel)]="guestInformation.age" bindLabel="value"
+                                                            (change)="setSeniorCitizen(guestInformation);changeSeniorCitizenDiscount()">
+                                                            <!-- [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.age))}" -->
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div *ngIf="checkMandatoryError(guestInformation.age)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Senior Citizen*</label>
+                                                    <div class="">
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            placeholder="Select Senior Citizen" [searchable]="true"
+                                                            bindValue="id" [items]="seniorCitizenList" disabled
+                                                            name="seniorCitizen"
+                                                            [(ngModel)]="guestInformation.seniorCitizen"
+                                                            bindLabel="value" (change)="changeSeniorCitizenDiscount()">
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div
+                                                                *ngIf="checkMandatoryError(guestInformation.seniorCitizen)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 yourbookinSection">
+                        <!--Accordion wrapper-->
+                        <h2>Your Booking</h2>
+
+                        <div class="row yourbookinBlock">
+                            <div class="col-12 col-md-5">
+                                <img *ngIf="paymentInfo.tourView != undefined && paymentInfo.tourView.tourGalleryViews != undefined && paymentInfo.tourView.tourGalleryViews"
+                                    [defaultImage]="'assets/images/loading.gif'"
+                                    [lazyLoad]="tourImgDownloadUrl+paymentInfo.tourView.tourGalleryViews[0].fileView.fileId"
+                                    class="width-100" />
+
+                                <img *ngIf="paymentInfo.tourView != undefined && paymentInfo.tourView.tourGalleryViews == undefined && !paymentInfo.tourView.tourGalleryViews"
+                                    src="assets/images/image-01.png" class="width-100" />
+                            </div>
+                            <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                <h3>{{paymentInfo.tourView.name}}</h3>
+                                <p class="mb-0">{{paymentInfo.tourView.tourPriceView.startDate | date }} -
+                                    {{paymentInfo.tourView.tourPriceView.endDate | date}}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- <div class="row yourbookinBlock">
+                            <div class="col-12">
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-5">
+                                        <label class="mb-0">Tour</label>
+                                    </div>
+                                    <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0">{{paymentInfo.tourView.name }}</p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-5">
+                                        <label class="mb-0">Date</label>
+                                    </div>
+                                    <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0">{{paymentInfo.tourView.tourPriceView.startDate | date }} - {{paymentInfo.tourView.tourPriceView.endDate | date}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                            <!-- <div class="row yourbookinBlock">
+                            <div class="col-12 col-md-12 mb-3">
+                                <p class="mb-0">Coupon Code</p>
+                            </div>
+                            <div class="col-12 col-md-8">
+    
+                                <div class="form-group mb-0">
+                                    <input type="text" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 align-self-center yourbooking-h-Detail m-payment-room">
+                                <button type="submit" value=""
+                                    class="btn btn-primary py-2 loginBtn height-52">Apply</button>
+                            </div>
+                        </div> -->
+                            <div class="row yourbookinBlock">
+                                <div class="col-12">
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">Tour Tariff</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">
+                                                {{paymentInfo.netAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room pl-3">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">Adult Tariff</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">
+                                                {{paymentInfo.adultAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room pl-3">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">Child Tariff</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">
+                                                {{paymentInfo.childAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">Number of Persons</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">
+                                                {{paymentInfo.totalSeats}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">Senior Citizen Disc
+                                                ({{paymentInfo.seniorCitizenDiscount}}%)</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">
+                                                {{paymentInfo.seniorCitizenDiscountAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">Special Disc (%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">0</p>
+                                    </div>
+                                </div> -->
+                                    <div class="row m-payment-room" *ngIf="paymentInfo.cgstAmount">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">CGST ({{paymentInfo.cgstTax}}%)</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">{{paymentInfo.cgstAmount}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room" *ngIf="paymentInfo.sgstAmount">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">SGST ({{paymentInfo.sgstTax}}%)</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">{{paymentInfo.sgstAmount}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room" *ngIf="paymentInfo.igstAmount">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">IGST ({{paymentInfo.igstTax}}%)</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">{{paymentInfo.igstAmount}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0 pa-label">Pay Amount</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right pa-label m-text-left"><i
+                                                    class="fa fa-rupee"></i>&nbsp;{{paymentInfo.totalAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" *ngIf="bookingOfficer" [formGroup]="applicantForm">
+                    <div class="col-12 col-md-8">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="name">Payment Mode* </label>
+                                    <div class="clearfix"></div>
+                                    <div id="" *ngFor="let paymentMode of paymentModes" class="paymentRadio">
+                                        <input type="radio" name="paymentMode.value" [value]="paymentMode"
+                                            [(ngModel)]="applicantModel.paymentMode"
+                                            [ngModelOptions]="{standalone: true}" class="happy">
+                                        <span class="pl-2">{{paymentMode.value}}</span>
+                                    </div>
+                                    <!-- <ng-select [searchable]="true" formControlName="paymentMode" [items]="paymentModes"
+                                        [(ngModel)]="applicantModel.paymentMode" bindLabel="value"
+                                        placeholder="Select Payment Mode">
+                                    </ng-select> -->
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="name">Remarks* </label>
+                                    <textarea class="form-control" type="text" [(ngModel)]="applicantModel.remarks"
+                                        formControlName="remarks" placeholder="Remarks"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="form-group checkbox-group mb-0" [formGroup]="applicantForm">
+                                    <label><span class="paylable">I have read and accept the <a [href]="termsUrl"
+                                                target="_blank">Terms and
+                                                Conditions</a></span>
+                                        <input type="checkbox" class="form-control" formControlName="termsAndConditions"
+                                            [(ngModel)]="termsAndConditions" [required]="termsAndConditions">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <small class="mandatory" *ngIf="f.termsAndConditions.errors">
+                                        <div *ngIf="f.termsAndConditions.errors.required && (vform.submitted || f.termsAndConditions.touched)"
+                                            class="font-size-12">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div *blockUI="'bookTourBtn'" class="">
+                    <button type="submit" class="btn btn-primary py-2 loginBtn height-52 paymentbtn">Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

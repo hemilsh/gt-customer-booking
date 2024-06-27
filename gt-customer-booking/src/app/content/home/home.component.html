@@ -1,0 +1,647 @@
+<app-banner></app-banner>
+<section class="ftco-booking ftco-section ftco-no-pt ftco-no-pb">
+  <div class="container">
+
+    <div class="row no-gutters">
+
+      <div class="col-lg-12 mt-70">
+        <ul class="nav homeTab">
+          <li [ngClass]="{'active':tab == 1}" (click)="selectTab(1, 'hotels')">Hotels</li>
+          <li [ngClass]="{'active':tab == 2}" (click)="selectTab(2, 'tcgl-tours');loadTourList();">TCGL Tours</li>
+          <li [ngClass]="{'active':tab == 3}" (click)="selectTab(3, 'tcgl-supported-tour');loadTourList();">Tour supported by Gujarat Tourism
+          </li>
+          <li [ngClass]="{'active':tab == 4}" (click)="selectTab(4, 'fairs-festivals')" *ngIf="tentHotelList.length !=0">Fair and Festivals
+          </li>
+          <!-- <li [ngClass]="{'active':tab == 5}" (click)="selectTab(5, 'rent-car')" *ngIf="carList.length > 0">Rent a Car</li> -->
+
+
+        </ul>
+        <form action="#" class="booking-form aside-stretch mt-0" *ngIf="tab == 1 || tab == 4">
+
+          <div class="row">
+            <div class="col-md d-flex pr-1">
+
+              <div class="form-group align-self-stretch d-flex align-items-end">
+                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                  <img src="assets/images/location.png" class="bookingLocation" />
+                </div>
+
+                <div class="wrap align-self-stretch py-1 px-1 py-0 booking-field autosearchHome">
+
+
+
+
+                  <label for="#">Destination</label>
+                  <ng-autocomplete [data]="hotelDropdownList" [searchKeyword]="keyword" (selected)='onSelect($event)'
+                    (inputCleared)="onHotelInputCleared()" (inputChanged)='onInputChangedEvent($event)'
+                    [itemTemplate]="itemTemplate" [placeHolder]="searchHotelPlaceHolder">
+                  </ng-autocomplete>
+                  <!--[notFoundTemplate]="notFoundTemplate" [initialValue]="hotelDropdownList[0]" -->
+                  <ng-template #itemTemplate let-item>
+                    <div class="row autosearchrow">
+                      <div class="col-8">
+                        <p class="autoIcon"><span [innerHTML]="item.name" class="locdesty"></span></p>
+                      </div>
+                      <div class="col-4">
+                        <p class="destiny">{{item.type.value}} <span *ngIf="item.type.key != 1"><strong>({{item.total}}
+                              Properties)</strong></span></p>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <!-- <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                  </ng-template> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md d-flex pl-0 pr-0">
+
+              <div class="form-group align-self-stretch d-flex align-items-end ">
+                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                  <img src="assets/images/calendar.png" class="bookingDate" />
+                </div>
+                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0">
+                  <div class="form-control date-range-picker-menu" id="datePicker" daterangepicker
+                    [options]="daterangepickerOptions" (selected)="selectedDate($event, mainInput)"
+                    (cancelDaterangepicker)="calendarEventsHandler($event)"
+                    (applyDaterangepicker)="calendarEventsHandler($event)"
+                    (hideDaterangepicker)="calendarEventsHandler($event)"
+                    (showDaterangepicker)="calendarEventsHandler($event)">
+                    <span class="form-control uneditable-input filter-checkin-out" name="daterange">
+                      <span class="sameBoxCon">
+                        <label for="#">Check-in</label> <br>
+                        {{ mainInput.start | date }}&nbsp;&nbsp;&nbsp;&nbsp;|
+                      </span>
+                      <span class="sameBoxCon">
+                        <label for="#">Check-out</label><br>
+                        {{ mainInput.end | date }}
+                      </span>
+
+                    </span>
+                    <span class="input-group-btn">
+                      <a type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md d-flex pr-0 pl-1 m-pl-15">
+              <div class="form-group align-self-stretch d-flex align-items-end">
+                <div class="align-self-stretch py-1 py-0 px-1 pr-0">
+                  <img src="assets/images/Guests.png" class="bookingDate" />
+                </div>
+                <div class="wrap align-self-stretch py-1  px-1 booking-field">
+                  <label for="#">Rooms & Guests</label>
+                  <div class="dropdown shortDrop gdDropdown">
+                    <button class="btn btn-secondary dropdown-toggle shortDrop" type="button" id="dropdownMenuButton"
+                      data-toggle="modal" data-target="#myModal">
+                      {{getTotalRoom()}} Rooms & {{getTotalGuest()}} Guests
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md d-flex pl-0">
+              <div class="form-group d-flex align-self-stretch">
+                <a (click)="checkAvailability()"
+                  class="btn btn-primary py-5 py-md-3 px-3 align-self-stretch d-block"><span>Check
+                    Availability</span></a>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form action="#" class="booking-form aside-stretch mt-0" *ngIf="tab == 2 || tab == 3">
+
+          <div class="row">
+            <div class="col-md d-flex pr-1">
+
+              <div class="form-group align-self-stretch d-flex align-items-end">
+                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                  <img src="assets/images/location.png" class="bookingLocation" />
+                </div>
+
+                <div class="wrap align-self-stretch py-1 px-1 py-0 booking-field autosearchHome">
+
+
+
+
+                  <label for="#">Destination</label>
+                  <ng-autocomplete [data]="tourDropdownList" [searchKeyword]="keyword" (selected)='onTourSelect($event)'
+                    (inputCleared)="onTourInputCleared()" (inputChanged)='onTourInputChangedEvent($event)'
+                    [itemTemplate]="itemTemplate" [placeHolder]="searchTourPlaceHolder">
+                  </ng-autocomplete>
+                  <!-- [initialValue]="tourDropdownList[0]" [notFoundTemplate]="notFoundTemplate" -->
+
+                  <ng-template #itemTemplate let-item>
+                    <div class="row autosearchrow">
+                      <div class="col-6">
+                        <p [innerHTML]="item.name" class="locdesty"></p>
+                      </div>
+                      <div class="col-6">
+                        <p class="destiny"><i class="fa fa-building-o"></i> {{item.type.value}} <span
+                            *ngIf="item.type.key != 1">({{item.total}} Properties)</span></p>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <!-- <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                  </ng-template> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md d-flex pl-0 pr-0" *blockUI="'filterTourList'">
+
+              <div class="form-group align-self-stretch d-flex align-items-end ">
+                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                  <img src="assets/images/calendar.png" class="bookingDate" />
+                </div>
+                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0 tourDrp">
+                  <label for="#">Tours</label>
+                  <!-- <input type="text" class="form-control checkout_date" placeholder="Check-out date"> -->
+                  <ng-select [searchable]="true" name="tours" placeholder="Select Tour" class="form-control1 tcglSelect"
+                    [items]="tourFilterDropdownList" [(ngModel)]="tourFilterDropdownView" bindLabel="value">
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md d-flex pr-0 pl-1  m-pl-15">
+              <div class="form-group align-self-stretch d-flex align-items-end">
+                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                  <img src="assets/images/calendar.png" class="bookingDate" />
+                </div>
+                <div class="wrap align-self-stretch py-1  px-1 booking-field">
+                  <label for="#" class="tourMonthdate">Month</label>
+                  <dp-date-picker [(ngModel)]="selectedDateAndMonth" placeholder="Select Month" name="selectedDate" class=" border-none" [mode]="'month'" [config]="config"></dp-date-picker>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md d-flex pl-0">
+              <div class="form-group d-flex align-self-stretch">
+                <a (click)="checkTourAvailability()"
+                  class="btn btn-primary py-5 py-md-3 px-3 align-self-stretch d-block"><span>Check
+                    Availability</span></a>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form action="#" class="booking-form aside-stretch mt-0" *ngIf="tab == 5">
+
+          <div class="row">
+            <div class="col-md d-flex pr-0" *blockUI="'filterTourList'">
+              <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                <img src="assets/images/calendar.png" class="bookingDate" />
+              </div>
+              <div class="form-group align-self-stretch d-flex align-items-end ">
+                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0 tourDrp cardrp">
+                  <label for="#">Select Your Location</label>
+                  <ng-select [searchable]="true" name="carLocationFilterDropdownView" placeholder="Select Your Location"
+                    class="form-control1 tcglSelect" [items]="carLocationFilterDropdownList"
+                    [(ngModel)]="carLocationFilterDropdownView" bindLabel="name">
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md d-flex pr-0"></div>
+            <div class="col-md d-flex pl-0">
+              <div class="form-group d-flex align-self-stretch">
+                <a (click)="checkCarAvailability()"
+                  class="btn btn-primary py-5 py-md-3 px-3 align-self-stretch d-block"><span>Check
+                    Availability</span></a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="ftco-section" *ngIf="tab == 1">
+  <div class="container">
+    <div class="row justify-content-center mb-3 pb-3">
+      <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
+        <!-- <span class="subheading">Read Blog</span> -->
+        <h2>Toran Hotels</h2>
+      </div>
+    </div>
+    <div class="row d-flex">
+      <!-- {{hotelList | json}} -->
+      <!-- <div class="col-md-4 d-flex ftco-animate fadeInUp ftco-animated fadeInUp ftco-animated"
+        *ngFor="let hotel of hotelList">
+        <div class="blog-entry align-self-stretch width-100">
+          <h3 class="heading thTitle hotelHeading"><a (click)="goToHoteViewPage(hotel)">{{hotel.name}}</a><br>
+            <span *ngIf="hotel.cityView">{{hotel.cityView.value}}</span>
+            <span *ngIf="!hotel.cityView">{{hotel.cityName}}</span>
+          </h3>
+
+          <a class="insta-img image-popup bk-opicity" (click)="goToHoteViewPage(hotel)">
+            <img *ngIf="hotel.galleryFileViews"
+              src="{{imgDownloadUrl}}{{hotel.galleryFileViews[0].galleryFileView.fileId}}" class="width-100" />
+            <img *ngIf="!hotel.galleryFileViews" src="assets/images/defaultImage.jpg" class="width-100" />
+          </a>
+
+        </div>
+      </div> -->
+      <div class="col-md-4 mb-5 d-flex ftco-animate fadeInUp ftco-animated fadeInUp ftco-animated"
+        *ngFor="let hotel of hotelList">
+        <div class="blog-entry align-self-stretch width-100">
+
+          <div class="col-12 pl-0 pr-0  m-pl-0 m-pr-0">
+            <a class="insta-img image-popup bk-opicity" (click)="goToHoteViewPage(hotel)">
+              <img *ngIf="hotel.galleryFileViews" [defaultImage]="'assets/images/loading.gif'"
+                [lazyLoad]="imgDownloadUrl+hotel.galleryFileViews[0].galleryFileView.fileId+'&requireCompressImage=false'"
+                class="width-100" />
+              <!-- <img *ngIf="hotel.galleryFileViews"
+              src="{{imgDownloadUrl}}{{hotel.galleryFileViews[0].galleryFileView.fileId}}" class="width-100" /> -->
+              <img *ngIf="!hotel.galleryFileViews" src="assets/images/defaultImage.jpg" class="width-100" />
+            </a>
+          </div>
+          <div class="heading thTitle tourHeading">
+            <p class="cityLocation" *ngIf="hotel.cityView">{{hotel.cityView.value}}</p>
+            <p class="cityLocation" *ngIf="!hotel.cityView">{{hotel.cityName}}</p>
+            <p class="hotelName cursor-pointer" (click)="goToHoteViewPage(hotel)">{{hotel.name}}</p>
+            <div class="priceBlock">
+              <div class="hotelRtDtl width-70 float-left mt-2">
+                <p class="ppnf">Price per night from</p>
+                <p class="hotelPrice"><i class="fa fa-inr" aria-hidden="true"></i> {{hotel.amount}}</p>
+              </div>
+              <div class="ViewMore width-30 float-right mt-2">
+                <a (click)="goToHoteViewPage(hotel)" class="btn btn-primary arrowBtn float-right mt-2"><span><i
+                      class="fa fa-angle-right"></i></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- <div class="col-md-12 text-center ftco-animate">
+      <p><a href="#" class="btn btn-primary rounded">View All</a></p>
+    </div> -->
+  </div>
+</section>
+<section class="ftco-section" *ngIf="tab == 2">
+  <div class="container">
+    <div class="row justify-content-center mb-3 pb-3">
+      <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
+        <!-- <span class="subheading">Read Blog</span> -->
+        <h2>Popular Tour</h2>
+      </div>
+    </div>
+    <div class="row d-flex">
+      <!-- {{hotelList | json}} -->
+      <div class="col-md-12" *ngIf="!isPopularTourFound">
+        <div class="height-500" *blockUI="'popularTourList'"></div>
+      </div>
+      <div class="col-md-12" *ngIf="isPopularTourFound">
+        <div class="row">
+          <div class="col-md-4 d-flex ftco-animate fadeInUp ftco-animated fadeInUp ftco-animated"
+            *ngFor="let popularTour of popularTourList">
+            <div class="blog-entry align-self-stretch width-100">
+              <div class="col-12 pl-0 pr-0 m-pl-0 m-pr-0">
+                <!-- <h3 class="heading thTitle tourCity hotelHeading">
+                    <span >Vadodara</span>
+                  </h3> -->
+
+                <a class="insta-img image-popup bk-opicity" (click)="goToTourViewPage(popularTour)">
+                  <img *ngIf="popularTour.tourGalleryViews" [defaultImage]="'assets/images/loading.gif'"
+                    [lazyLoad]="tourImgDownloadUrl+popularTour.tourGalleryViews[0].fileView.fileId+'&requireCompressImage=false'"
+                    class="width-100" />
+                  <img *ngIf="!popularTour.tourGalleryViews" src="assets/images/defaultImage.jpg" class="width-100" />
+                  <!-- <img *ngIf="popularTour.tourGalleryViews"
+                      src="{{tourImgDownloadUrl}}{{popularTour.tourGalleryViews[0].fileView.fileId}}" class="width-100" />
+                    <img *ngIf="!popularTour.tourGalleryViews" src="assets/images/defaultImage.jpg" class="width-100" /> -->
+                </a>
+              </div>
+              <h3 class="heading thTitle tourHeading"><a
+                  (click)="goToTourViewPage(popularTour)">{{popularTour.name}}</a><br>
+                <span *ngIf="popularTour.cityView">{{popularTour.cityView.value}}</span>
+                <span *ngIf="!popularTour.cityView">{{popularTour.cityName}}</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-12 text-center ftco-animate">
+      <p><a href="#" class="btn btn-primary rounded">View All</a></p>
+    </div> -->
+  </div>
+</section>
+<section class="ftco-section" *ngIf="tab == 3">
+  <div class="container">
+    <div class="row justify-content-center mb-3 pb-3">
+      <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
+        <!-- <span class="subheading">Read Blog</span> -->
+        <h2>Tour supported by Gujarat Tourism</h2>
+      </div>
+    </div>
+    <div class="row d-flex">
+      <!-- {{hotelList | json}} -->
+      <div class="col-md-12" *ngIf="!isPopularTourFound">
+        <div class="height-500" *blockUI="'privateTourList'"></div>
+      </div>
+      <div class="col-md-12" *ngIf="isPopularTourFound">
+        <div class="row">
+          <div class="col-md-4 d-flex ftco-animate fadeInUp ftco-animated fadeInUp ftco-animated"
+            *ngFor="let privateTour of privateTourList">
+            <div class="blog-entry align-self-stretch width-100">
+              <div class="col-12 pl-0 pr-0 m-pl-0 m-pr-0">
+                <!-- <h3 class="heading thTitle tourCity hotelHeading">
+                    <span >Vadodara</span>
+                  </h3> -->
+
+                <a class="insta-img image-popup bk-opicity" (click)="goToTourViewPage(privateTour)">
+                  <img *ngIf="privateTour.tourGalleryViews" [defaultImage]="'assets/images/loading.gif'"
+                    [lazyLoad]="tourImgDownloadUrl+privateTour.tourGalleryViews[0].fileView.fileId+'&requireCompressImage=false'"
+                    class="width-100" />
+                  <img *ngIf="!privateTour.tourGalleryViews" src="assets/images/defaultImage.jpg" class="width-100" />
+                  <!-- <img *ngIf="privateTour.tourGalleryViews"
+                      src="{{tourImgDownloadUrl}}{{privateTour.tourGalleryViews[0].fileView.fileId}}" class="width-100" />
+                    <img *ngIf="!privateTour.tourGalleryViews" src="assets/images/defaultImage.jpg" class="width-100" /> -->
+                </a>
+              </div>
+              <h3 class="heading thTitle tourHeading"><a
+                  (click)="goToTourViewPage(privateTour)">{{privateTour.name}}</a><br>
+                <span *ngIf="privateTour.cityView">{{privateTour.cityView.value}}</span>
+                <span *ngIf="!privateTour.cityView">{{privateTour.cityName}}</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-12 text-center ftco-animate">
+      <p><a href="#" class="btn btn-primary rounded">View All</a></p>
+    </div> -->
+  </div>
+</section>
+<section class="ftco-section" *ngIf="tab == 4">
+  <div class="container">
+    <div class="row justify-content-center mb-3 pb-3">
+      <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
+        <!-- <span class="subheading">Read Blog</span> -->
+        <h2>Tent</h2>
+      </div>
+    </div>
+    <div class="row d-flex">
+      <div class="col-md-12" *ngIf="!isTentHotelFound">
+        <div class="height-500" *blockUI="'tentHotelList'"></div>
+      </div>
+      <div class="col-md-12" *ngIf="isTentHotelFound">
+        <div class="row">
+          <div class="col-md-4 mb-5 d-flex ftco-animate fadeInUp ftco-animated fadeInUp ftco-animated"
+            *ngFor="let tentHotel of tentHotelList">
+            <div class="blog-entry align-self-stretch width-100">
+
+              <div class="col-12 pl-0 pr-0  m-pl-0 m-pr-0">
+                <a class="insta-img image-popup bk-opicity" (click)="goToHoteViewPage(tentHotel)">
+                  <img *ngIf="tentHotel.galleryFileViews" [defaultImage]="'assets/images/loading.gif'"
+                    [lazyLoad]="imgDownloadUrl+tentHotel.galleryFileViews[0].galleryFileView.fileId+'&requireCompressImage=false'"
+                    class="width-100" />
+                  <img *ngIf="!tentHotel.galleryFileViews" src="assets/images/defaultImage.jpg" class="width-100" />
+                </a>
+              </div>
+              <div class="heading thTitle tourHeading">
+                <p class="cityLocation" *ngIf="tentHotel.cityView">{{tentHotel.cityView.value}}</p>
+                <p class="cityLocation" *ngIf="!tentHotel.cityView">{{tentHotel.cityName}}</p>
+                <p class="hotelName cursor-pointer" (click)="goToHoteViewPage(tentHotel)">{{tentHotel.name}}</p>
+                <div class="priceBlock">
+                  <div class="hotelRtDtl width-70 float-left mt-2">
+                    <p class="ppnf">Price per night from</p>
+                    <p class="hotelPrice"><i class="fa fa-inr" aria-hidden="true"></i> {{tentHotel.amount}}</p>
+                  </div>
+                  <div class="ViewMore width-30 float-right mt-2">
+                    <a (click)="goToHoteViewPage(tentHotel)" class="btn btn-primary arrowBtn float-right mt-2"><span><i
+                          class="fa fa-angle-right"></i></span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-12 text-center ftco-animate">
+      <p><a href="#" class="btn btn-primary rounded">View All</a></p>
+    </div> -->
+  </div>
+</section>
+<section class="ftco-section" *ngIf="tab == 5">
+  <div class="container">
+    <div class="row justify-content-center mb-3 pb-3">
+      <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
+        <!-- <span class="subheading">Read Blog</span> -->
+        <h2>Rent a car</h2>
+      </div>
+    </div>
+    <div class="row d-flex">
+      <!-- {{hotelList | json}} -->
+      <div class="col-md-12" *ngIf="carList.length == 0">
+        <div class="height-100" *blockUI="'privateTourList'"></div>
+      </div>
+      <div class="col-md-12" *ngIf="carList.length > 0">
+        <div class="row">
+          <div class="blog-entry align-self-stretch width-100">
+            <div class="col-12 pl-0 pr-0 m-pl-0 m-pr-0">
+              <table class="table table-layout-fixed no-border oddEvenTable" table-bordered="">
+                <thead class="thead-light">
+                  <tr>
+                    <th class="width-10">Sr. No.</th>
+                    <th class="width-60">Vehicle</th>
+                    <th class="width-15">Rate</th>
+                    <th class="width-15">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let car of carList;index as carNo">
+                    <td>{{carNo+1}}</td>
+                    <td>{{car.name}}</td>
+                    <td>{{car.rate}}({{car.rateType.value}})</td>
+                    <td><button type="submit" (click)="goToPayment(car)" value=""
+                        class="dropdown-toggle bookingStatusDRP advance tblBookingBtn">Book
+                        Now</button></td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="blog-entry align-self-stretch width-100">
+            <div class="col-12 pl-0 pr-0 m-pl-0 m-pr-0">
+              <table class="table" table-bordered="">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Terms &amp; Conditions&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>
+                      <p>01. Km will be charge from garage to Garage/ TCGL Office to Office</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>02. We are not responsible for passengers any kind of luggage against theft/forget/damage/misplace</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>03. Subject to Gandhinagar Jurisdiction</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>04. Rates are w.e.f. 1st September 2019</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>05. After increase in KM or hours, the rates of next slab will be applicable (Daily basis - 300
+                        kms)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>06. Toll charge/parking charge/entry & inter state tax will be extra.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>07. 5% GST will be extra (SUBJECT TO CHANGE)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p>08. 100% Advance Payment should be taken.</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- <div class="col-md-12 text-center ftco-animate">
+      <p><a href="#" class="btn btn-primary rounded">View All</a></p>
+    </div> -->
+  </div>
+</section>
+
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Guests and rooms</h4>
+        <button type="button" id="closeModel" class="close" data-dismiss="modal">&times;</button>
+
+      </div>
+      <div class="modal-body scrollroom modalPadding">
+        <div class="addmoreBlock" *ngFor="let roomsAndGuests of roomsAndGuestsList;let i = index">
+          <div class="row">
+            <div class="col-12 rmCounterBlock" [ngClass]="{'mt-2': roomsAndGuests.id != 1}">
+              <span class="roomLbl">Room {{i+1}}</span>
+              <div class="float-right d-flex counterPM" *ngIf="i != 0">
+                <span class="removeRoom" (click)="removeRoom(roomsAndGuests)">Remove room</span>
+              </div>
+            </div>
+            <div class="col-12 rmCounterBlock">
+              <a class="">Adults <div class="float-right d-flex counterPM">
+                  <input type='button' value='-' class='qtyminus' field='quantity'
+                    [disabled]="roomsAndGuests.adultsValue == 1"
+                    [ngClass]="{'cursor-no-drop':roomsAndGuests.adultsValue == 1}"
+                    (click)="changeAdults(roomsAndGuests,0)" />
+                  <input type='text' name='quantity' [value]='roomsAndGuests.adultsValue' class='qty' readonly />
+                  <input type='button' value='+' class='qtyplus' field='quantity'
+                    [disabled]="roomsAndGuests.adultsValue == (adultMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest"
+                    (click)="changeAdults(roomsAndGuests,1)"
+                    [ngClass]="{'cursor-no-drop':roomsAndGuests.adultsValue == (adultMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest}" />
+                </div></a>
+            </div>
+            <div class="col-12 rmCounterBlock">
+              <a class="">Children <div class="float-right d-flex counterPM">
+                  <input type='button' value='-' class='qtyminus' field='quantity'
+                    [ngClass]="{'cursor-no-drop':roomsAndGuests.childrenValue == 0}"
+                    [disabled]="roomsAndGuests.childrenValue == 0" (click)="changeChildren(roomsAndGuests,0)" />
+                  <input type='text' name='quantity' [value]='roomsAndGuests.childrenValue' class='qty' readonly />
+                  <input type='button' value='+' class='qtyplus' field='quantity'
+                    [ngClass]="{'cursor-no-drop':roomsAndGuests.childrenValue == (childrenMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest}"
+                    [disabled]="roomsAndGuests.childrenValue == (childrenMaxRooms) || roomsAndGuests.adultsValue+roomsAndGuests.childrenValue >= maxGuest"
+                    (click)="changeChildren(roomsAndGuests,1)" />
+                </div></a>
+            </div>
+            <div class="col-4 rmCounterBlock" *ngFor="let childrenAge of roomsAndGuests.childrenAgeList;let i = index">
+              <label> Child {{i+1}} age</label>
+              <ng-select [searchable]="true" class="form-control dropGender ageDrp" [items]="genderList"
+                [(ngModel)]="childrenAge.childrenAge" bindLabel="value">
+              </ng-select>
+            </div>
+            <div class="col-12">
+              <div class="border-bottom"></div>
+            </div>
+          </div>
+
+        </div>
+        <!-- <div class="addmoreBlock">
+      <div class="row">
+     <div class="col-12 rmCounterBlock mt-2">
+      <span class="roomLbl">Rooms</span> <div class="float-right d-flex counterPM">
+        <span class="removeRoom">Remove room</span> 
+      </div>
+   </div>
+     <div class="col-12 rmCounterBlock">
+      <a class="">Adults <div class="float-right d-flex counterPM">
+        <input type='button' value='-' class='qtyminus' field='quantity' [disabled]="adultsValue == 0"
+          (click)="changeAdults(0)" />
+        <input type='text' name='quantity' [value]='adultsValue' class='qty' readonly />
+        <input type='button' value='+' class='qtyplus' field='quantity'
+          [disabled]="adultsValue == (adultMaxRooms * roomValue)" (click)="changeAdults(1)" />
+      </div></a>
+    </div>
+     <div class="col-12 rmCounterBlock">
+      <a class="">Children <div class="float-right d-flex counterPM">
+        <input type='button' value='-' class='qtyminus' field='quantity'
+          [disabled]="childrenValue == 0" (click)="changeChildren(0)" />
+        <input type='text' name='quantity' [value]='childrenValue' class='qty' readonly />
+        <input type='button' value='+' class='qtyplus' field='quantity'
+          [disabled]="childrenValue == (childrenMaxRooms * roomValue)" (click)="changeChildren(1)" />
+      </div></a>
+    </div>
+     <div class="col-4 rmCounterBlock">
+      <ng-select [searchable]="true" class="form-control dropGender ageDrp" [(ngModel)]="childrenAge">
+        <ng-option *ngFor="let option of genderList" [value]="option">
+          {{ option.value }}
+        </ng-option>
+      </ng-select>
+    </div>
+    <div class="col-12"><div class="border-bottom"></div>
+    </div>
+    </div>
+    
+  </div> -->
+        <button type="button" class="btn btn-default addMore" *ngIf="roomsAndGuestsList.length < 10"
+          (click)="addRoom();scrollTo('addRoomGuestBtn')" id="addRoomGuestBtn" #addRoomGuestBtn>+ Add More</button>
+      </div>
+      <div class="modal-footer">
+        <div class="col-12">
+          <button class="btn btn-primary py-3 px-5 loginBtn " type="submit" (click)="onAddRoomAndGuest()"
+            value="">Update</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

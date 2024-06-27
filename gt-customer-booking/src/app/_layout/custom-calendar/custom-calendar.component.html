@@ -1,0 +1,80 @@
+<div class="calendar__wrapper">
+    <div class="calendar__input-wrapper" id="customCalendar" (click)="onClick(show)" *ngIf="!isMonthlyVacantReportPage">
+      <label *ngIf="!selectedDate" class="cursor-pointer">Select Date</label>  {{selectedDate | date}}
+      <!-- <input [hidden]="true" readonly class="calendar__input" [(ngModel)]="selectedDate"> -->
+      <img class="icon_calendar" [src]="'assets/images/calendar.png'" alt="calendar icon" />
+    </div>
+    <div class="calendar" #calendar *ngIf="show">
+      <div class="calendar__navs">
+        <div class="calendar__month-nav">
+          <button class="calendar__nav-btn" (click)="prevMonth()" [disabled]="!isDisabledPrevMonth(currentDate) || isMonthlyVacantReportPage">&lt;</button>
+          <span>
+            {{currentDate.format('MMMM').toUpperCase()}}
+             {{currentDate.format('YYYY')}}
+             </span>
+          <button class="calendar__nav-btn" 
+          (click)="nextMonth()"
+          [disabled]="isMonthlyVacantReportPage || currentDate > tourEndDate"
+          >&gt;</button>
+          <!-- [disabled]="!isDisabledMonth(currentDate)" -->
+        </div>
+      </div>
+      <div class="calendar__month">
+        <div class="calendar__day-names">
+          <div class="calendar__day-name" 
+                *ngFor="let name of namesOfDays">{{name}}</div>
+        </div>
+        <div class="calendar__weeks">
+          <div class="calendar__week" *ngFor="let week of weeks">
+            <ng-container *ngFor="let day of week">
+              <div class="calendar__date"
+                   [ngClass]="{'today': day.today, 
+                                'selected': day.selected && isTourViewPage, 
+                                'selectedDate': day.selected && isMonthlyVacantReportPage, 
+                                'tourDate': (day.price && isBeforeCurrentDate(day.mDate)), 
+                                'disabled': (!day.price || isTourViewPage && (day.mDate >= tourEndDate && day.mDate <= tourStartDate)) || (isMonthlyVacantReportPage && !day.roomTypeList)}"
+                                (click)="selectDate(day)">
+                                <!-- 'disabled': !isSelectedMonth(day.mDate)}" -->
+                <span class="calendar__number ">{{day.mDate.date()}}</span>
+                <div class="calendar__event" *ngIf="day.price && isTourViewPage">
+                   <i class="la la-rupee"></i>{{day.price}} 
+                </div>
+                <div class="calendar__event" *ngIf="isMonthlyVacantReportPage && day.roomTypeList != undefined">
+                  <!-- <table class="w-100 customCalenderTableClass">
+                    <tr>
+                      <th>Type</th>
+                      <th>Tol</th>
+                      <th>Vac</th>
+                    </tr>
+                    <tr *ngFor="let roomType of day.roomTypeList">
+                      <td>{{roomType.name}}</td>
+                      <td>{{roomType.totalRoom}}</td>
+                      <td>{{roomType.availableRoom}}</td>
+                    </tr>
+                  </table> -->
+                  <div class="roomDeatilsAvaiblity">
+                    <div class="row dateBox">
+                       <div class="col-6 pl-0 pr-0">Type</div>
+                       <div class="col-3 pl-0 pr-0">Tot</div>
+                       <div class="col-3 pl-0 pr-0">Vac</div>
+                    </div>
+                    <div class="row dateBox"  *ngFor="let roomType of day.roomTypeList">
+                      <div class="col-6 pl-0 pr-0"> <span [ngClass]="{'notAvlblName':roomType.availableRoom == 0,'avlblName':roomType.availableRoom != 0}">{{roomType.name}}</span></div>
+                      <div class="col-3 pl-0 pr-0"> <span [ngClass]="{'notAvailableNumber':roomType.availableRoom == 0,'availableNumber':roomType.availableRoom != 0}">{{roomType.totalRoom}}</span> </div>
+                      <div class="col-3 pl-0 pr-0"><span [ngClass]="{'notAvailableNumber':roomType.availableRoom == 0,'availableNumber':roomType.availableRoom != 0}">{{roomType.availableRoom}}</span> </div>
+                   </div>
+                   
+                  </div>
+              </div>
+            </div>
+        </ng-container>
+        <br>
+      
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    
+  </style>

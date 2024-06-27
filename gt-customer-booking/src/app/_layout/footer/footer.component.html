@@ -1,0 +1,67 @@
+<footer class="ftco-footer ftco-section img footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4  order-md-2">
+        <div class="ftco-footer-widget mb-4 ml-md-5">
+          <!-- <h2 class="ftco-heading-2">Useful Links</h2> -->
+          <a href=""><img src="assets/images/newLogo.png" class="footLogo h-190" /></a>
+        </div>
+      </div>
+      <div class="col-md-4 order-md-1">
+        <div class="ftco-footer-widget mb-4 reg-office">
+          <p><strong>Registered office:</strong></p>
+          <p>
+            <!-- <span class="icon icon-map-marker"></span> -->
+             Udyog Bhavan, Block No. 16,<br/> 4th Floor, Sector-11,<br/> Gandhinagar - 382 011.</p>
+          <p>
+            <!-- <span class="icon icon-phone"></span> -->
+            <strong>Tel:</strong> +91 79 23977200 <br/>
+            <strong>Fax:</strong> +91 79 23977202 <br/>
+            <strong>Toll Free Number:</strong> 1800 200 5080 <br/>
+            <strong>E -mail:</strong> <a href="#">info@gujarattourism.com</a> <br/>
+          </p>
+          <!-- <p><span class="icon icon-print"></span>: +91 79 23977202</p>
+          <p><span class="icon icon-phone"></span> 1800 200 5080</p>
+          <p><a href="#"><span class="icon icon-envelope"></span> info@gujarattourism.com</a></p> -->
+          <!-- <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+            <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+            <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+            <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+          </ul> -->
+        </div>
+      </div>
+      
+      <div class="col-md-4 order-md-3 subscribeCol text-right animated fadeInUpShort go">
+       
+          <p><strong>Subscribe</strong></p>
+          <form  [formGroup]="subscriberForm" (ngSubmit)="onSubscribe('subscribeFormId')" #vform="ngForm" id="subscribeFormId" class="subscribe cf" novalidate="novalidate">
+            <div class="">
+              <label for="email">
+                <input id="email" name="email" type="text" class="form-control" required="" autocomplete="off" placeholder="e-mail" style="height: calc(1.5em + 0.75rem + 2px) !important;color: #b2b2b2 !important;" [(ngModel)]="subscriberModel.email" formControlName="email">
+                <small *ngIf="f.email.errors" class="mandatary">
+                  <div *ngIf="f.email.errors.required && (vform.submitted || f.email.touched)">
+                      <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                      Mandatory : This cannot be left blank.</div>
+                      <div *ngIf="f.email.errors.pattern && (vform.submitted || f.email.touched)">
+                        <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                        Email must be a valid email address</div>
+                    <div *ngIf="f.email.errors.maxlength && (vform.submitted || f.email.touched)">
+                        <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                        You have reached maximum limit of 100 allowed characters.. </div>
+                </small>
+              </label>
+            </div>
+            <button class="subscribeBtn"></button>
+          </form>
+          <p><a href="" [routerLink]="['/monthly-vacant-report']">Monthly Vacant Positions</a></p>
+          <!-- <p>
+          	Website Last Updated : 12/18/2019<br>
+          	Website Powered by : <a href="" target="_blank"></a>
+          </p> -->
+          <!-- <p class="copyRig"><span>©</span><strong>Gujarat Tourism</strong></p> -->
+        </div>
+     
+    </div>
+    
+  </div>
+</footer>

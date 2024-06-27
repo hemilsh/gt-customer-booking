@@ -1,0 +1,457 @@
+<section class="ftco-booking ftco-section mt-3 ftco-no-pb">
+    <div class="container">
+        <div class="row no-gutters mt-100">
+            <div class="col-lg-12">
+                <form action="#" class="booking-form aside-stretch">
+                    <div class="row">
+                        <div class="col-md d-flex pr-1">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/location.png" class="bookingLocation" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1 py-0 booking-field autosearchHome">
+
+
+
+                                    <label for="#">Destination</label>
+                                    <ng-autocomplete [data]="tourDropdownList" [searchKeyword]="keyword"
+                                        (selected)='onSelect($event)' (inputChanged)='onInputChangedEvent($event)'
+                                        [itemTemplate]="itemTemplate" [placeHolder]="searchTourPlaceHolder"
+                                        (inputCleared)="onTourInputCleared()" [initialValue]="tourDropdownList[0]">
+                                        <!--
+                                [notFoundTemplate]="notFoundTemplate" -->
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate let-item>
+                                        <div class="row autosearchrow" *ngIf="item.name != ''">
+                                            <div class="col-7">
+                                                <p class="autoIcon"> <span [innerHTML]="item.name"
+                                                        class="locdesty"></span></p>
+                                            </div>
+                                            <div class="col-5">
+                                                <p class="destiny"> {{item.type.value}}
+                                                    <span *ngIf="item.type.key != 1">({{item.total}} Properties)</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+                                    <!-- <ng-template #notFoundTemplate let-notFound>
+                              <div [innerHTML]="notFound"></div>
+                            </ng-template> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex pl-0 pr-0" *blockUI="'filterTourList'">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end ">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/calendar.png" class="bookingDate" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1  booking-field py-0 tourDrp">
+                                    <label for="#">Tour</label>
+                                    <ng-select [searchable]="true" placeholder="Select Tour" name="tours"
+                                        class="form-control1 tcglSelect" [items]="tourFilterDropdownList"
+                                        [(ngModel)]="tourFilterDropdownView" bindLabel="value">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md d-flex pr-0  pl-1  m-pl-15">
+                        <div class="form-group align-self-stretch d-flex align-items-end">
+                          <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                            <img src="assets/images/calendar.png" class="bookingDate" />
+                          </div>
+                          <div class="wrap align-self-stretch py-1  px-1 booking-field">
+                            <label for="#" class="tourMonthdate">Month</label>
+                            <dp-date-picker [(ngModel)]="selectedDateAndMonth" placeholder="Select Month" name="selectedDate" [config]="config" [mode]="'month'"></dp-date-picker>
+                          </div>
+                        </div>
+                      </div> -->
+                        <div class="col-md d-flex pl-0">
+                            <div class="form-group d-flex align-self-stretch">
+                                <a (click)="checkAvailability()"
+                                    class="btn btn-primary py-5 py-md-3 px-3 align-self-stretch d-block"><span>Check
+                                        Availability</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-menu ">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+            <!-- <div class="row justify-content-center mb-5 pb-3">
+				  <div class="col-md-7 heading-section text-center ftco-animate">
+					<span class="subheading">Restaurant</span>
+					<h2>Destinations</h2>
+				  </div>
+				</div> -->
+            <div class="row">
+                <div class="col-12 col-md-3 filterDiv m-pl-0 m-pr-0">
+                    <!--Accordion wrapper-->
+                    <h3>Filter By</h3>
+                    <div class="filterPanel">
+                        <div class="priceFilter pb-10 mb-0">
+                            <label>Day</label><br />
+                            <div class="col-12 col-md-12 pl-0 pr-0">
+                                <div id="rangeSlider" class="range-slider mb-15">
+                                    <div class="range-group height-25">
+                                        <input class="range-input" value="10" [(ngModel)]="minimumDay" role="slider"
+                                            (change)="dayWiseFilterChangePlus()" min="1" max="100" step="1" type="range" />
+                                        <input class="range-input" value="50" [(ngModel)]="maximumDay" role="slider"
+                                            (change)="dayWiseFilterChangeMinus()" min="1" max="100" step="1" type="range" />
+                                    </div>
+                                </div>
+                                {{minimumDay}} - {{maximumDay}}
+                            </div>
+                        </div>
+                            <div class="priceFilter pb-10 mb-0 bb-0">
+                                <label>Price</label><br />
+                                <div class="col-12 col-md-12 pl-0 pr-0">
+                                    <div id="rangeSlider" class="range-slider mb-15">
+                                        <div class="range-group height-25">
+                                            <input class="range-input" value="10" [(ngModel)]="minimumPrice"
+                                                (change)="filterChangePlus()" min="1" max="30000" step="1" type="range" />
+                                            <input class="range-input" value="50" [(ngModel)]="maximumPrice"
+                                                (change)="filterChangeMinus()" min="1" max="30000" step="1" type="range" />
+                                        </div>
+                                    </div>
+                                    <!-- {{minimumPrice}} - {{maximumPrice}} -->
+                                    <div class="row range-slider mb-0">
+                                        <div class="col-12 col-md-5 p-0">
+                                            <input type="text" class="width-100 padding-left-5"
+                                                [(ngModel)]="minimumPrice" />
+                                        </div>
+                                        <div class="col-12 col-md-2 text-align-center">
+                                            - </div>
+                                        <div class="col-12 col-md-5 p-0">
+                                            <input type="text" class="width-100 padding-left-5"
+                                                [(ngModel)]="maximumPrice" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- <div class="priceFilter">
+                        <label>User rating </label><br/>
+                        <ul class="userRating">
+                            <li ><button class="zeroRt">0+</button></li>
+                            <li><button class="oneRt">1+</button></li>
+                            <li><button class="twoRt">2+</button></li>
+                            <li><button class="threeRt">3+</button></li>
+                            <li><button class="fourRt">4+</button></li>
+                        </ul>
+                    </div> -->
+
+                        <!-- <div class="priceFilter mb-0">
+                       
+                         <div class="accordion" id="accordion1">
+                            <div class="accordion-group1">
+                                <div class="accordion-heading cursorPointer" data-toggle="collapse"
+                                    data-parent="#accordion1" data-target="#collapse1">
+                                    <a class="accordion-toggle">
+                                        Tour Package
+                                    </a>
+                                </div>
+                                <div id="collapse1" class="accordion-body collapse hide">
+                                    <div class="accordion-inner">
+      
+                                        <div class="col-12 col-md-12 pl-0 pr-0" *ngFor="let tourPackageType of tourPackageTypeList;">
+                                            <div class="form-group checkbox-group mb-0 text-left">
+                                                <label><span class="paylable">{{tourPackageType.name}}</span>
+                                                    <input type="checkbox" name="tourPackageView"
+                                                        [(ngModel)]="tourPackageView[tourPackageType.id]"
+                                                        (change)="filterPackageChange(tourPackageType,tourPackageView[tourPackageType.id])">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+      
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                        <!-- </div> -->
+                        <!-- <div class="accordion" id="accordion4">
+                      <div class="accordion-group">
+                          <div class="accordion-heading cursorPointer" data-toggle="collapse"
+                              data-parent="#accordion4" data-target="#collapse4">
+                              <a class="accordion-toggle">
+                                  User rating
+                              </a>
+                          </div>
+                          <div id="collapse4" class="accordion-body collapse hide">
+                              <div class="accordion-inner">
+
+                                  <div class="col-12 col-md-12 pl-0 pr-0" *ngFor="let review of hotelReviewList;">
+                                      <div class="form-group checkbox-group mb-0 text-left">
+                                          <label><span class="paylable">{{review.name}}</span>
+                                              <input type="checkbox" name="reviewView"
+                                                  [(ngModel)]="reviewView[review.id]"
+                                                  (change)="filterReviewChange(review,reviewView[review.id])">
+                                              <span class="checkmark"></span>
+                                          </label>
+                                      </div>
+                                  </div>
+
+                                  <br>
+                              </div>
+                          </div>
+                      </div>
+                  </div> -->
+                        <!-- <div class="accordion" id="accordion1">
+                      <div class="accordion-group">
+                          <div class="accordion-heading cursorPointer" data-toggle="collapse"
+                              data-parent="#accordion1" data-target="#collapse1">
+                              <a class="accordion-toggle">
+                                  Tour Package
+                              </a>
+                          </div>
+                          <div id="collapse1" class="accordion-body collapse hide">
+                              <div class="accordion-inner">
+
+                                  <div class="col-12 col-md-12 pl-0 pr-0" *ngFor="let tourPackageType of tourPackageTypeList;">
+                                      <div class="form-group checkbox-group mb-0 text-left">
+                                          <label><span class="paylable">{{tourPackageType.name}}</span>
+                                              <input type="checkbox" name="tourPackageView"
+                                                  [(ngModel)]="tourPackageView[tourPackageType.id]"
+                                                  (change)="filterPackageChange(tourPackageType,tourPackageView[tourPackageType.id])">
+                                              <span class="checkmark"></span>
+                                          </label>
+                                      </div>
+                                  </div>
+
+                                  <br>
+                              </div>
+                          </div>
+                      </div>
+                  </div> -->
+
+                        <!-- <div class="accordion" id="accordion10">
+                      <div class="accordion-group">
+                          <div class="accordion-heading cursorPointer" data-toggle="collapse"
+                              data-parent="#accordion10" data-target="#collapse10">
+                              <a class="accordion-toggle">
+                                Day
+                              </a>
+                          </div>
+                          <div id="collapse10" class="accordion-body collapse hide">
+                              <div class="accordion-inner">
+
+                                  <div class="col-12 col-md-12 pl-0 pr-0">
+                                    <div id="rangeSlider" class="range-slider">
+                                        <div class="range-group">
+                                            <input class="range-input" value="10" [(ngModel)]="minimumDay"
+                                                (change)="dayWiseFilterChange()" min="1" max="100" step="1" type="range" />
+                                            <input class="range-input" value="50" [(ngModel)]="maximumDay"
+                                                (change)="dayWiseFilterChange()" min="1" max="100" step="1" type="range" />
+                                        </div>
+                                    </div>
+                                    {{minimumDay}} - {{maximumDay}}
+                                  </div>
+
+                                  <br>
+                              </div>
+                          </div>
+                      </div>
+                  </div> -->
+                        <!-- <div class="accordion" id="accordion11">
+                        <div class="accordion-group">
+                            <div class="accordion-heading cursorPointer" data-toggle="collapse"
+                                data-parent="#accordion11" data-target="#collapse11">
+                                <a class="accordion-toggle">
+                                    price
+                                </a>
+                            </div>
+                            <div id="collapse11" class="accordion-body collapse hide">
+                                <div class="accordion-inner">
+
+                                    <div class="col-12 col-md-12 pl-0 pr-0">
+                                        <div id="rangeSlider" class="range-slider">
+                                            <div class="range-group">
+                                                <input class="range-input" value="10" [(ngModel)]="minimumPrice"
+                                                    (change)="filterChange()" min="1" max="30000" step="1" type="range" />
+                                                <input class="range-input" value="50" [(ngModel)]="maximumPrice"
+                                                    (change)="filterChange()" min="1" max="30000" step="1" type="range" />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row range-slider">
+                                        <div class="col-12 col-md-5 p-0">
+                                            <input type="text" class="width-100 padding-left-5" [(ngModel)]="minimumPrice"/>
+                                        </div>
+                                                <div class="col-12 col-md-2 text-align-center">
+                                        - </div>
+                                                    <div class="col-12 col-md-5 p-0">
+                                        <input type="text" class="width-100 padding-left-5" [(ngModel)]="maximumPrice"/>
+                                        </div>
+                    
+                                    </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+
+                    </div>
+                    <div class="col-12 col-md-9 tourListSection" infiniteScroll [infiniteScrollDistance]="1"
+                        [infiniteScrollThrottle]="50" (scrolled)="loadMoreTours()">
+                        <div class="row mt-1">
+                            <h3 class="pageTitle">{{selectedTour.name}} : {{tourList.length}} Tours found</h3>
+                            <!-- <div class="dropdown shortDrop">
+                            <button class="btn btn-secondary dropdown-toggle shortDrop" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Sort
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div> -->
+                            <!-- <div class="col-12 pl-0 searchTag">
+                            <span *ngFor="let category of filterArray.categoryList;" class="tag">{{category.name}} <i
+                                    class="fa fa-remove" (click)="removeCategoryFilter(category)"></i></span>
+                            <span *ngFor="let type of filterArray.typeList;" class="tag">{{type.name}} <i
+                                    class="fa fa-remove" (click)="removeTypeFilter(type)"></i></span>
+                            <span class="tag" *ngIf="filterArray.reviewView">{{filterArray.reviewView.name}} <i
+                                    class="fa fa-remove"
+                                    (click)="removeReviewFilter(filterArray.reviewView)"></i></span>
+                        </div> -->
+                            <div class="col-12" *ngIf="tourList.length != 0 && isTourListFound">
+                                <div class="row">
+                                    <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection dsktp-hotellist"
+                                        *ngFor="let tour of tourList;">
+                                        <div class="pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated">
+                                            <div class="img align-self-center1">
+                                                <!-- style="background-image: url(assets/images/tour.png);border-radius: 5px 0 0 5px;" -->
+                                                <img *ngIf="tour.tourGalleryViews"
+                                                    [defaultImage]="'assets/images/loading.gif'"
+                                                    [lazyLoad]="imgDownloadUrl+tour.tourGalleryViews[0].fileView.fileId+'&requireCompressImage=false'"
+                                                    class="width-100" />
+                                                <img *ngIf="!tour.tourGalleryViews" src="assets/images/defaultImage.jpg"
+                                                    class="width-100" />
+                                            </div>
+                                            <div class="desc pr-0">
+                                                <div class="row" style="height:100%">
+                                                    <div class="col-12 col-md-9 hotelDescBlock ">
+                                                        <div class="text align-items-start">
+                                                            <h3><span>{{tour.name}}</span>
+                                                                <!-- <span class="tag">Toran Hotel</span> -->
+                                                            </h3>
+                                                        </div>
+                                                        <div class="d-block hotelbookingDesc">
+                                                            <p>{{tour.description | slice:0:170}}</p>
+                                                            <br />
+
+                                                        </div>
+                                                        <p class="tourLocation1">
+                                                            <span
+                                                                *ngFor="let tourLocationView of tour.tourLocationViews">{{tourLocationView.name}}
+                                                                <span
+                                                                    *ngIf="tour.tourLocationViews[tour.tourLocationViews.length-1] != tourLocationView">,
+                                                                </span>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="align-self-center col-12 col-md-3 hotelListPriceSection"
+                                                        style="height:100%">
+                                                        <div class="text align-items-start">
+                                                            <p class="tourRs margin-b-20"> <span class="">Rs.
+                                                                    {{tour.tourPriceView.price}}</span></p>
+                                                        </div>
+                                                        <div class="bookingBtnblock">
+                                                            <a (click)="bookNow(tour)"
+                                                                class="bookingBtn tourListBtn">More</a>
+                                                            <p class="remDays"> <span>{{tour.days}} days</span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" *ngIf="!isTourListFound">
+                                <div class="row">
+                                    <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection dsktp-hotellist">
+                                        <div class="pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated height-500"
+                                            *blockUI="'tourList'"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-xl-12 d-flex1 onlineBokingListSection norecourdfound"
+                                *ngIf="tourList.length == 0 && isTourListFound">
+                                <div class="pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated">
+                                    Sorry, we couldn't find any matches.
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-xl-12 d-flex1 mobile-hotellist" *ngFor="let tour of tourList;">
+                                <div class="row pricing-entry rounded d-flex ftco-animate fadeInUp ftco-animated ">
+                                    <div class="col-12">
+                                        <img *ngIf="tour.tourGalleryViews" [defaultImage]="'assets/images/loading.gif'"
+                                            [lazyLoad]="imgDownloadUrl+tour.tourGalleryViews[0].fileView.fileId+'&requireCompressImage=false'"
+                                            class="width-100" />
+                                        <img *ngIf="!tour.tourGalleryViews" src="assets/images/defaultImage.jpg"
+                                            class="width-100" />
+                                    </div>
+                                    <div class="col-12 desc p-4">
+                                        <div class="row">
+                                            <div class="col-12 col-md-8 hotelDescBlock">
+                                                <div class="text align-items-start">
+                                                    <h3><span>{{tour.name}}</span><br />
+                                                        <!-- <span class="tag ml-0">Toran Hotel</span>  -->
+                                                    </h3>
+                                                    <!-- <p><span *ngIf="tour.stateView">{{tour.stateView.value}}, </span>
+                                                    <span *ngIf="tour.stateName">{{tour.stateName}}, </span>
+                                                    <span *ngIf="tour.cityView">{{tour.cityView.value}}</span>
+                                                    <span *ngIf="tour.cityName">{{tour.cityName}}</span></p> -->
+                                                </div>
+                                                <div class="d-block hotelbookingDesc">
+                                                    <p>{{tour.description | slice:0:150}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-4 tourPriceList">
+                                                <!-- <div class="text align-items-start row">
+                                                <p> <span class="rating">4.5</span></p>
+                                                <br />
+                                                <p class="mobileReview mt-10"><span class="review">736 Review</span></p>
+                                            </div> -->
+                                                <div class="text align-items-start mb-3">
+                                                    <p class="tourRs"> <span class="">Rs.
+                                                            {{tour.tourPriceView.price}}</span></p>
+                                                </div>
+                                                <div class="row bookingBtnblock ">
+                                                    <a (click)="bookNow(tour)"
+                                                        class="bookingBtn width-100 tourBtn">More</a>
+                                                    <p class="mt-2"> <span>{{tour.days}} days</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-12 text-center ftco-animate">
+                            <p><a class="btn btn-primary rounded">View More</a></p>
+                        </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>

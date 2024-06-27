@@ -1,0 +1,530 @@
+.autocomplete ul {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-left: 1px solid #888;
+  border-right: 1px solid #888;
+  border-bottom: 1px solid #888;
+  list-style: none;
+  padding-left: 0px;
+  margin-top: 2px;
+  background-color: #fff;
+  z-index: 100;
+}
+.autocomplete li {
+  text-align: left;
+  list-style: none;
+  width: 100%;
+  padding: 0.4em 0 0.4em 0;
+}
+.autocomplete li.active {
+  width: 100%;
+  background-color: #4bf;
+}
+
+.autocomplete .highlight {
+  background-color: #e2e2e2;
+}
+.autocomplete li.active .highlight {
+  background: #666;
+  color: #fff;
+}
+.mandatory{color:#ff4961 !important}
+i{cursor: pointer;}
+.display-none{
+  display: none !important;
+}
+.cursor-no-drop{
+  cursor: no-drop;
+}
+.panel-group .panel {
+  border-radius: 0;
+  box-shadow: none;
+  border-color: #EEEEEE;
+}
+
+.panel-default > .panel-heading {
+  padding: 0;
+  border-radius: 0;
+  color: #212121;
+  background-color: #FAFAFA;
+  border-color: #EEEEEE;
+}
+
+.panel-title-acordian {
+  font-size: 14px;
+}
+
+.panel-title-acordian > a {
+display: block;
+padding-bottom: 6px;
+text-decoration: none;
+padding-top: 6px;
+}
+
+.more-less {
+  float: right;
+  color: #212121;
+}
+
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #EEEEEE;
+}
+
+.ng-dropdown-panel {
+opacity: 1;
+background: #ffffff;
+top: 45px;
+box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.16);
+left: 0;
+z-index: 999;
+position: absolute;
+width: 100%;
+}
+.ng-dropdown-panel .ng-option .ng-option-label
+{width: 100%;
+padding: 0px 12px;
+display: inline-block;}
+
+.ng-select-container .ng-dropdown-panel:nth-child(n+1) {top: -81px !important;}
+.ng-option.ng-option-selected{
+  background-color: #a84924  !important;
+}
+.ng-option.ng-option-selected .ng-option-label{
+    color: #fff !important;
+}
+.dp-input-container input{
+  border: none ;
+}
+.dp-input-container input:focus {
+  border: none !important;
+}
+
+app-custom-calendar {width: 100% !important;}
+      app-custom-calendar .calendar{width: 100% !important;}
+      /* app-custom-calendar .calendar__week{min-height: 100px;} */
+      app-custom-calendar .calendar__number{font-size: 12px !important;padding: 0px;}
+      app-custom-calendar .calendar__event{font-size: 10px !important; color: #944725 !important;z-index: 10;text-align: left;
+        font-weight: normal;padding-bottom: 0px;margin-top: -10px;}
+      app-custom-calendar .calendar__event .bookedFlag{color: red !important;}
+      app-custom-calendar .calendar__event .availabeFlag{color: green !important;}
+        app-custom-calendar .calendar__event i {font-size: 12px !important;}
+      app-custom-calendar .calendar__date{height: auto !important;min-height: 40px;}
+      app-custom-calendar .calendar__date, .calendar__day-name{display:grid !important;font-size: 16px;}
+      app-custom-calendar .calendar__date::after{height: 100% !important;
+        width: 100% !important;border-radius:0 !important ;border: 1px solid #c7c7c74d;align-items: inherit !important;}
+      .calendar__navs {background-color: #f38c2e !important;}
+      .calendar__day-names {background-color: #f38c2ebf !important;}
+      .calendar__date.selected::after {background-color: #f38c2ebf !important;}
+      /* .calendar__date.selected .calendar__number {padding-top: 25px !important;} */
+      .calendar__month-nav {font-size: 18px;}
+      .calendar__date:hover::after{background-color: #f38c2ebf !important;opacity: .8 !important;}
+      .calendar__date, .calendar__day-name {align-items: inherit !important;}
+      
+
+
+      .ng-select .ng-has-value .ng-placeholder {
+        display: none;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+.dp-calendar-weekday {
+    height: 25px;
+    width: 30px;
+    line-height: 25px;
+    background: #E0E0E0;
+    border: 1px solid #E0E0E0;
+  }
+
+  .dp-calendar-wrapper {
+    border: 1px solid #E0E0E0;
+  }
+
+  .dp-calendar-month {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+  }
+  .dp-calendar-month:hover {
+    background: #E0E0E0;
+  }
+
+  .dp-selected {
+    background: #f28130 !important;
+    color: #FFFFFF;
+  }
+  .dp-selected:hover {
+    background: #f28130 !important;
+  }
+
+  .dp-current-month {
+    /* border: 1px solid #f28130 !important; */
+  }
+
+  .dp-calendar-nav-container {
+    position: relative;
+    box-sizing: border-box;
+    height: 25px;
+    border: 1px solid #000000;
+    border-bottom: none;
+  }
+
+  .dp-nav-date-btn {
+    box-sizing: border-box;
+    height: 25px;
+    border: 1px solid #000000;
+    border-bottom: none;
+  }
+
+  .dp-nav-btns-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 5px;
+    display: inline-block;
+  }
+
+  .dp-calendar-nav-container-left, .dp-calendar-nav-container-right {
+    display: inline-block;
+  }
+
+  .dp-calendar-nav-left,
+  .dp-calendar-nav-right,
+  .dp-calendar-secondary-nav-left,
+  .dp-calendar-secondary-nav-right {
+    position: relative;
+    width: 16px;
+    cursor: pointer;
+  }
+
+  .dp-calendar-nav-left, .dp-calendar-nav-right {
+    line-height: 0;
+  }
+
+  .dp-calendar-secondary-nav-left, .dp-calendar-secondary-nav-right {
+    padding: 0;
+  }
+
+  .dp-calendar-secondary-nav-right {
+    left: initial;
+    right: 5px;
+  }
+
+  .dp-nav-header {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 5px;
+    display: inline-block;
+    font-size: 13px;
+  }
+
+  .dp-nav-header-btn {
+    cursor: pointer;
+  }
+
+  .dp-current-location-btn {
+    position: relative;
+    top: -1px;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    background: fade(#000000, 60);
+    border: 1px solid fade(#000000, 60);
+    outline: none;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 3px #FFFFFF;
+    cursor: pointer;
+
+  }
+  .dp-current-location-btn:hover {
+        background: #000000;
+      }
+
+    .dp-calendar-nav-container {
+      height: 30px;
+      border: 1px solid #E0E0E0;
+    }
+
+    .dp-calendar-nav-left,
+    .dp-calendar-nav-right,
+    .dp-calendar-secondary-nav-left,
+    .dp-calendar-secondary-nav-right {
+      border: none;
+      background: #FFFFFF;
+      outline: none;
+      font-size: 16px;
+      padding: 0;
+    }
+
+    .dp-calendar-secondary-nav-left,
+    .dp-calendar-secondary-nav-right {
+      width: 20px;
+    }
+
+    .dp-nav-header-btn {
+      height: 20px;
+      width: 80px;
+      border: none;
+      background: #FFFFFF;
+      outline: none;
+
+    }
+        .dp-nav-header-btn:hover {
+          background: fade(#000000, 5);
+        }
+  
+        .dp-nav-header-btn:active {
+          background: fade(#000000, 10);
+        }
+        .radioBtnNormal{    position: absolute;
+          top: 5px;
+          left: 13px;
+          height: 25px;
+          width: 25px;
+          background-color: #eee;
+          border-radius: 50%;}
+          .radioBtnNormalSelected{
+            background-color: #22b573;
+          }
+          .fs-12{
+            font-size: 12px;
+          }
+          .daterangepicker .ranges{clear: both;float: right !important;margin-right: 10px;}
+        .daterangepicker .range_inputs .applyBtn{float: right !important;background-color: #f28130;border: 1px solid #f28130;}
+        .daterangepicker .range_inputs .cancelBtn {border: 1px solid #f28130;
+          color: #f28130;
+          margin-right: 5px;}
+          .pinkbk {background-color: #fff;
+            border-top: 1px solid #c7c7c7 !important;
+            border-bottom: 1px solid #c7c7c7 !important;}
+          .pinkbk th{border:0px !important}
+          .bookingStatusCB.dropdown-toggle::after{display: none;}
+.bookingStatusCB.dropdown-toggle::before{display: none;}
+.bookingStatusDRP::before{display: none !important;}
+.bookingStatusCB.dropdown-toggle{background-color: #fff;}
+.bookingStatusDRP.dropdown-toggle::after{display: none;}
+.bookingStatusDRP.completed{background-color: #1ec650;}
+.bookingStatusDRP.advance{background-color: #4a90e2;}
+.bookingStatusDRP.canceled{background-color: #ff385c;}
+.bookingStatusDRP{color: #fff;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 1px 15px 0px 15px;
+  border-radius: 50px;
+  width: 100px !important;
+  display: inline-block;
+  max-width: 100%;
+  text-align: center;
+  height: 20px;
+}
+.bookingStatusCB {color:#333}
+.statusRdoDrp li{font-weight: 500;}
+.statusRdoDrp li a{color: #333;
+  font-size: 14px;
+  padding: 5px 20px !important;
+  width: 100%;
+  display: block;}
+.statusRdoDrp li a input{margin-right: 5px;float: left;
+  margin-top: 7px;}
+.statusRdoDrp li a label{margin: 0;cursor: pointer;}
+.statusRdoDrp li:nth-child(1) label{color: #4a90e2;}
+.statusRdoDrp li:nth-child(2) label{color: #1ec650;}
+.statusRdoDrp li:nth-child(3) label{color: #ff385c}
+
+.loader {
+  background-color: #3330;
+  /* background-image: url(../images/loader.gif); */
+  text-align: left;
+  color: #f5f5f5;
+  padding: 10px;
+  background-size: 25px 25px !important;
+  filter: alpha(opacity=100);
+  width: 26px !important;
+  height: 26px !important;
+  /* border: 0px !important; */
+  /* animation: inherit !important; */
+  /* border-radius: 0 !important; */
+  /* margin-top: 18px !important; */
+}
+.hotel-booking-date{
+  width: 100%;
+    background-color: #c7c7c747;
+    padding-left: 15px;
+}
+.daterangepicker.dropdown-menu.ltr.show-calendar.opensright{    margin-left: -60px;}
+.oddEvenTable tr:nth-child(even) {background-color: rgba(199, 199, 199, 0.28);}
+.brdcm {margin-top: 30px;}
+.brdcm a {color: #333;font-size: 17px;font-weight: 300;margin-right: 20px ;}
+.brdcm span {color: #333;font-size: 17px;font-weight: 500;margin-right: 15px ;}
+.brdcm i{font-size: 17px;margin-right: 10px;
+  color: #dfd2ac;
+  font-weight: 700;}
+.padding-t-45{
+  padding-top: 45px;
+}
+.ml-15{
+  margin-left: 15px;
+}
+.cityNameBooking{
+  color: #c7c7c7;
+}
+
+.userViewShortname {display: block;
+  width: 100px;
+  height: 100px;
+  background-color: #f38c2e;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100px;border-radius: 0% !important;
+  margin: 0 auto;
+}
+  .showpassWord {    position: absolute;
+    right: 5px;
+    top: 50px;
+    cursor: pointer;
+}
+.height-100{
+      height: 100px;
+}
+.h-190{
+      height: 190px;
+}
+.ng-option-marked{
+background-color: #f28130;
+}
+.ng-option-label:hover{
+background-color: #f28130 !important;
+}
+.ng-option-marked .ng-option-label{
+color: #fff;
+}
+.payment-select .ng-select-container{
+  margin-top: -7px;
+}
+.ng-option.ng-option-selected .ng-option-label:hover{
+  background-color: #a84924  !important;
+}
+.ng-arrow-wrapper .ng-arrow:before{    font-weight: 400;
+  content: "\f107";
+  font-family: "FontAwesome";
+  position: relative;
+  font-size: 18px;
+  margin-right: 5px;
+  margin-top: -2px;
+  right: 16px;}
+  .ng-has-value .ng-arrow-wrapper{
+    display: none;
+  }
+  .p-15-20{
+    padding: 15px 20px ;
+  }
+  .cancelBookingClass{
+    color: #7b7a7a !important;
+    font-size: 14px !important;
+  }
+  .bookingCancelled {
+    border-bottom: 1px solid #c7c7c7;
+    padding-bottom: 50px;
+    margin-bottom: 20px;
+}
+.bookingCancelled span {
+    font-size: 24px;
+    color: #000;
+    margin-left: 90px;
+}
+.bookingCancelled p {
+    font-size: 14px;
+    color: #000;
+    margin-left: 90px;
+    margin-top: 0px;
+}
+.bookingCancelled::before {
+    background-image: url("../../assets/images/cancel.png");
+    background-size: 70px 70px;
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    content: "";
+    position: absolute;
+}
+.bg-transparent{
+  background-color: transparent !important;
+}
+.overflow-visible{
+  overflow: visible !important;
+}
+.focusRed{border: 1px solid red !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 73, 97, 0) !important;}
+  .fa-angle-left:before {
+    content: "\f104";
+    margin-right: 4px;
+    padding-top: 8px;
+}
+.fa-angle-right:before {
+  content: "\f105";
+  padding-top: 8px;
+  margin-left: 2px;
+}
+.roomAmenitiesIcon{
+  height: 20px;
+  width: 20px !important;
+}
+.font-size-12{
+  font-size: 12px ;
+}
+.pt-36{
+  padding-top: 36px;
+}
+.tbrBox table,.tbrBox th,.tbrBox thead,.tbrBox td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+@media (max-width: 768px) {
+.bookingCancelled::before {
+  position: relative !important;
+}
+
+.bookingCancelled span {
+  font-size: 18px !important;
+  color: #000;
+  margin-left: 0 !important;
+  line-height: normal;
+  display: block;
+}
+.bookingCancelled p {
+  margin-left: 0px !important;
+  line-height: normal;
+  margin-top: 10px !important;
+}
+}
+.right-align-date-range-picker-menu.daterangepicker.dropdown-menu {left: auto !important; right: 0 !important;}
+.date-range-picker-menu.daterangepicker.dropdown-menu {margin-top: 40px !important;}
+.cancel-booking{
+  background-color: #BD362F;
+}
+.paymentRadio {display: inline-block;margin-right: 15px;}
+.modelDrp .ng-input {height: 51px;margin-top: 1px;}
+.modelDrp input{height: 45px;}
+.modelDrp .ng-value-label {z-index: 1;position: relative;}
+.modelAcord input {    border-left: 1px solid #c7c7c7;
+  border-right: 1px solid #c7c7c7;
+  border-top: 1px solid #c7c7c7;
+  border-bottom: 1px solid #c7c7c7;
+}
+.termsAndConditionsTbl th, .termsAndConditionsTbl td{padding: 10px;}

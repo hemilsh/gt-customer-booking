@@ -1,0 +1,1039 @@
+<section class="ftco-section ftco-menu mt-5">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+            <form (ngSubmit)="redirectToPayment('applicantDetailsFormId')" id="applicantDetailsFormId" #vform="ngForm">
+                <div class="row">
+                    <div class="col-12 col-md-8 OrderingInMobile m-pl-0 m-pr-0">
+                        <div class="row" *ngIf="bookingOfficer">
+                            <div class="col-lg-12 col-xl-12">
+                                <h2 class="formSubTitle bb-0 mt-0 pt-0">Citizen Details</h2>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="bookingOfficer" id="applicantFormId" [formGroup]="applicantForm">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="name">Name* </label>
+                                    <input class="form-control" type="text" [(ngModel)]="applicantModel.name"
+                                        formControlName="name" placeholder="Name" />
+                                    <small class="mandatory" *ngIf="f.name.errors">
+                                        <div *ngIf="f.name.errors.required && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                        <div *ngIf="f.name.errors.maxlength && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 30 allowed characters..
+                                        </div>
+                                        <div *ngIf="f.name.errors.pattern && (vform.submitted || f.name.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Alphabets, space & dots are allowed.
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="email">Email* </label>
+                                    <input type="text" class="form-control" placeholder="Email" id="email"
+                                        [(ngModel)]="applicantModel.email" formControlName="email"
+                                        (ngModelChange)="applicantModel.email = $event.toLowerCase()">
+                                    <small *ngIf="f.email.errors" class="mandatary">
+                                        <div *ngIf="f.email.errors.required && (vform.submitted || f.email.touched)">
+                                            <span>
+                                                <img src="assets/images/invalid.svg" alt="invalid">
+                                            </span>
+                                            Mandatory : This cannot be left blank.
+                                        </div>
+                                        <div *ngIf="f.email.errors.pattern && (vform.submitted || f.email.touched)">
+                                            <span>
+                                                <img src="assets/images/invalid.svg" alt="invalid">
+                                            </span>
+                                            Email must be a valid email address
+                                        </div>
+                                        <div *ngIf="f.email.errors.maxlength && (vform.submitted || f.email.touched)">
+                                            <span>
+                                                <img src="assets/images/invalid.svg" alt="invalid">
+                                            </span>
+                                            You have reached maximum limit of 100 allowed characters..
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="mobile"> Mobile* </label>
+                                    <input class="form-control" type="text" [(ngModel)]="applicantModel.mobile"
+                                        formControlName="mobile" placeholder="Mobile" />
+
+                                    <small class="mandatory" *ngIf="f.mobile.errors">
+                                        <div *ngIf="f.mobile.errors.required && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                        <div *ngIf="f.mobile.errors.maxlength && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 15 allowed characters..
+                                        </div>
+                                        <div *ngIf="f.mobile.errors.pattern && (vform.submitted || f.mobile.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Invalid Mobile no.
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="address"> Address* </label>
+                                    <input class="form-control" type="text" [(ngModel)]="applicantModel.address"
+                                        formControlName="address" placeholder="Address" />
+                                    <small class="mandatory" *ngIf="f.address.errors">
+                                        <div
+                                            *ngIf="f.address.errors.required && (vform.submitted || f.address.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                        <div
+                                            *ngIf="f.address.errors.maxlength && (vform.submitted || f.address.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 1000 allowed characters..
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="landmark"> Landmark</label>
+                                    <input class="form-control" type="text" [(ngModel)]="applicantModel.landmark"
+                                        formControlName="landmark" placeholder="Landmark" />
+                                    <small class="mandatory" *ngIf="f.landmark.errors">
+                                        <div
+                                            *ngIf="f.landmark.errors.maxlength && (vform.submitted || f.landmark.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 1000 allowed characters..
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="countryView">Select Country* </label>
+                                    <ng-select [searchable]="true" formControlName="countryView" [items]="countryViews"
+                                        [(ngModel)]="applicantModel.countryView" bindLabel="value"
+                                        placeholder="Select Country" (change)="findState(applicantModel.countryView)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="stateView">Select State* </label>
+                                    <ng-select [searchable]="true" formControlName="stateView" [items]="stateViews"
+                                        placeholder="Select State"
+                                        *ngIf="applicantModel.countryView != null && applicantModel.countryView.key == 96"
+                                        [(ngModel)]="applicantModel.stateView" bindLabel="value"
+                                        (change)="findCity(applicantModel.stateView)">
+                                    </ng-select>
+                                    <input class="form-control" type="text" [(ngModel)]="applicantModel.stateName"
+                                        formControlName="stateName" placeholder="State Name"
+                                        [hidden]="applicantModel.countryView != null && applicantModel.countryView.key == 96" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="cityView">Select City* </label>
+                                    <ng-select [searchable]="true" formControlName="cityView" [items]="cityViews"
+                                        placeholder="Select City"
+                                        *ngIf="applicantModel.countryView != null && applicantModel.countryView.key == 96"
+                                        [(ngModel)]="applicantModel.cityView" bindLabel="value">
+                                    </ng-select>
+                                    <input class="form-control" type="text" [(ngModel)]="applicantModel.cityName"
+                                        formControlName="cityName" placeholder="City Name"
+                                        [hidden]="applicantModel.countryView != null && applicantModel.countryView.key == 96" />
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="pincode">Pin Code* </label>
+                                    <input class="form-control" type="text" [(ngModel)]="applicantModel.pincode"
+                                        formControlName="pincode" placeholder="Pin Code" />
+                                    <small class="mandatory" *ngIf="f.pincode.errors">
+                                        <div
+                                            *ngIf="f.pincode.errors.required && (vform.submitted || f.pincode.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                        <div
+                                            *ngIf="f.pincode.errors.maxlength && (vform.submitted || f.pincode.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            You have reached maximum limit of 6 allowed characters..
+                                        </div>
+                                        <div *ngIf="f.pincode.errors.pattern && (vform.submitted || f.pincode.touched)">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Invalid Pin Code.
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="row" >
+                        <div class="col-sm-12 col-lg-6 col-xl-6">
+                            <label>Name*</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" [(ngModel)]="paymentInfo.applicantView.name"
+                                    placeholder="Name" [ngModelOptions]="{standalone: true}"
+                                    [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(paymentInfo.applicantView.name) || checkMaxLengthError(paymentInfo.applicantView.name,30) || checkRegexError(paymentInfo.applicantView.name,'ALPHABETS_WITH_SPACE_AND_DOT'))}">
+                                <small *ngIf="isFormSubmitted" class="mandatary">
+                                    <div *ngIf="checkMandatoryError(paymentInfo.applicantView.name)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Mandatory : This cannot be left blank.</div>
+                                    <div *ngIf="checkMaxLengthError(paymentInfo.applicantView.name,30)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        You have reached maximum limit of 30 allowed characters.. </div>
+                                    <div *ngIf="checkRegexError(paymentInfo.applicantView.name,'ALPHABETS_WITH_SPACE_AND_DOT')">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Alphabets & space are allowed. </div>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6 col-xl-6">
+                            <label>Email*</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" [(ngModel)]="paymentInfo.applicantView.email"
+                                    (ngModelChange)="paymentInfo.applicantView.email = $event.toLowerCase()"
+                                    placeholder="abc@youremail.com" [ngModelOptions]="{standalone: true}"
+                                    [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(paymentInfo.applicantView.email) || checkMaxLengthError(paymentInfo.applicantView.email,100) || checkRegexError(paymentInfo.applicantView.email,'Email'))}">
+                                <small *ngIf="isFormSubmitted" class="mandatary">
+                                    <div *ngIf="checkMandatoryError(paymentInfo.applicantView.email)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Mandatory : This cannot be left blank.</div>
+                                    <div *ngIf="checkMaxLengthError(paymentInfo.applicantView.email,100)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        You have reached maximum limit of 100 allowed characters.. </div>
+                                    <div *ngIf="checkRegexError(paymentInfo.applicantView.email,'Email')">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Email must be a valid email address. </div>
+                                </small>
+                            </div>
+                        </div>
+                       
+                        <div class="col-sm-12 col-lg-6 col-xl-6">
+                            <label>Mobile*</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" [(ngModel)]="paymentInfo.applicantView.mobile"
+                                    placeholder="Ex - 9898989898" [ngModelOptions]="{standalone: true}"
+                                    [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(paymentInfo.applicantView.mobile) || checkMaxLengthError(paymentInfo.applicantView.mobile,100) || checkRegexError(paymentInfo.applicantView.mobile,'PHONE_NUMBER'))}">
+                                <small *ngIf="isFormSubmitted" class="mandatary">
+                                    <div *ngIf="checkMandatoryError(paymentInfo.applicantView.mobile)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Mandatory : This cannot be left blank.</div>
+                                    <div *ngIf="checkMaxLengthError(paymentInfo.applicantView.mobile,15)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        You have reached maximum limit of 15 allowed characters.. </div>
+                                    <div *ngIf="checkRegexError(paymentInfo.applicantView.mobile,'PHONE_NUMBER')">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Mobile is invalid. </div>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-12 col-xl-12">
+                            <label>Address*</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" [(ngModel)]="paymentInfo.applicantView.address"
+                                    placeholder="Address" [ngModelOptions]="{standalone: true}"
+                                    [ngClass]="{'form-invalid':isFormSubmitted && checkMandatoryError(paymentInfo.applicantView.address)}">
+                                <small *ngIf="isFormSubmitted" class="mandatary">
+                                    <div *ngIf="checkMandatoryError(paymentInfo.applicantView.address)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Mandatory : This cannot be left blank.</div>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6 col-xl-6">
+                            <label>Landmark*</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" [(ngModel)]="paymentInfo.applicantView.landmark"
+                                    placeholder="landmark" [ngModelOptions]="{standalone: true}">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6 col-xl-6">
+                            <label>Select Country*</label>
+                            <div class="form-group">
+                                <ng-select [searchable]="true" formControlName="countryView" [items]="countryViews"
+                                        [(ngModel)]="paymentInfo.applicantView.countryView" bindLabel="value"
+                                        (change)="findState($event)" [ngModelOptions]="{standalone: true}">
+                                    </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6 col-xl-6">
+                            <label>Select State*</label>
+                            <div class="form-group">
+                                <ng-select [searchable]="true" formControlName="stateView" [items]="stateViews"
+                                *ngIf="paymentInfo.applicantView.countryView != null && paymentInfo.applicantView.countryView.key == 96"
+                                [(ngModel)]="paymentInfo.applicantView.stateView" bindLabel="value"
+                                (change)="findCity($event)">
+                            </ng-select>
+                            <input class="form-control" type="text" [(ngModel)]="paymentInfo.applicantView.stateName"
+                                formControlName="stateName"
+                                [hidden]="paymentInfo.applicantView.countryView != null && paymentInfo.applicantView.countryView.key == 96" />
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6 col-xl-6">
+                            <label>Select City*</label>
+                            <div class="form-group">
+                                <ng-select [searchable]="true" formControlName="cityView" [items]="cityViews"
+                                *ngIf="paymentInfo.applicantView.countryView != null && paymentInfo.applicantView.countryView.key == 96"
+                                [(ngModel)]="paymentInfo.applicantView.cityView" bindLabel="value">
+                            </ng-select>
+                            <input class="form-control" type="text" [(ngModel)]="paymentInfo.applicantView.cityName"
+                                formControlName="cityName"
+                                [hidden]="paymentInfo.applicantView.countryView != null && paymentInfo.applicantView.countryView.key == 96" />
+                        </div>
+                    </div>
+                        <div class="col-sm-12 col-lg-6 col-xl-6">
+                            <label>Pin Code*</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" [(ngModel)]="paymentInfo.applicantView.pincode"
+                                    placeholder="Pin Code" [ngModelOptions]="{standalone: true}"
+                                    [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(paymentInfo.applicantView.pincode) || checkMaxLengthError(paymentInfo.applicantView.pincode,6))}">
+                                <small *ngIf="isFormSubmitted" class="mandatary">
+                                    <div *ngIf="checkMandatoryError(paymentInfo.applicantView.mobile)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Mandatory : This cannot be left blank.</div>
+                                    <div *ngIf="checkMaxLengthError(paymentInfo.applicantView.mobile,6)">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        You have reached maximum limit of 6 allowed characters.. </div>
+                                    <div *ngIf="checkRegexError(paymentInfo.applicantView.mobile,'PHONE_NUMBER')">
+                                        <span>
+                                            <img src="assets/images/invalid.svg" alt="invalid">
+                                        </span>
+                                        Mobile is invalid. </div>
+                                </small>
+                            </div>
+                    </div>
+                    </div> -->
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12">
+                                <h4 class="formSubTitle bb-0 float-left mt-0 pt-2">Room Wise Traveller Details</h4>
+                                <!-- <span class="float-right color-red pt-36">5% discount on digital payment</span> -->
+                            </div>
+                        </div>
+
+                        <div class="row" *ngFor="let roomBooking of paymentInfo.roomBookingViews">
+                            <div class="col-lg-12 col-xl-12">
+                                <h4 class="formSubTitle bb-0">{{roomBooking.roomTypeView.name}}</h4>
+                            </div>
+                            <div id="guestInformationId" class="col-lg-12 col-xl-12 paymentAccordian">
+                                <ngb-accordion activeIds="{{accordionId}}" (panelChange)="beforeChange($event)"
+                                    closeOthers="true">
+
+                                    <ngb-panel title="Room {{i+1}}" id="{{roomBooking.id}}{{i}}"
+                                        (click)="setAccordionId(roomBooking.id+''+i)"
+                                        *ngFor="let guestInformation of roomBooking.guestInformationViews; let i = index">
+                                        <ng-template ngbPanelContent>
+                                            <label *ngIf="guestInformation.seniorCitizen" class="color-red">You are
+                                                eligible for senior citizen discount.</label>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Full Name*</label>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            [(ngModel)]="guestInformation.name" placeholder="Full Name"
+                                                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.name) || checkMaxLengthError(guestInformation.name,100) || checkRegexError(guestInformation.name,'ALPHABETS_WITH_SPACE'))}">
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div *ngIf="checkMandatoryError(guestInformation.name)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                            <div *ngIf="checkMaxLengthError(guestInformation.name,100)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                You have reached maximum limit of 100 allowed
+                                                                characters..
+                                                            </div>
+                                                            <div
+                                                                *ngIf="checkRegexError(guestInformation.name,'ALPHABETS_WITH_SPACE')">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Alphabets & space are allowed.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Gender*</label>
+                                                    <div class="form-group">
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            placeholder="Select Gender" [searchable]="true"
+                                                            [ngModelOptions]="{standalone: true}" [items]="genderList"
+                                                            [(ngModel)]="guestInformation.gender" bindLabel="value"
+                                                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.gender))}">
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div *ngIf="checkMandatoryError(guestInformation.gender)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Age*</label>
+                                                    <div class="form-group">
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            placeholder="Age" [searchable]="true" [items]="ageList"
+                                                            bindValue="value" [(ngModel)]="guestInformation.age"
+                                                            bindLabel="value" [ngModelOptions]="{standalone: true}"
+                                                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.age))}"
+                                                            (change)="setSeniorCitizen(guestInformation);onChangeSeniorCitizen(roomType,guestInformation)">
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div *ngIf="checkMandatoryError(guestInformation.age)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Adults*</label>
+                                                    <div class="form-group ">
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            placeholder="Total Adult" [searchable]="true"
+                                                            [items]="guestInformation.totalAdultList"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.totalAdult))}"
+                                                            [(ngModel)]="guestInformation.totalAdult" bindLabel="value"
+                                                            (change)="getTotalChildrenList(guestInformation,roomBooking);onChangeSeniorCitizen(roomType,guestInformation);setOtherGuestInfo(guestInformation,roomBooking)">
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div
+                                                                *ngIf="checkMandatoryError(guestInformation.totalAdult)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Children*</label>
+                                                    <div class="form-group ">
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            placeholder="Total Children" [searchable]="true"
+                                                            [items]="guestInformation.totalChildrenList"
+                                                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.totalChildren))}"
+                                                            [(ngModel)]="guestInformation.totalChildren"
+                                                            bindLabel="value" [ngModelOptions]="{standalone: true}"
+                                                            (change)="onChangeChildren(guestInformation);onChangeSeniorCitizen(roomType,guestInformation);setOtherGuestInfo(guestInformation,roomBooking)">
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div
+                                                                *ngIf="checkMandatoryError(guestInformation.totalChildren)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-4 col-lg-4"
+                                                    *ngFor="let childAge of guestInformation.childAge; let k = index">
+                                                    <label>Children {{k+1}} Age</label>
+                                                    <div class="form-group ">
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.childAge[k]))}"
+                                                            placeholder="Children Age" [searchable]="true"
+                                                            [items]="childAgeList" [ngModelOptions]="{standalone: true}"
+                                                            [(ngModel)]="guestInformation.childAge[k]" bindLabel="value"
+                                                            (change)="onChangeSeniorCitizen(roomType,guestInformation)">
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div
+                                                                *ngIf="checkMandatoryError(guestInformation.childAge[k])">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-sm-12 col-md-4 col-lg-4">
+                                                    <label>Senior Citizen*</label>
+                                                    <div class=""> 
+                                                        <ng-select class="form-control dropGender payment-select"
+                                                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.seniorCitizen))}"
+                                                            placeholder="Select Senior Citizen" [searchable]="true"
+                                                            bindValue="id" [items]="seniorCitizenList"
+                                                            [(ngModel)]="guestInformation.seniorCitizen"
+                                                            bindLabel="value" name="seniorCitizen{{i}}" disabled
+                                                            (change)="onChangeSeniorCitizen(roomType,guestInformation)">
+                                                        </ng-select>
+                                                        <small *ngIf="isFormSubmitted" class="mandatary">
+                                                            <div
+                                                                *ngIf="checkMandatoryError(guestInformation.seniorCitizen)">
+                                                                <span>
+                                                                    <img src="assets/images/invalid.svg" alt="invalid">
+                                                                </span>
+                                                                Mandatory : This cannot be left blank.
+                                                            </div>
+                                                        </small>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <ngb-accordion closeOthers="true" class="mt-4 dusplay-block"
+                                                activeIds="{{subAccordionId}}"
+                                                *ngIf="guestInformation.otherGuestInformationViews">
+                                                <ngb-panel title="Other Guest Information of person {{j+1}}"
+                                                    id="{{roomBooking.id}}{{i}}{{j}}"
+                                                    *ngFor="let otherGuestInformation of guestInformation.otherGuestInformationViews;let j = index">
+                                                    <ng-template ngbPanelContent>
+                                                        <label *ngIf="otherGuestInformation.seniorCitizen"
+                                                            class="color-red">You are eligible for senior citizen
+                                                            discount.</label>
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                                                <label>Full Name*</label>
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" name="name"
+                                                                        [(ngModel)]="otherGuestInformation.name"
+                                                                        placeholder="Full Name">
+                                                                    <!-- [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(otherGuestInformation.name) || checkMaxLengthError(otherGuestInformation.name,100) || checkRegexError(otherGuestInformation.name,'ALPHABETS_WITH_SPACE'))}"  -->
+                                                                    <small *ngIf="isFormSubmitted" class="mandatary">
+                                                                        <div
+                                                                            *ngIf="checkMandatoryError(otherGuestInformation.name)">
+                                                                            <span>
+                                                                                <img src="assets/images/invalid.svg"
+                                                                                    alt="invalid">
+                                                                            </span>
+                                                                            Mandatory : This cannot be left blank.
+                                                                        </div>
+                                                                        <div
+                                                                            *ngIf="checkMaxLengthError(otherGuestInformation.name,100)">
+                                                                            <span>
+                                                                                <img src="assets/images/invalid.svg"
+                                                                                    alt="invalid">
+                                                                            </span>
+                                                                            You have reached maximum limit of 100
+                                                                            allowed
+                                                                            characters..
+                                                                        </div>
+                                                                        <div
+                                                                            *ngIf="checkRegexError(otherGuestInformation.name,'ALPHABETS_WITH_SPACE')">
+                                                                            <span>
+                                                                                <img src="assets/images/invalid.svg"
+                                                                                    alt="invalid">
+                                                                            </span>
+                                                                            Alphabets & space are allowed.
+                                                                        </div>
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                                                <label>Gender*</label>
+                                                                <div class="form-group">
+                                                                    <ng-select
+                                                                        class="form-control dropGender payment-select"
+                                                                        placeholder="Select Gender" [searchable]="true"
+                                                                        [items]="genderList" name="gender"
+                                                                        [(ngModel)]="otherGuestInformation.gender"
+                                                                        bindLabel="value">
+                                                                        <!-- [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(otherGuestInformation.gender))}" -->
+                                                                    </ng-select>
+                                                                    <small *ngIf="isFormSubmitted" class="mandatary">
+                                                                        <div
+                                                                            *ngIf="checkMandatoryError(otherGuestInformation.gender)">
+                                                                            <span>
+                                                                                <img src="assets/images/invalid.svg"
+                                                                                    alt="invalid">
+                                                                            </span>
+                                                                            Mandatory : This cannot be left blank.
+                                                                        </div>
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                                                <label>Age*</label>
+                                                                <div class="form-group">
+                                                                    <ng-select
+                                                                        class="form-control dropGender payment-select"
+                                                                        placeholder="Age" [searchable]="true"
+                                                                        [items]="otherGuestInfoAgeList"
+                                                                        bindValue="value" name="age"
+                                                                        [(ngModel)]="otherGuestInformation.age"
+                                                                        bindLabel="value"
+                                                                        (change)="setSeniorCitizen(otherGuestInformation);onChangeSeniorCitizen(roomType,otherGuestInformation)">
+                                                                        <!-- [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(otherGuestInformation.age))}" -->
+                                                                    </ng-select>
+                                                                    <small *ngIf="isFormSubmitted" class="mandatary">
+                                                                        <div
+                                                                            *ngIf="checkMandatoryError(otherGuestInformation.age)">
+                                                                            <span>
+                                                                                <img src="assets/images/invalid.svg"
+                                                                                    alt="invalid">
+                                                                            </span>
+                                                                            Mandatory : This cannot be left blank.
+                                                                        </div>
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <div class="col-sm-12 col-md-4 col-lg-4">
+                                                                <label>Senior Citizen*</label>
+                                                                <div class="">
+                                                                    <ng-select
+                                                                        class="form-control dropGender payment-select"
+                                                                        placeholder="Select Senior Citizen"
+                                                                        [searchable]="true" bindValue="id" disabled
+                                                                        [items]="seniorCitizenList" name="otherSeniorCitizen{{j}}"
+                                                                        [(ngModel)]="otherGuestInformation.seniorCitizen"
+                                                                        bindLabel="value"
+                                                                        (change)="onChangeSeniorCitizen(roomType,otherGuestInformation)">
+                                                                    </ng-select>
+                                                                    <small *ngIf="isFormSubmitted" class="mandatary">
+                                                                        <div
+                                                                            *ngIf="checkMandatoryError(otherGuestInformation.seniorCitizen)">
+                                                                            <span>
+                                                                                <img src="assets/images/invalid.svg"
+                                                                                    alt="invalid">
+                                                                            </span>
+                                                                            Mandatory : This cannot be left blank.
+                                                                        </div>
+                                                                    </small>
+                                                                </div>
+                                                            </div> -->
+                                                        </div>
+                                                    </ng-template>
+                                                </ngb-panel>
+                                            </ngb-accordion>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 pl-0"
+                                                *ngIf="!(paymentInfo.roomBookingViews[paymentInfo.roomBookingViews.length - 1] == roomBooking && ((i+1) == roomBooking.rooms))">
+                                                <button (click)="setNextAccordionId(roomBooking,i)"
+                                                    class="btn btn-primary py-2 loginBtn height-52 paymentbtn">Next</button>
+                                            </div>
+                                            <!-- <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" >
+        
+                                            <div class="panel panel-default getId" id="{{roomBooking.id}}{{j}}{{i}}">
+                                                <div class="panel-heading tourAcrd" role="tab" id="heading">
+                                                    <div class="panel-title-acordian">
+                                                        <div class="collapsed" role="button" id="heading{{roomBooking.id}}{{j}}{{i}}"
+                                                            (click)="openCloseAccordion(roomBooking.id+''+j+''+i)">
+                                                            <i class="more-less fa fa-angle-down" id="faFaIcon{{roomBooking.id}}{{j}}{{i}}"></i>
+                                                            <h4 class="formSubTitle" id="room-category">Other Guest Information of person {{j+1}}</h4>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div id="collapse{{roomBooking.id}}{{j}}{{i}}" class="panel-collapse collapse display-none" style="height: 0px;">
+                                                    <div class="panel-body" id="subCollapse{{roomBooking.id}}{{j}}{{i}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                    
+                                        </div> -->
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <!-- <ngb-panel title="Panel One" id="testets">
+                                    <ng-template ngbPanelContent>
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
+                                        aute.
+                                    </ng-template>
+                                </ngb-panel>
+                                <ngb-panel title="Panel Two" id="testets1">
+                                    <ng-template ngbPanelContent>
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
+                                        aute.
+                                    </ng-template>
+                                </ngb-panel>
+                                <ngb-panel title="Panel Three">
+                                    <ng-template ngbPanelContent>
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
+                                        aute.
+                                    </ng-template>
+                                </ngb-panel> -->
+                                </ngb-accordion>
+                                <div class="col-lg-12 col-xl-12">
+                                    <h4 class="formSubTitle bb-0"></h4>
+                                </div>
+                                <div class="col-lg-12 col-xl-12 table-responsive1">
+
+                                    <!-- <table class="table  table-layout-fixed">
+                                    <thead>
+                                        <tr>
+                                            <th class="width-25"></th>
+                                            <th class="width-20">Gender*</th>
+                                            <th class="width-15">Age*</th>
+                                            <th class="width-10">Senior 
+                                                <br> Citizen*</th>
+                                            <th class="width-20">Adults*</th>
+                                            <th class="width-20">Children*</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                           >
+                                            <td>
+                                                <div class="form-group mb-0">
+                                                    <input type="text" class="form-control"
+                                                        [(ngModel)]="guestInformation.name" placeholder="Full Name">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group mb-0">
+                                                    <ng-select class="form-control dropGender"
+                                                        placeholder="Select Gender" [searchable]="true"
+                                                        [items]="genderList" [(ngModel)]="guestInformation.gender"
+                                                        bindLabel="value">
+                                                    </ng-select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group mb-0">
+                                                    <input type="text" class="form-control"
+                                                        [(ngModel)]="guestInformation.age" placeholder="Age"
+                                                        (change)="onChangeSeniorCitizen(roomType,guestInformation)">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group ageradioDiv mb-0">
+                                                    <label class="ageRadio">
+                                                        <input type="checkbox" name="radio{{roomBooking.id+j}}"
+                                                        [(ngModel)]="guestInformation.seniorCitizen"
+                                                        (change)="onChangeSeniorCitizen(roomType,guestInformation)">
+                                                        <span class="radioBtnNormal"
+                                                        [ngClass]="{'radioBtnNormalSelected':guestInformation.seniorCitizen}"></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group mb-0">
+                                                    <ng-select class="form-control dropGender"
+                                                    placeholder="Total Adult" [searchable]="true"
+                                                    [items]="guestInformation.totalAdultList" [(ngModel)]="guestInformation.totalAdult"
+                                                    bindLabel="value">
+                                                </ng-select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group mb-0">
+                                                    <ng-select class="form-control dropGender"
+                                                    placeholder="Total Children" [searchable]="true"
+                                                    [items]="guestInformation.totalChildrenList" [(ngModel)]="guestInformation.totalChildren"
+                                                    bindLabel="value" (change)="onChangeChildren(guestInformation)">
+                                                </ng-select>
+                                                </div>
+                                            </td>
+                                            <td *ngFor="let childAge of guestInformation.childAge">
+                                                <div class="form-group mb-0">
+                                                    <ng-select class="form-control dropGender"
+                                                    placeholder="Children Age" [searchable]="true"
+                                                    [items]="guestInformation.totalChildrenList" [(ngModel)]="guestInformation.totalChildren"
+                                                    bindLabel="value" (change)="onChangeChildren(guestInformation)">
+                                                </ng-select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-4 mb-5 yourbookinSection">
+                        <!--Accordion wrapper-->
+                        <h2>Your Booking</h2>
+
+                        <div class="row yourbookinBlock">
+                            <div class="col-12 col-md-5">
+                                <img *ngIf="paymentInfo.hotelView != undefined && paymentInfo.hotelView.galleryFileViews != undefined && paymentInfo.hotelView.galleryFileViews"
+                                    [defaultImage]="'assets/images/loading.gif'"
+                                    [lazyLoad]="hotelImageDownload+paymentInfo.hotelView.galleryFileViews[0].galleryFileView.fileId"
+                                    class="width-100" />
+
+                                <img *ngIf="paymentInfo.hotelView != undefined && paymentInfo.hotelView.galleryFileViews == undefined && !paymentInfo.hotelView.galleryFileViews"
+                                    src="assets/images/image-01.png" class="width-100" />
+                            </div>
+                            <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                <h3>{{paymentInfo.hotelView.name}}</h3>
+                                <p>
+                                    <span
+                                        *ngIf="paymentInfo.hotelView.cityView">{{paymentInfo.hotelView.cityView.value}},</span>
+                                    <span
+                                        *ngIf="paymentInfo.hotelView.cityName">{{paymentInfo.hotelView.cityName}},</span>
+                                    <span
+                                        *ngIf="paymentInfo.hotelView.stateView">{{paymentInfo.hotelView.stateView.value}}</span>
+                                    <span
+                                        *ngIf="paymentInfo.hotelView.stateName">{{paymentInfo.hotelView.stateName}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div *ngFor="let roomType of paymentInfo.roomBookingViews" [hidden]="roomType.rooms == 0">
+                            <div class="row yourbookinBlock">
+                                <div class="col-12">
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-5 m-pl-0 m-pr-0">
+                                            <label class="mb-0">Room</label>
+                                        </div>
+                                        <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right">{{roomType.roomTypeView.name}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-5 m-pl-0 m-pr-0">
+                                            <label class="mb-0">Date</label>
+                                        </div>
+                                        <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right">{{paymentInfo.startDate | date }} -
+                                                {{paymentInfo.endDate | date}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-5 m-pl-0 m-pr-0">
+                                            <label class="mb-0"></label>
+                                        </div>
+                                        <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right">Check in from
+                                                {{paymentInfo.hotelView.checkInTime }}
+                                                Check out till {{paymentInfo.hotelView.checkOutTime}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row yourbookinBlock">
+                            <div class="col-12 col-md-12 mb-3">
+                                <p class="mb-0">Coupon Code</p>
+                            </div>
+                            <div class="col-12 col-md-8">
+    
+                                <div class="form-group mb-0">
+                                    <input type="text" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 align-self-center yourbooking-h-Detail m-payment-room">
+                                <button type="submit" value=""
+                                    class="btn btn-primary py-2 loginBtn height-52">Apply</button>
+                            </div>
+                        </div> -->
+                            <div class="row yourbookinBlock">
+                                <div class="col-12">
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0">Room Tariff</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">{{roomType.roomCharges}}</p>
+                                            <!-- <p class="mb-0 text-right m-text-left"
+                                            *ngIf="roomType.roomTypeChargesView != undefined">
+                                            ({{roomType.roomTypeChargesView.amount}}</p>
+                                        <p class="mb-0 text-right m-text-left">No of Rooms - {{roomType.rooms}}
+                                        </p> -->
+                                            <p class="mb-0 text-right m-text-left">( No of Nights - {{roomType.nights}}
+                                                )
+                                            </p>
+                                            <p class="mb-0 text-right m-text-left">( No of Rooms - {{roomType.rooms}}
+                                                )
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room" *ngIf="roomType.extraAmount">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0">extra charges</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">
+                                                {{roomType.extraAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room"
+                                        *ngIf="roomType.seniorCitizenDiscount && roomType.seniorCitizenDiscountPercentage">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0">Senior Citizen Disc
+                                                ({{roomType.seniorCitizenDiscountPercentage}}%)</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">
+                                                {{roomType.seniorCitizenDiscount}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row m-payment-room" *ngIf="roomType.digitalPayDiscountPercentage && roomType.digitalPayDiscount">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">Digital Payment Disc  ({{roomType.digitalPayDiscountPercentage}}%)</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left"> {{roomType.digitalPayDiscount}}</p>
+                                        </div>
+                                    </div> 
+                                    <div class="row m-payment-room" *ngFor="let bookingTax of roomType.bookingTaxViews">
+                                        <div class="col-12 col-md-7">
+                                            <label class="mb-0">{{bookingTax.name}}
+                                                <span *ngIf="bookingTax.percetange">({{bookingTax.percetange}}%)</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right m-text-left">{{bookingTax.amount}}</p>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row m-payment-room" *ngIf="roomType.taxationView.sgstTax && roomType.sgstAmount">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">SGST ({{roomType.taxationView.sgstTax}}%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">{{roomType.sgstAmount * 1}}</p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room" *ngIf="roomType.taxationView.igstTax && roomType.igstAmount">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">IGST ({{roomType.taxationView.igstTax}}%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">{{roomType.igstAmount * 1}}</p>
+                                    </div>
+                                </div> -->
+                                    <!-- <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7">
+                                        <label class="mb-0">Special Disc (%)</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">0</p>
+                                    </div>
+                                </div>-->
+                                
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0 pa-label">Payable Amount</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right pa-label m-text-left"><i
+                                                    class="fa fa-rupee"></i>&nbsp;{{roomType.totalAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row yourbookinBlock">
+                                <div class="col-12">
+                                    <div class="row m-payment-room">
+                                        <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                            <label class="mb-0 pa-label">Total Amount</label>
+                                        </div>
+                                        <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                            <p class="mb-0 text-right pa-label m-text-left"><i
+                                                    class="fa fa-rupee"></i>&nbsp;{{paymentInfo.totalAmount}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" *ngIf="bookingOfficer" [formGroup]="applicantForm">
+                    <div class="col-12 col-md-8">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="name">Payment Mode* </label>
+                                    <div class="clearfix"></div>
+                                    <div id="" *ngFor="let paymentMode of paymentModes" class="paymentRadio">
+                                        <input type="radio" name="paymentMode.value" [value]="paymentMode"
+                                            [(ngModel)]="applicantModel.paymentMode"
+                                            [ngModelOptions]="{standalone: true}" class="happy">
+                                        <span class="pl-2">{{paymentMode.value}}</span>
+                                    </div>
+                                    <!-- <ng-select [searchable]="true" formControlName="paymentMode" [items]="paymentModes"
+                                        [(ngModel)]="applicantModel.paymentMode" bindLabel="value"
+                                        placeholder="Select Payment Mode">
+                                    </ng-select> -->
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="name">Remarks* </label>
+                                    <textarea class="form-control" type="text" [(ngModel)]="applicantModel.remarks"
+                                        formControlName="remarks" placeholder="Remarks"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="form-group checkbox-group mb-0" [formGroup]="applicantForm">
+                                    <label><span class="paylable">I have read and accept the <a [href]="termsUrl"
+                                                target="_blank">Terms and
+                                                Conditions</a></span>
+                                        <input type="checkbox" class="form-control" formControlName="termsAndConditions"
+                                            [(ngModel)]="applicantModel.termsAndConditions"
+                                            [required]="!applicantModel.termsAndConditions">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <small class="mandatory" *ngIf="f.termsAndConditions.errors">
+                                        <div *ngIf="f.termsAndConditions.errors.required && (vform.submitted || f.termsAndConditions.touched)"
+                                            class="font-size-12">
+                                            <span> <img src="assets/images/invalid.svg" alt="invalid"></span>
+                                            Mandatory : This cannot be left blank
+                                        </div>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-primary py-2 loginBtn height-52 paymentbtn">Payment</button>
+            </form>
+        </div>
+    </div>
+</section>

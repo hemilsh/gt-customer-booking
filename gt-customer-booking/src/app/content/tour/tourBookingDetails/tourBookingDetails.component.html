@@ -1,0 +1,162 @@
+<section class="padding-t-45 mt-5">
+  <div class="container-fluid px-md-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-12">
+          <p class="brdcm"><a (click)="goToHome()">Home</a> <i class="fa fa-angle-right"></i><span>Tour Bookings</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section class="ftco-menu">
+  <div class="container-fluid px-md-4">
+    <div class="container">
+      <!-- <div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-7 heading-section text-center ftco-animate">
+            <span class="subheading">Restaurant</span>
+            <h2>Destinations</h2>
+          </div>
+        </div> -->
+      <!-- <div class="row">
+                <div class="col-12 col-md-12"> -->
+      <div class="row">
+        <div class="col-md-8 col-xl-9  heading-section">
+          <h2 class="">Tour Bookings</h2>
+        </div>
+        <div class="col-md-4 col-xl-3 bookingDetailsFullDate d-flex pl-0">
+          <div class="form-group pt-10 align-self-stretch d-flex align-items-end hotel-booking-date">
+            <div class="align-self-stretch px-1 py-0 pr-4">
+              <i class="fa fa-calendar searcpnlIcon"></i>
+
+            </div>
+            <div class="booking-form aside-stretch mt-0 border-none">
+              <div class="row">
+                <div class="col-md d-flex pl-0">
+                  <div class="form-group align-self-stretch d-flex align-items-end border-none ">
+                    <div class="wrap align-self-stretch py-1 px-1 pl-0 booking-field py-0">
+                      <div class="form-control right-align" id="datePicker" daterangepicker
+                        [options]="searchDateRangePickerOptions" (selected)="selectedFilterDate($event, filterInput)"
+                        (cancelDaterangepicker)="calendarFilterEventsHandler($event)"
+                        (applyDaterangepicker)="calendarFilterEventsHandler($event)"
+                        (hideDaterangepicker)="calendarFilterEventsHandler($event)"
+                        (showDaterangepicker)="calendarFilterEventsHandler($event)">
+                        <span class="form-control uneditable-input checkin-out" name="daterange">
+                          <span *ngIf="!startDateSearch">Start Date &nbsp;</span>
+                          <span *ngIf="startDateSearch">{{ filterInput.start | date:'dd/MM/yyyy' }} &nbsp;</span>
+                          <i class="fa fa-long-arrow-right"></i>
+                          <span *ngIf="!endDateSearch">&nbsp; End Date</span>
+                          <span *ngIf="endDateSearch">&nbsp; {{ filterInput.end | date:'dd/MM/yyyy' }}</span>
+                        </span>
+                        <span class="input-group-btn">
+                          <a type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></a>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="tag ml-15" *ngIf="isSearchUsingNumber">Booking id : {{searchModel.referenceNumber}} <i
+            class="fa fa-remove" (click)="removeFilter()"></i></span>
+        <span class="tag ml-15" *ngIf="isSearchUsingStatus">Status : {{searchModel.status.value}} <i
+            class="fa fa-remove" (click)="removeStatusFilter()"></i></span>
+        <span class="tag ml-15" *ngIf="startDateSearch && endDateSearch">Date :
+          {{ filterInput.start | date:'dd/MM/yyyy' }} &nbsp; <i class="fa fa-long-arrow-right"></i> &nbsp; {{
+          filterInput.end | date:'dd/MM/yyyy' }}
+          <i class="fa fa-remove" (click)="removeDateFilter()"></i></span>
+        <div class="col-lg-12 col-xl-12  mt-2 table-responsive" *ngIf="isBookingDetalisFound">
+          <table class="table  table-layout-fixed no-border oddEvenTable">
+            <thead>
+              <tr class="pinkbk">
+                <th class="width-15">Booking ID </th>
+                <th class="width-20">Name</th>
+                <th class="width-15">Check In </th>
+                <th class="width-15">Booking date </th>
+                <th class="width-15">Amount</th>
+                <th class="width-15">No. of Seats</th>
+                <th class="width-10">
+                  <div class="dropdown">
+                    <span class=" dropdown-toggle bookingStatusCB" (click)="openStatusList()" type="button"
+                      data-toggle="dropdown"><span>Status <i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                    </span>
+                    <ul class="dropdown-menu statusRdoDrp mt-3">
+                      <li *ngFor="let bookingStatus of bookingStatusList"><a><input type="radio"
+                            id="statusId{{bookingStatus.key}}" (change)="onChangeStatus(bookingStatus.key)"
+                            name="statusViews{{bookingStatus.key}}" [checked]="statusViews[bookingStatus.key]" /> <label
+                            for="statusId{{bookingStatus.key}}"> {{bookingStatus.value}}</label></a></li>
+                    </ul>
+                  </div>
+                </th>
+                <th class="width-10">
+                  action
+                </th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr [hidden]="bookingList.length == 0"
+                *ngFor="let booking of bookingList | paginate: { itemsPerPage: totalItemDisplay, currentPage: p ,totalItems:bookingRecords};let i = index">
+                <td class="color-orng cursor-pointer" (click)="goToPaymentRecipt(booking)">
+                  {{booking.referenceNumber}}
+                </td>
+                <td (click)="goToPaymentRecipt(booking)">
+                  <strong>{{booking.tourView.name}}</strong>
+                  <br>
+                  <span class="cityNameBooking"
+                    *ngIf="booking.tourView != undefined && booking.tourView.cityView != undefined">{{booking.tourView.cityView.value}}</span>
+                  <span class="cityNameBooking"
+                    *ngIf="booking.tourView != undefined && booking.tourView.cityView == undefined">{{booking.tourView.cityName}}</span>
+                </td>
+
+                <td>
+                  {{booking.startDate | date }} -  {{booking.endDate | date }}
+                </td>
+                <td>
+                  {{booking.createDate | date }}
+                </td>
+                <td>
+                  {{booking.totalAmount}}
+                </td>
+                <td>
+                  {{booking.totalSeats}} Seats
+                </td>
+                <td>
+                  <span class=" dropdown-toggle bookingStatusDRP"
+                    [ngClass]="{'advance': booking.status.key == 3,'completed': booking.status.key == 2,'canceled': booking.status.key == 4}"
+                    type="button" data-toggle="dropdown"><span>{{booking.status.value}}</span></span>
+                  <!-- <span class=" dropdown-toggle bookingStatusDRP advance" type="button" data-toggle="dropdown"><span>ADVANCE</span></span>
+                                    <span class=" dropdown-toggle bookingStatusDRP completed" type="button" data-toggle="dropdown"><span>COMPLETED</span></span> -->
+                  <!-- <button class="btn btn-primary align-self-stretch d-block fs-12" (click)="onFullTourCancellation(booking)"><span>Full Cancellation</span></button> -->
+                </td>
+                <td>
+                  <span *ngIf="booking.status != undefined && booking.status.key == 2"
+                    class="dropdown-toggle bookingStatusDRP cancel-booking"
+                    (click)="onFullTourCancellation(booking)"><span>Cancel</span></span>
+                  <!-- <i *ngIf="booking.paid != undefined && booking.status.key != 4" class="fa fa-times pl-3" title="booking cancellation" (click)="cancelBooking(booking)"></i> -->
+                </td>
+              </tr>
+              <tr *ngIf="bookingList.length == 0">
+                <td class="mandatory" colspan="8">Sorry, we couldn't find any matches</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-12 col-xl-12  mt-3 height-500" [hidden]="isBookingDetalisFound" *blockUI="'bookingDiv'">
+        </div>
+        <div class="col-lg-12 col-xl-12  mt-3 text-center " *ngIf="bookingList.length != 0">
+          <pagination-controls (pageChange)="pageChanged($event);p = $event"></pagination-controls>
+        </div>
+        <!-- <div class="col-lg-12 col-xl-12  mt-3 " *ngIf="bookingList.length == 0">
+                    <p class="mandatory">Sorry, we couldn't find any matches.</p>
+                </div> -->
+      </div>
+    </div>
+  </div>
+</section>

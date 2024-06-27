@@ -1,0 +1,321 @@
+<section class="ftco-section ftco-menu mt-5">
+    <div class="container-fluid px-md-4">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-12">
+                    <div
+                        [ngClass]="{'confimSuccessfull':carBookingView.paid != undefined && carBookingView.paid.key != 4,'bookingCancelled': carBookingView.paid != undefined && carBookingView.paid.key == 4}">
+                        <span *ngIf="carBookingView.paid != undefined && carBookingView.paid.key == 4">Dear
+                            {{carBookingView.name}}, Your booking of
+                            {{carBookingView.carView.name}} is cancelled.</span>
+                        <span *ngIf="carBookingView.paid != undefined && carBookingView.paid.key != 4">Dear
+                            {{carBookingView.name}}, Your booking of
+                            {{carBookingView.carView.name}} is confirmed.</span>
+                        <p class="text-gray"> Booking <span
+                                *ngIf="carBookingView.paid != undefined && carBookingView.paid.key == 4"
+                                class="ml-0 cancelBookingClass">Cancellation</span> Receipt is been sent on
+                            {{carBookingView.email}}<span
+                                *ngIf="carBookingView.paid != undefined && carBookingView.paid.key == 4"
+                                class="ml-0 cancelBookingClass">.</span> <span
+                                *ngIf="carBookingView.paid != undefined && carBookingView.paid.key != 4"
+                                class="ml-0 cancelBookingClass"> Car booking dates are
+                                {{carBookingView.startDate | date:'dd MMM, yyyy'}} -
+                                {{carBookingView.endDate | date:'dd MMM, yyyy'}}</span></p>
+                    </div>
+                </div>
+
+                <div class="col-sm-8">
+                    <h2 class="bs-title bb-0">Booking <span
+                            *ngIf="carBookingView.paid != undefined && carBookingView.paid.key == 4">Cancellation</span>
+                        <span *ngIf="carBookingView.paid != undefined && carBookingView.paid.key != 4"
+                            class="">Confirmation</span> Receipt
+                    </h2>
+                </div>
+                <div class="col-sm-4 pr-0">
+                    <button type="submit" value="" class="btn btn-primary py-2 printreceiptbtn height-52 paymentbtn"
+                        *ngIf="carBookingView.paid != undefined && carBookingView.paid.key != 4"
+                        (click)="exportReceipt(carBookingView)">Print Receipt</button>
+                    <button type="submit" value="" class="btn btn-primary py-2 printreceiptbtn height-52 paymentbtn"
+                        *ngIf="carBookingView.paid != undefined && carBookingView.paid.key == 4"
+                        (click)="exportCancelReceipt(carBookingView)">Print Receipt</button>
+                </div>
+                <div class="col-12 col-md-8 receiptLeftSection">
+                    <div class="row">
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Booking No.</label>
+                                <p class="textBlock">{{carBookingView.referenceNumber}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Booking Date</label>
+                                <p class="textBlock">{{carBookingView.createDate | date}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-xl-12">
+                            <table
+                                class="table card-table tab-table table-vcenter mt-table table-striped table-layout-fixed no-border">
+                                <thead>
+                                    <tr class="pinkbk">
+                                        <th class="width-20">Name</th>
+                                        <th class="width-15">Mobile </th>
+                                        <th class="width-30">Email </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            {{carBookingView.name}}
+                                        </td>
+                                        <td>
+                                            {{carBookingView.mobile}}
+                                        </td>
+                                        <td>
+                                            {{carBookingView.email}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">Start Date</label>
+                                <p class="textBlock">{{carBookingView.startDate | date}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">End Date</label>
+                                <p class="textBlock">{{carBookingView.endDate | date}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-xl-6" *ngIf="carBookingView.rateType.key == 1">
+                            <div class="form-group">
+                                <label class="mb-0">Kilometers</label>
+                                <p class="textBlock">{{carBookingView.kilometers}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xl-6" *ngIf="carBookingView.rateType.key == 2">
+                            <div class="form-group">
+                                <label class="mb-0">Hours</label>
+                                <p class="textBlock">{{carBookingView.hours}}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label class="mb-0">No of cars</label>
+                                <p class="textBlock">{{carBookingView.cars}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3" *ngIf="carBookingView.paid.key == 4">
+                        <div class="col-lg-12 col-xl-12 ">
+                            <ngb-accordion closeOthers="true" class="mt-4 dusplay-block">
+                                <ngb-panel title="Cancellation Policy for TCGL Units">
+                                    <ng-template ngbPanelContent>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <ol>
+                                                    <li>
+                                                        <strong>CANCELLATION POLICY FOR TCGL UNITS</strong>
+                                                        <table class="tbrBox mt-10">
+                                                            <thead>
+                                                                <tr class="pinkbk">
+                                                                    <th class="width-15">Season</th>
+                                                                    <th class="width-50">Notice for Cancellation </th>
+                                                                    <th class="width-20">Refund (in %) </th>
+                                                                    <th class="width-15">Unit</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>All year round</td>
+                                                                    <td><strong>For on line booking</strong> –2 days (48
+                                                                        hours) prior to booking date
+                                                                    </td>
+                                                                    <td>90%</td>
+                                                                    <td>All Units</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>All year round</td>
+                                                                    <td><strong>For physical booking</strong> 2 clear
+                                                                        working days excluding date of
+                                                                        application and date of booking. Public holidays
+                                                                        and Sundays will not be
+                                                                        considered as said period of 2 days</td>
+                                                                    <td>90%</td>
+                                                                    <td>All Units</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </li>
+                                                    <li class="mt-10">
+                                                        <strong class="pt-5 pb-5">REFUND POLICY</strong>
+                                                        <ul class="mt-10">
+                                                            <li>Refund amount will be credited to customer's a/c within
+                                                                8 working days.</li>
+                                                            <li>First Day Start from Cancellation Date.</li>
+                                                        </ul>
+                                                    </li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-panel>
+                            </ngb-accordion>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="row yourbookinBlock">
+                        <div class="col-12 col-md-12 align-self-center yourbooking-h-Detail">
+                            <h3>{{carBookingView.carView.name}}</h3>
+                            <p>
+                                <span *ngFor="let carLocation of carBookingView.carView.carLocationViews">
+                                    {{carLocation.name}}
+                                    <span
+                                        *ngIf="carBookingView.carView.carLocationViews[carBookingView.carView.carLocationViews.length -1] != carLocation">,</span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row yourbookinBlock">
+                            <div class="col-12">
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                        <label class="mb-0">Tariff</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right m-text-left">{{carBookingView.rate}}
+                                            ({{carBookingView.rateType.value}})</p>
+                                        <p class="mb-0 text-right m-text-left">( No of Cars -
+                                            {{carBookingView.cars}}
+                                            )
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room"
+                                    *ngIf="carBookingView.startDate && carBookingView.endDate">
+                                    <div class="col-12 col-md-5 m-pl-0 m-pr-0">
+                                        <label class="mb-0">Date</label>
+                                    </div>
+                                    <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right">{{carBookingView.startDate | date }} -
+                                            {{carBookingView.endDate | date}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row yourbookinBlock">
+                            <div class="col-12">
+                                <div class="row m-payment-room">
+                                    <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                        <label class="mb-0 pa-label">Payable Amount</label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right pa-label m-text-left"><i
+                                                class="fa fa-rupee"></i>&nbsp;
+                                            <span
+                                                *ngIf="carBookingView.netAmount">{{carBookingView.netAmount}}</span>
+                                            <span
+                                                *ngIf="carBookingView.carView.rate && !carBookingView.netAmount">{{carBookingView.carView.rate}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room" *ngIf="carBookingView.sgstAmount">
+                                    <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                        <label class="mb-0 pa-label">SGST <span
+                                                *ngIf="carBookingView.sgstTax">({{carBookingView.sgstTax}}%)</span></label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right pa-label m-text-left"><i
+                                                class="fa fa-rupee"></i>&nbsp;{{carBookingView.sgstAmount}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room" *ngIf="carBookingView.cgstAmount">
+                                    <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                        <label class="mb-0 pa-label">CGST <span
+                                                *ngIf="carBookingView.cgstTax">({{carBookingView.cgstTax}}%)</span></label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right pa-label m-text-left"><i
+                                                class="fa fa-rupee"></i>&nbsp;{{carBookingView.cgstAmount}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row m-payment-room" *ngIf="carBookingView.igstAmount">
+                                    <div class="col-12 col-md-7 m-pl-0 m-pr-0">
+                                        <label class="mb-0 pa-label">IGST <span
+                                                *ngIf="carBookingView.igstTax">({{carBookingView.igstTax}}%)</span></label>
+                                    </div>
+                                    <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                        <p class="mb-0 text-right pa-label m-text-left"><i
+                                                class="fa fa-rupee"></i>&nbsp;{{carBookingView.igstAmount}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row yourbookinBlock">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0 pa-label">Total Amount</label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right pa-label m-text-left"><i
+                                            class="fa fa-rupee"></i>&nbsp;{{carBookingView.totalAmount}}</p>
+                                </div>
+                            </div>
+                            <div class="row"
+                                *ngIf="carBookingView.cancellationPercentage && carBookingView.cancellationAmount">
+                                <div class="col-12 col-md-7">
+                                    <label class="mb-0">Cancellation Charges
+                                        ({{carBookingView.cancellationPercentage}}%)
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-5 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{carBookingView.cancellationAmount}} </p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="carBookingView.refundAmount">
+                                <div class="col-12 col-md-5">
+                                    <label class="mb-0">Refund Amount </label>
+                                </div>
+                                <div class="col-12 col-md-7 align-self-center yourbooking-h-Detail">
+                                    <p class="mb-0 text-right m-text-left"> <i class="fa fa-rupee"></i>
+                                        {{carBookingView.refundAmount}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row yourbookinBlock m-payment-room " *ngIf="isCancellationPage">
+                        <div class="col-12 col-md-12">
+                            <div *blockUI="'cancellationBtn'" class="loginBtn mt-0">
+                                <button type="submit" (click)="onCancellation()" value=""
+                                    class="btn btn-primary py-3 px-5 loginBtn mt-3">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,156 @@
+<section class="ftco-booking ftco-section mt-5 ftco-no-pb">
+    <div class="container">
+        <div class="row no-gutters mt-100">
+            <div class="col-lg-12 mt-4 mb-2">
+                <h3 class="colorBlack">Monthly Vacant Positions</h3>
+            </div>
+            <div class="col-lg-12">
+                <form action="#" class="booking-form mt-1 monthlySearch aside-stretch">
+                    <div class="row">
+                        <div class="col-md d-flex pr-1">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/calenderHotel.png" class="bookingLocation" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0 tourDrp">
+
+
+
+                                    <label for="#">Hotel</label>
+                                    <ng-select [searchable]="true" placeholder="Select Hotel" name="hotelView"
+                                        class="form-control1 tcglSelect" [items]="hotelList" [(ngModel)]="hotelView"
+                                        bindLabel="name">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex pl-0 pr-0" *blockUI="'filterTourList'">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end ">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/calendar.png" class="bookingDate" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0 tourDrp">
+                                    <label for="#">Month</label>
+                                    <!-- <dp-date-picker [(ngModel)]="selectedDateAndMonth" name="selectedDate" [config]="config" [mode]="'month'"></dp-date-picker> -->
+                                    <ng-select [searchable]="true" placeholder="Select Month" name="monthView"
+                                        class="form-control1 tcglSelect" [items]="monthList" [(ngModel)]="monthView"
+                                        bindLabel="value">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex pl-0 pr-0" *blockUI="'filterTourList'">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end ">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/calendar.png" class="bookingDate" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0 tourDrp">
+                                    <label for="#">Year</label>
+                                    <!-- <dp-date-picker [(ngModel)]="selectedDateAndMonth" name="selectedDate" [config]="config" [mode]="'month'"></dp-date-picker> -->
+                                    <ng-select [searchable]="true" placeholder="Select Year" name="yearView"
+                                        class="form-control1 tcglSelect" [items]="yearList" [(ngModel)]="yearView"
+                                        bindLabel="value">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md d-flex pl-0">
+                            <div class="form-group d-flex align-self-stretch" *blockUI="'checkAvailabilityBtn'">
+                                <a (click)="checkAvailability()"
+                                    class="btn btn-primary py-5 py-md-3 px-3 align-self-stretch d-block"><span>Check
+                                        Availability</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="">
+    <div class="container">
+        <div class="row monthlyCalendarRow">
+            <div class="col-lg-12 monthlyCalendar mt-5" *ngIf="isMonthlyVacantReportDisplay">
+            <div class="row">
+                <div class="col-12 col-md-8 HotelDetailsCalendar">
+                    <h3>{{hotelView.name}}</h3>
+                    <!-- <p>location</p> -->
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="filterDate">
+                        <!-- <span class="leftArrow"><i class="fa fa-angle-left"></i></span> -->
+                         <span class="filterDateSelected">{{monthView.key}}/{{yearView.value}}</span>
+                        <!-- <span class="rightArrow"><i class="fa fa-angle-right"></i></span> -->
+                    </div>
+                </div>
+            </div>
+                <app-custom-calendar></app-custom-calendar>
+                
+            </div>
+          
+                <div class="col-12 col-md-12 noSelectedDate" *ngIf="!isMonthlyVacantReportDisplay">
+                    <img _ngcontent-fmh-c6="" class="display-center" src="assets/images/calendar.png">
+                    <h4 class="display-center">See Monthly Vacant Positions List Here</h4>
+                </div>
+             
+        </div>
+    </div>
+</section>
+<section class="ftco-booking ftco-section ftco-no-pb" id="bookHotelId" *ngIf="isMonthlyVacantReportDisplay">
+    <div class="container">
+        <div class="row no-gutters ">
+            <div class="col-lg-12 mb-5">
+                <form action="#" class="booking-form mt-1 monthlySearch aside-stretch">
+                    <div class="row">
+                        <div class="col-md d-flex pr-1">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/location.png" class="bookingLocation" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0 tourDrp">
+
+
+
+                                    <label for="#">Hotel</label>
+                                    <p class="tcglSelect pt-1">{{hotelView.name}}</p>
+                                    <!-- <ng-select [searchable]="true" placeholder="Select Hotel" name="hotelView"
+                                        class="form-control1 tcglSelect" [items]="hotelList" [(ngModel)]="hotelView"
+                                        bindLabel="name">
+                                    </ng-select> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex pl-0 pr-0">
+
+                            <div class="form-group align-self-stretch d-flex align-items-end ">
+                                <div class="align-self-stretch py-1 px-1 pr-0 py-0">
+                                    <img src="assets/images/calendar.png" class="bookingDate" />
+                                </div>
+                                <div class="wrap align-self-stretch py-1 px-1 booking-field py-0 tourDrp">
+                                    <label for="#">Check-in</label>
+                                    <p class="tcglSelect pt-1">{{selectedDate | date:'dd/MM/yyyy'}}</p>
+                                   <!-- <ng-select [searchable]="true" placeholder="Select Month" name="monthView"
+                                        class="form-control1 tcglSelect" [items]="monthList" [(ngModel)]="monthView"
+                                        bindLabel="value">
+                                    </ng-select> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md d-flex pl-0 pr-0" >
+                            <div class="loginBtn mt-0">
+                <button type="submit"  value="" class="btn btn-primary filterBookNow " (click)="goToView()" >Book Now</button>
+                            </div>
+                        </div>
+                    
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

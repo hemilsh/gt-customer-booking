@@ -1,0 +1,387 @@
+<section class="padding-t-45 mt-5">
+  <div class="container-fluid px-md-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-12">
+          <p class="brdcm"><a (click)="goToHome()">Home</a> <i class="fa fa-angle-right"></i><span>Hotel Bookings</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section class="ftco-menu">
+  <div class="container-fluid px-md-4">
+    <div class="container">
+      <!-- <div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-7 heading-section text-center ftco-animate">
+            <span class="subheading">Restaurant</span>
+            <h2>Destinations</h2>
+          </div>
+        </div> -->
+      <!-- <div class="row">
+                <div class="col-12 col-md-12"> -->
+      <div class="row">
+        <div class="col-md-8 col-xl-9  heading-section">
+          <h2 class="">Hotel Bookings</h2>
+        </div>
+        <div class="col-md-4 col-xl-3 bookingDetailsFullDate d-flex pl-0">
+          <div class="form-group pt-10 align-self-stretch d-flex align-items-end hotel-booking-date">
+            <div class="align-self-stretch px-1 py-0 pr-4">
+              <i class="fa fa-calendar searcpnlIcon"></i>
+
+            </div>
+            <div class="booking-form aside-stretch mt-0 border-none">
+              <div class="row">
+                <div class="col-md d-flex pl-0">
+                  <div class="form-group align-self-stretch d-flex align-items-end border-none ">
+                    <div class="wrap align-self-stretch py-1 px-1 pl-0 booking-field py-0">
+                      <div class="form-control right-align" id="datePicker" daterangepicker
+                        [options]="searchDateRangePickerOptions" (selected)="selectedFilterDate($event, filterInput)"
+                        (cancelDaterangepicker)="calendarFilterEventsHandler($event)"
+                        (applyDaterangepicker)="calendarFilterEventsHandler($event)"
+                        (hideDaterangepicker)="calendarFilterEventsHandler($event)"
+                        (showDaterangepicker)="calendarFilterEventsHandler($event)">
+                        <span class="form-control uneditable-input checkin-out" name="daterange">
+                          <span *ngIf="!startDateSearch">Start Date &nbsp;</span>
+                          <span *ngIf="startDateSearch">{{ filterInput.start | date:'dd/MM/yyyy' }} &nbsp;</span>
+                          <i class="fa fa-long-arrow-right"></i>
+                          <span *ngIf="!endDateSearch">&nbsp; End Date</span>
+                          <span *ngIf="endDateSearch">&nbsp; {{ filterInput.end | date:'dd/MM/yyyy' }}</span>
+                        </span>
+                        <span class="input-group-btn">
+                          <a type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></a>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="tag ml-15" *ngIf="isSearchUsingNumber">booking id : {{searchModel.referenceNumber}} <i
+            class="fa fa-remove" (click)="removeFilter()"></i></span>
+        <span class="tag ml-15" *ngIf="isSearchUsingStatus">status : {{searchModel.paid.value}} <i class="fa fa-remove"
+            (click)="removeStatusFilter()"></i></span>
+        <span class="tag ml-15" *ngIf="startDateSearch && endDateSearch">Date :
+          {{ filterInput.start | date:'dd/MM/yyyy' }} &nbsp; <i class="fa fa-long-arrow-right"></i> &nbsp; {{
+          filterInput.end | date:'dd/MM/yyyy' }}
+          <i class="fa fa-remove" (click)="removeDateFilter()"></i></span>
+        <div class="col-lg-12 col-xl-12 table-responsive mt-2" *ngIf="isBookingDetalisFound">
+          <table class="table  table-layout-fixed no-border oddEvenTable">
+            <thead>
+              <tr class="pinkbk">
+                <th class="width-10">Hotel</th>
+                <th class="width-10">Booking ID </th>
+                <th class="width-10">Booking date </th>
+                <th class="width-10">Check In </th>
+                <th class="width-10">Check Out</th>
+                <th class="width-5">Amount</th>
+                <th class="width-10">No. of Room</th>
+                <th class="width-5">Guest</th>
+                <th class="width-10">
+                  <div class="dropdown">
+                    <span class=" dropdown-toggle bookingStatusCB" (click)="openStatusList()" type="button"
+                      data-toggle="dropdown"><span>Status <i class="fa fa-caret-down" aria-hidden="true"></i></span>
+                    </span>
+                    <ul class="dropdown-menu statusRdoDrp mt-3">
+                      <li *ngFor="let bookingStatus of bookingStatusList"><a><input type="radio"
+                            id="statusId{{bookingStatus.key}}" (change)="onChangeStatus(bookingStatus.key)"
+                            name="statusViews{{bookingStatus.key}}" [checked]="statusViews[bookingStatus.key]" /> <label
+                            for="statusId{{bookingStatus.key}}"> {{bookingStatus.value}}</label></a></li>
+                    </ul>
+                  </div>
+                </th>
+                <th class="width-10">
+                  action
+                </th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr [hidden]="bookingList.length == 0"
+                *ngFor="let booking of bookingList | paginate: { itemsPerPage: totalItemDisplay, currentPage: p ,totalItems:bookingRecords};let i = index">
+                <td>
+                  <strong>{{booking.hotelView.name}}</strong>
+                  <br>
+                  <span class="cityNameBooking"
+                    *ngIf="booking.hotelView != undefined && booking.hotelView.cityView != undefined">{{booking.hotelView.cityView.value}}</span>
+                  <span class="cityNameBooking"
+                    *ngIf="booking.hotelView != undefined && booking.hotelView.cityView == undefined">{{booking.hotelView.cityName}}</span>
+                </td>
+                <td class="color-orng cursor-pointer" (click)="goToPaymentRecipt(booking)">
+                  {{booking.referenceNumber}}
+                </td>
+
+                <td>
+                  {{booking.createDate | date }}
+                </td>
+                <td>
+                  {{booking.startDate | date }}
+                  <br>Check in from {{booking.hotelView.checkInTime}}
+                </td>
+                <td>
+                  {{booking.endDate | date }}
+                  <br>Check out till {{booking.hotelView.checkOutTime}}
+                </td>
+                <td>
+                  {{booking.totalAmount}}
+                </td>
+                <td>
+                  {{booking.totalRooms}} Rooms
+                </td>
+                <td>
+                  <span *ngIf="booking.totalAdults != undefined && booking.totalChildren != undefined">
+                    {{booking.totalAdults}} + {{booking.totalChildren}}
+                  </span>
+                </td>
+                <td>
+                  <span class=" dropdown-toggle bookingStatusDRP"
+                    [ngClass]="{'advance': booking.paid.key == 3,'completed': booking.paid.key == 2,'canceled': booking.paid.key == 4}"
+                    type="button" data-toggle="dropdown"><span>{{booking.paid.value}}</span></span>
+                  <!-- <span class=" dropdown-toggle bookingStatusDRP advance" type="button" data-toggle="dropdown"><span>ADVANCE</span></span>
+                                    <span class=" dropdown-toggle bookingStatusDRP completed" type="button" data-toggle="dropdown"><span>COMPLETED</span></span> -->
+                  <!-- <button class="btn btn-primary align-self-stretch d-block fs-12" (click)="onFullTourCancellation(booking)"><span>Full Cancellation</span></button> -->
+                </td>
+                <td>
+                  <span *ngIf="booking.paid != undefined && booking.paid.key != 4 && booking.paid.key != 3"
+                    class=" dropdown-toggle bookingStatusDRP cancel-booking"
+                    (click)="cancelBooking(booking)"><span>Cancel</span></span>
+                  <span *ngIf="booking.paid != undefined && booking.paid.key != 4 && booking.paid.key != 3 && bookingOfficer"
+                    class=" dropdown-toggle bookingStatusDRP advance"
+                    (click)="updateBooking(booking)"><span>Update</span></span>
+                  <!-- <i *ngIf="booking.paid != undefined && booking.paid.key != 4" class="fa fa-times pl-3" title="booking cancellation" (click)="cancelBooking(booking)"></i> -->
+                </td>
+              </tr>
+              <tr *ngIf="bookingList.length == 0">
+                <td class="mandatory" colspan="8">Sorry, we couldn't find any matches</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-12 col-xl-12  mt-3 height-500" [hidden]="isBookingDetalisFound" *blockUI="'bookingDiv'">
+        </div>
+        <div class="col-lg-12 col-xl-12  mt-3 text-center " *ngIf="bookingList.length != 0">
+          <pagination-controls (pageChange)="pageChanged($event);p = $event"></pagination-controls>
+        </div>
+        <!-- <div class="col-lg-12 col-xl-12  mt-3 " *ngIf="bookingList.length == 0">
+                    <p class="mandatory">Sorry, we couldn't find any matches.</p>
+                </div> -->
+      </div>
+
+      <!-- </div>
+
+            </div> -->
+
+    </div>
+  </div>
+</section>
+
+<div id="guestInfo" class="overlaymenu">
+
+  <div class="overlay-content">
+    <form (ngSubmit)="onSave('userAddEditId')" id="userAddEditId" #lform="ngForm"
+      class="bg-white contact-form loginForm modelAcord max-width-1000">
+      <a class="closebtn" (click)="closeGuest()">&times;</a>
+      <h2>Update Guest Information</h2>
+      <div class="row">
+        <div class="col-12">
+          <div class="row" *ngFor="let roomBooking of bookingModel.roomBookingViews">
+            <div class="col-lg-12 col-xl-12">
+              <h4 class="bb-0">{{roomBooking.roomTypeView.name}}</h4>
+            </div>
+            <div id="guestInformationId" class="col-lg-12 col-xl-12 paymentAccordian">
+              <ngb-accordion activeIds="{{accordionId}}" (panelChange)="beforeChange($event)" closeOthers="true">
+
+                <ngb-panel title="Room {{i+1}}" id="{{roomBooking.id}}{{i}}"
+                  (click)="setAccordionId(roomBooking.id+''+i)"
+                  *ngFor="let guestInformation of roomBooking.guestInformationViews; let i = index">
+                  <ng-template ngbPanelContent>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-4 col-lg-4 text-left">
+                        <label>Full Name*</label>
+                        <div class="form-group">
+                          <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="guestInformation.name" placeholder="Full Name"
+                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.name) || checkMaxLengthError(guestInformation.name,100) || checkRegexError(guestInformation.name,'ALPHABETS_WITH_SPACE'))}">
+                          <small *ngIf="isFormSubmitted" class="mandatary">
+                            <div *ngIf="checkMandatoryError(guestInformation.name)">
+                              <span>
+                                <img src="assets/images/invalid.svg" alt="invalid">
+                              </span>
+                              Mandatory : This cannot be left blank.
+                            </div>
+                            <div *ngIf="checkMaxLengthError(guestInformation.name,100)">
+                              <span>
+                                <img src="assets/images/invalid.svg" alt="invalid">
+                              </span>
+                              You have reached maximum limit of 100 allowed
+                              characters..
+                            </div>
+                            <div *ngIf="checkRegexError(guestInformation.name,'ALPHABETS_WITH_SPACE')">
+                              <span>
+                                <img src="assets/images/invalid.svg" alt="invalid">
+                              </span>
+                              Alphabets & space are allowed.
+                            </div>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-4 col-lg-3 text-left">
+                        <label>Gender*</label>
+                        <div class="form-group">
+                          <ng-select class="form-control dropGender modelDrp payment-select" placeholder="Select Gender"
+                            [searchable]="true" [ngModelOptions]="{standalone: true}" [items]="genderList"
+                            [(ngModel)]="guestInformation.gender" bindLabel="value"
+                            [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(guestInformation.gender))}">
+                          </ng-select>
+                          <small *ngIf="isFormSubmitted" class="mandatary">
+                            <div *ngIf="checkMandatoryError(guestInformation.gender)">
+                              <span>
+                                <img src="assets/images/invalid.svg" alt="invalid">
+                              </span>
+                              Mandatory : This cannot be left blank.
+                            </div>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-4 col-lg-1">
+                        <label>Age*</label>
+                        <div class="form-group">
+                          {{guestInformation.age}}
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-4 col-lg-1">
+                        <label>Adults*</label>
+                        <div class="form-group ">
+                          {{guestInformation.totalAdult.value}}
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-4 col-lg-1">
+                        <label>Children*</label>
+                        <div class="form-group ">
+                          {{guestInformation.totalChildren.value}}
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-4 col-lg-1"
+                        *ngFor="let childAge of guestInformation.childAge; let k = index">
+                        <label>Children {{k+1}} Age</label>
+                        <div class="form-group ">
+                          {{guestInformation.childAge[k]}}
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-4 col-lg-2">
+                        <label>Senior Citizen*</label>
+                        <div class="">
+                          {{guestInformation.seniorCitizen}}
+                        </div>
+                      </div>
+                    </div>
+                    <ngb-accordion closeOthers="true" class="mt-4 dusplay-block" activeIds="{{subAccordionId}}"
+                      *ngIf="guestInformation.otherGuestInformationViews">
+                      <ngb-panel title="Other Guest Information of person {{j+1}}" id="{{roomBooking.id}}{{i}}{{j}}"
+                        *ngFor="let otherGuestInformation of guestInformation.otherGuestInformationViews;let j = index">
+                        <ng-template ngbPanelContent>
+                          <div class="row">
+                            <div class="col-sm-12 col-md-4 col-lg-4 text-left">
+                              <label>Full Name*</label>
+                              <div class="form-group">
+                                <input type="text" class="form-control" name="name"
+                                  [(ngModel)]="otherGuestInformation.name" placeholder="Full Name">
+                                <!-- [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(otherGuestInformation.name) || checkMaxLengthError(otherGuestInformation.name,100) || checkRegexError(otherGuestInformation.name,'ALPHABETS_WITH_SPACE'))}"  -->
+                                <small *ngIf="isFormSubmitted" class="mandatary">
+                                  <div *ngIf="checkMandatoryError(otherGuestInformation.name)">
+                                    <span>
+                                      <img src="assets/images/invalid.svg" alt="invalid">
+                                    </span>
+                                    Mandatory : This cannot be left blank.
+                                  </div>
+                                  <div *ngIf="checkMaxLengthError(otherGuestInformation.name,100)">
+                                    <span>
+                                      <img src="assets/images/invalid.svg" alt="invalid">
+                                    </span>
+                                    You have reached maximum limit of 100
+                                    allowed
+                                    characters..
+                                  </div>
+                                  <div *ngIf="checkRegexError(otherGuestInformation.name,'ALPHABETS_WITH_SPACE')">
+                                    <span>
+                                      <img src="assets/images/invalid.svg" alt="invalid">
+                                    </span>
+                                    Alphabets & space are allowed.
+                                  </div>
+                                </small>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4 text-left">
+                              <label>Gender*</label>
+                              <div class="form-group">
+                                <ng-select class="form-control dropGender modelDrp payment-select"
+                                  placeholder="Select Gender" [searchable]="true" [items]="genderList" name="gender"
+                                  [(ngModel)]="otherGuestInformation.gender" bindLabel="value">
+                                  <!-- [ngClass]="{'form-invalid':isFormSubmitted &&(checkMandatoryError(otherGuestInformation.gender))}" -->
+                                </ng-select>
+                                <small *ngIf="isFormSubmitted" class="mandatary">
+                                  <div *ngIf="checkMandatoryError(otherGuestInformation.gender)">
+                                    <span>
+                                      <img src="assets/images/invalid.svg" alt="invalid">
+                                    </span>
+                                    Mandatory : This cannot be left blank.
+                                  </div>
+                                </small>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-2">
+                              <label>Age*</label>
+                              <div class="form-group">
+                                {{otherGuestInformation.age}}
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-2">
+                              <label>Senior Citizen*</label>
+                              <div class="">
+                                {{otherGuestInformation.seniorCitizen}}
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ngb-panel>
+                    </ngb-accordion>
+                    <div class="col-sm-12 col-md-12 col-lg-12 pl-0"
+                      *ngIf="!(bookingModel.roomBookingViews[bookingModel.roomBookingViews.length - 1] == roomBooking && ((i+1) == roomBooking.rooms))">
+                      <button (click)="setNextAccordionId(roomBooking,i)"
+                        class="btn btn-primary py-2 loginBtn height-52 paymentbtn">Next</button>
+                    </div>
+                  </ng-template>
+                </ngb-panel>
+              </ngb-accordion>
+              <div class="col-lg-12 col-xl-12">
+                <h4 class="formSubTitle bb-0"></h4>
+              </div>
+              <div class="col-lg-12 col-xl-12 table-responsive1">
+
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-xl-12 text-left">
+              <div class="form-group">
+                <label class="form-control-label" for="name">Remarks* </label>
+                <textarea class="form-control" type="text" [(ngModel)]="remarks" [ngModelOptions]="{standalone: true}"
+                  placeholder="Remarks"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" *blockUI="'loginBtn'">
+            <button type="submit" value="" class="btn btn-primary py-2 loginBtn height-52 paymentbtn">Update</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
